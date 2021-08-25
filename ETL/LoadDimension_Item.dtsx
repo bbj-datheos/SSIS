@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/1/2017 3:07:54 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="nna-ext"
+  DTS:DTSID="{8F0807A9-38FB-41D4-8F21-91255A998249}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="LoadDimension_Item"
+  DTS:ProtectionLevel="0"
+  DTS:VersionGUID="{965E2BA0-03AA-475A-ADB0-F00618C452CF}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{41A82AED-D1A1-49DE-B604-5ED72241C694}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{BFA61D3A-C4FF-4CAB-AA41-B8AE055CDE1C}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">Item</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SQL Load Item"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{4EB0071D-C9B4-434C-9038-94B0F9E6F8CD}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL Load Item"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{41A82AED-D1A1-49DE-B604-5ED72241C694}"
+          SQLTask:SqlStatementSource="EXEC etl.LoadDimension @Table = ?, @PrintSQL = NULL" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::Table"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="130"
+            SQLTask:ParameterSize="0" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+</DTS:Executable>

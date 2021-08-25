@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/28/2017 2:13:53 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="nna-ext"
+  DTS:DTSID="{E20C4BCF-2A32-44FF-A021-D2566A8FA21A}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="LoadDimension_GPPG"
+  DTS:ProtectionLevel="0"
+  DTS:VersionGUID="{9094271B-6611-4083-8945-21928AC3FA50}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{28017EE7-0E12-42A9-9C1A-4304A50DD465}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02\BI;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{0E429AD7-AFF1-40DA-91D9-707A49CD21A1}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">GPPG</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SQL Load GPPG"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{F3013114-6010-428D-B66B-BE70CA052B39}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL Load GPPG"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{28017EE7-0E12-42A9-9C1A-4304A50DD465}"
+          SQLTask:SqlStatementSource="EXEC etl.LoadDimension @Table = ?, @PrintSQL = NULL" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::Table"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="130"
+            SQLTask:ParameterSize="0" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+</DTS:Executable>

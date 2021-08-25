@@ -1,0 +1,1212 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/20/2017 10:08:13 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="meg-ext"
+  DTS:DTSID="{1A9D4CB4-99D9-456A-A1FB-ED811EEE1176}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_Inventory"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="28"
+  DTS:VersionGUID="{BDE3C0AB-A1ED-455D-A4A4-204BA325300C}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{91A456A0-9E70-412E-AB54-7F20D5CC8634}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{7087727D-B1AB-47E7-BA48-F5C892D9D2B6}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{FF2A5275-F3FB-4808-A210-CDB9E4591649}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{FF97B90B-E8B0-4626-B3F2-478710CDCD02}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">fact</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{23360FFC-6665-44EA-AF16-9809CE933B23}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.Inventory</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{2AF5BC46-04CE-401E-93FE-AD225F5CA329}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">Inventory</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{B302BD23-8F07-41AF-9318-911D3ED9E881}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{895A342A-6108-4809-B5C7-1560CA29AD1D}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{7087727D-B1AB-47E7-BA48-F5C892D9D2B6}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform Inventory"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{91AA1704-5FDE-43DD-9C3E-55E246BAEC1C}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform Inventory">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform Inventory\DFT Transform Inventory"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{13A385F6-D0B4-4996-82C5-3BD6D941C086}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform Inventory"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform Inventory\DFT Transform Inventory\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform Inventory\DFT Transform Inventory\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform Inventory\DFT Transform Inventory\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform Inventory\DFT Transform Inventory\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform Inventory\DFT Transform Inventory\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform Inventory\DFT Transform Inventory\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES Inventory"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES Inventory">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].Columns[CompanyKey]"
+                          cachedDataType="ui1"
+                          cachedName="CompanyKey"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[CompanyKey]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].Columns[ItemKey]"
+                          cachedDataType="wstr"
+                          cachedLength="81"
+                          cachedName="ItemKey"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[ItemKey]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[ItemKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].Columns[EntryTypeKey]"
+                          cachedDataType="i4"
+                          cachedName="EntryTypeKey"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[EntryTypeKey]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[EntryTypeKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].Columns[CurrencyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="1"
+                          cachedName="CurrencyKey"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[CurrencyKey]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[CurrencyKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].Columns[CalendarKey]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="CalendarKey"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].Columns[VendorKey]"
+                          cachedDataType="wstr"
+                          cachedLength="81"
+                          cachedName="VendorKey"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[VendorKey]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[VendorKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].Columns[GPPGCurrentKey]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="GPPGCurrentKey"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[GPPGCurrentKey]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[GPPGCurrentKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].Columns[GPPGHistoricalKey]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="GPPGHistoricalKey"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[GPPGHistoricalKey]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[GPPGHistoricalKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].Columns[InventoryTypeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="132"
+                          cachedName="InventoryTypeKey"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[InventoryTypeKey]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[InventoryTypeKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].Columns[CalendarSnapshotKey]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="CalendarSnapshotKey"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[CalendarSnapshotKey]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[CalendarSnapshotKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].Columns[RemainingQty]"
+                          cachedDataType="numeric"
+                          cachedName="RemainingQty"
+                          cachedPrecision="28"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[RemainingQty]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[RemainingQty]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].Columns[AvailableQty]"
+                          cachedDataType="numeric"
+                          cachedName="AvailableQty"
+                          cachedPrecision="28"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[AvailableQty]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[AvailableQty]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].Columns[InventoryValueAvailableAmount]"
+                          cachedDataType="numeric"
+                          cachedName="InventoryValueAvailableAmount"
+                          cachedPrecision="28"
+                          cachedScale="10"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[InventoryValueAvailableAmount]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[InventoryValueAvailableAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].Columns[ObsolescenceProvisionAmount]"
+                          cachedDataType="numeric"
+                          cachedName="ObsolescenceProvisionAmount"
+                          cachedPrecision="28"
+                          cachedScale="10"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[ObsolescenceProvisionAmount]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[ObsolescenceProvisionAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].Columns[InventoryValueRemainingAmount]"
+                          cachedDataType="numeric"
+                          cachedName="InventoryValueRemainingAmount"
+                          cachedPrecision="28"
+                          cachedScale="10"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[InventoryValueRemainingAmount]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[InventoryValueRemainingAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].Columns[OwnerKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="OwnerKey"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[OwnerKey]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[OwnerKey]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[ItemKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="ItemKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[EntryTypeKey]"
+                          dataType="i4"
+                          name="EntryTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[CurrencyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CurrencyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[VendorKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="VendorKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[GPPGCurrentKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="GPPGCurrentKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[GPPGHistoricalKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="GPPGHistoricalKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[InventoryTypeKey]"
+                          dataType="wstr"
+                          length="100"
+                          name="InventoryTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[CalendarSnapshotKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarSnapshotKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[RemainingQty]"
+                          dataType="numeric"
+                          name="RemainingQty"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[AvailableQty]"
+                          dataType="numeric"
+                          name="AvailableQty"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[InventoryValueRemainingAmount]"
+                          dataType="numeric"
+                          name="InventoryValueRemainingAmount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[InventoryValueAvailableAmount]"
+                          dataType="numeric"
+                          name="InventoryValueAvailableAmount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[ObsolescenceProvisionAmount]"
+                          dataType="numeric"
+                          name="ObsolescenceProvisionAmount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory].ExternalColumns[OwnerKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="OwnerKey" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+	 hod.[Company Code] AS [CompanyKey]
+	,ISNULL((SELECT MAX([Company Name]) FROM [EETDW_Extract].[navcom].[Business Unit] WHERE [Consolidate]=1 AND [Code]=hod.[Company Code])
+	   ,N'') + N'-' + [ItemNo] AS [ItemKey]
+	,0 as EntryTypeKey
+	,N'' AS CurrencyKey
+	,ISNULL((SELECT MAX([Company Name]) FROM [EETDW_Extract].[navcom].[Business Unit] WHERE [Consolidate]=1 AND [Code]=hod.[Company Code])
+	   ,N'') + N'-' + [Supplier] AS [VendorKey]
+	,[GenProductPostingGroupCode] AS [GPPGCurrentKey]
+	,[GenProductPostingGroupCode] AS [GPPGHistoricalKey]
+
+	,ISNULL((SELECT MAX([Company Name]) FROM [EETDW_Extract].[navcom].[Business Unit] WHERE [Consolidate]=1 AND [Code]=hod.[Company Code])
+		,N'') + N'-' + [Owner] + N'-' + [Location Code] AS [InventoryTypeKey]
+	,[File Date] AS CalendarSnapshotKey -- BBJ 20180704: Change posting date to start of time
+	,CASE
+		WHEN [Posting Date]&lt;'2013-01-01' THEN '2013-01-01'
+		ELSE [Posting Date]
+	END AS CalendarKey
+	,CONVERT(nvarchar(10),ISNULL(OrderOwner.OwnerKey,N'')) AS OwnerKey -- added by SRG: 20191112
+	,[RemainingQty]
+	,[AvailableQty]
+	,[InventoryValueAvailable] AS [InventoryValueAvailableAmount]
+	,[Obsolescence Provision] AS [ObsolescenceProvisionAmount]
+	,[InventoryValueRemaining] AS [InventoryValueRemainingAmount]
+FROM 
+	[EETDW_Extract].[analyzer].[Hist Obs Data] AS hod
+	LEFT JOIN (
+		SELECT  
+			 OrderNo
+			,MAX([Owner]) AS OwnerKey
+		FROM
+			[EETDW_Extract].[nav].[Obsolescense Data]
+		WHERE
+			NOT ([Owner] is null OR [Owner] = '')
+			AND NOT ([OrderNo] is null OR [OrderNo] = '')
+		GROUP BY
+			OrderNo
+	) AS OrderOwner
+	ON hod.OrderNo = OrderOwner.OrderNo
+WHERE
+	hod.[File Date]&gt;='2014-01-01'</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyKey]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]"
+                          name="CompanyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[ItemKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemKey]"
+                          length="81"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[ItemKey]"
+                          name="ItemKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[EntryTypeKey]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[EntryTypeKey]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[EntryTypeKey]"
+                          name="EntryTypeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[CurrencyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[CurrencyKey]"
+                          length="1"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[CurrencyKey]"
+                          name="CurrencyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[VendorKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorKey]"
+                          length="81"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[VendorKey]"
+                          name="VendorKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[GPPGCurrentKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[GPPGCurrentKey]"
+                          length="50"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[GPPGCurrentKey]"
+                          name="GPPGCurrentKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[GPPGHistoricalKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[GPPGHistoricalKey]"
+                          length="50"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[GPPGHistoricalKey]"
+                          name="GPPGHistoricalKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[InventoryTypeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[InventoryTypeKey]"
+                          length="132"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[InventoryTypeKey]"
+                          name="InventoryTypeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[CalendarSnapshotKey]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarSnapshotKey]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[CalendarSnapshotKey]"
+                          name="CalendarSnapshotKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]"
+                          name="CalendarKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[RemainingQty]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[RemainingQty]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[RemainingQty]"
+                          name="RemainingQty"
+                          precision="28"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[AvailableQty]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[AvailableQty]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[AvailableQty]"
+                          name="AvailableQty"
+                          precision="28"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[InventoryValueAvailableAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[InventoryValueAvailableAmount]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[InventoryValueAvailableAmount]"
+                          name="InventoryValueAvailableAmount"
+                          precision="28"
+                          scale="10"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[ObsolescenceProvisionAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[ObsolescenceProvisionAmount]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[ObsolescenceProvisionAmount]"
+                          name="ObsolescenceProvisionAmount"
+                          precision="28"
+                          scale="10"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[InventoryValueRemainingAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[InventoryValueRemainingAmount]"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[InventoryValueRemainingAmount]"
+                          name="InventoryValueRemainingAmount"
+                          precision="28"
+                          scale="10"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[OwnerKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[OwnerKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].Columns[OwnerKey]"
+                          name="OwnerKey"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyKey]"
+                          dataType="ui1"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemKey]"
+                          dataType="wstr"
+                          length="81"
+                          name="ItemKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[EntryTypeKey]"
+                          dataType="i4"
+                          name="EntryTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[CurrencyKey]"
+                          dataType="wstr"
+                          length="1"
+                          name="CurrencyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorKey]"
+                          dataType="wstr"
+                          length="81"
+                          name="VendorKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[GPPGCurrentKey]"
+                          dataType="wstr"
+                          length="50"
+                          name="GPPGCurrentKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[GPPGHistoricalKey]"
+                          dataType="wstr"
+                          length="50"
+                          name="GPPGHistoricalKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[InventoryTypeKey]"
+                          dataType="wstr"
+                          length="132"
+                          name="InventoryTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarSnapshotKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarSnapshotKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[RemainingQty]"
+                          dataType="numeric"
+                          name="RemainingQty"
+                          precision="28" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[AvailableQty]"
+                          dataType="numeric"
+                          name="AvailableQty"
+                          precision="28" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[InventoryValueAvailableAmount]"
+                          dataType="numeric"
+                          name="InventoryValueAvailableAmount"
+                          precision="28"
+                          scale="10" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[ObsolescenceProvisionAmount]"
+                          dataType="numeric"
+                          name="ObsolescenceProvisionAmount"
+                          precision="28"
+                          scale="10" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[InventoryValueRemainingAmount]"
+                          dataType="numeric"
+                          name="InventoryValueRemainingAmount"
+                          precision="28"
+                          scale="10" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output].ExternalColumns[OwnerKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="OwnerKey" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[CompanyKey]"
+                          dataType="ui1"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[CompanyKey]"
+                          name="CompanyKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[ItemKey]"
+                          dataType="wstr"
+                          length="81"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[ItemKey]"
+                          name="ItemKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[EntryTypeKey]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[EntryTypeKey]"
+                          name="EntryTypeKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[CurrencyKey]"
+                          dataType="wstr"
+                          length="1"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[CurrencyKey]"
+                          name="CurrencyKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[VendorKey]"
+                          dataType="wstr"
+                          length="81"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[VendorKey]"
+                          name="VendorKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[GPPGCurrentKey]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[GPPGCurrentKey]"
+                          name="GPPGCurrentKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[GPPGHistoricalKey]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[GPPGHistoricalKey]"
+                          name="GPPGHistoricalKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[InventoryTypeKey]"
+                          dataType="wstr"
+                          length="132"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[InventoryTypeKey]"
+                          name="InventoryTypeKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[CalendarSnapshotKey]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[CalendarSnapshotKey]"
+                          name="CalendarSnapshotKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[CalendarKey]"
+                          name="CalendarKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[OwnerKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[OwnerKey]"
+                          name="OwnerKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[RemainingQty]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[RemainingQty]"
+                          name="RemainingQty"
+                          precision="28" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[AvailableQty]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[AvailableQty]"
+                          name="AvailableQty"
+                          precision="28" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[InventoryValueAvailableAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[InventoryValueAvailableAmount]"
+                          name="InventoryValueAvailableAmount"
+                          precision="28"
+                          scale="10" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[ObsolescenceProvisionAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[ObsolescenceProvisionAmount]"
+                          name="ObsolescenceProvisionAmount"
+                          precision="28"
+                          scale="10" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[InventoryValueRemainingAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[InventoryValueRemainingAmount]"
+                          name="InventoryValueRemainingAmount"
+                          precision="28"
+                          scale="10" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform Inventory\DFT Transform Inventory.Paths[OLE SRC Extract_Output_DER Audit]"
+                  endId="Package\SEQC Transform Inventory\DFT Transform Inventory\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="OLE SRC Extract_Output_DER Audit"
+                  startId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC Transform Inventory\DFT Transform Inventory.Paths[Output]"
+                  endId="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory.Inputs[DER Audit_Output_OLE DES Inventory]"
+                  name="Output"
+                  startId="Package\SEQC Transform Inventory\DFT Transform Inventory\DER Audit.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform Inventory\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{54DBDF87-0B25-4705-8E9E-3FD642B76DBD}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{FF2A5275-F3FB-4808-A210-CDB9E4591649}"
+              SQLTask:SqlStatementSource="EXEC('TRUNCATE TABLE ' + ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform Inventory.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform Inventory]"
+          DTS:CreationName=""
+          DTS:DTSID="{A7F0EA35-DDC2-416E-A19E-C0D2B901D5B8}"
+          DTS:From="Package\SEQC Transform Inventory\Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_Truncate Table_To_DFT Transform Inventory"
+          DTS:To="Package\SEQC Transform Inventory\DFT Transform Inventory" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SEQC Transform Inventory_To_SEQC MaintainDW]"
+      DTS:CreationName=""
+      DTS:DTSID="{7DC2CBB1-4A8C-4854-90A7-AE49E3ED89AB}"
+      DTS:From="Package\SEQC Transform Inventory"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SEQC Transform Inventory_To_SEQC MaintainDW"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,103"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="24.0000000000001,313.5" />
+        <NodeLayout
+          Size="198,42"
+          Id="Package\SEQC Transform Inventory\DFT Transform Inventory"
+          TopLeft="5.50000000000001,107.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform Inventory\Truncate Table"
+          TopLeft="29.5,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform Inventory.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform Inventory]"
+          TopLeft="104.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="209,205"
+          Size="209,248"
+          Id="Package\SEQC Transform Inventory"
+          TopLeft="5.50000000000003,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_SEQC Transform Inventory_To_SEQC MaintainDW]"
+          TopLeft="110,253.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform Inventory\DFT Transform Inventory">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract"
+          TopLeft="12,3.5" />
+        <NodeLayout
+          Size="169,42"
+          Id="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory"
+          TopLeft="5.50000000000003,208.5" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform Inventory\DFT Transform Inventory\DER Audit"
+          TopLeft="27,107.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform Inventory\DFT Transform Inventory.Paths[OLE SRC Extract_Output_DER Audit]"
+          TopLeft="90,45.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,62"
+              Start="0,0"
+              End="0,54.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,54.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform Inventory\DFT Transform Inventory.Paths[Output]"
+          TopLeft="90,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,59"
+              Start="0,0"
+              End="0,51.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,51.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform Inventory\DFT Transform Inventory\OLE DES Inventory">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

@@ -1,0 +1,1235 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="3/8/2017 10:38:24 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="mim-ext"
+  DTS:DTSID="{96C97771-A0C2-401F-B739-40C3AEF84FA7}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_CustomerClass"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="1"
+  DTS:VersionGUID="{7F97679A-83D0-4E86-B8C8-A790BDA4987A}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{1FA40DC9-8B89-479D-901A-8C3C0554E9D9}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{99A1450B-2E12-4FDF-B017-BA90D2B2F5A4}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{AF6F2BBF-6160-42D9-BC48-7A6D6452374C}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{EF71FAE7-A006-457B-A85A-62526BE45D55}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">dim</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{84481DC2-AC7B-4A28-8EE8-11D0F185E287}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.CustomerClass</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{4756CA7F-FAB6-48CF-9AB7-44508F6B9E7A}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">CustomerClass</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{87F51BB1-7294-4B51-890C-ACE283EF5023}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{284EAD93-5D99-4C8F-B15A-1C0041F04646}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{99A1450B-2E12-4FDF-B017-BA90D2B2F5A4}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform CustomerClass"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{C56FF7F9-992B-4B1F-9F47-E07F2C3AC726}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform CustomerClass">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{8EBD6AC6-3205-4806-853B-FDDF7DEAA3D7}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform CustomerClass"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES CustomerClass"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES CustomerClass">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].Columns[CustomerClassKey]"
+                          cachedDataType="wstr"
+                          cachedLength="7"
+                          cachedName="CustomerClassKey"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[CustomerClassKey]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerClassKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].Columns[CustomerClassCode]"
+                          cachedDataType="wstr"
+                          cachedLength="1"
+                          cachedName="CustomerClassCode"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[CustomerClassCode]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerClassCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].Columns[CustomerClassName]"
+                          cachedDataType="wstr"
+                          cachedLength="9"
+                          cachedName="CustomerClassName"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[CustomerClassName]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerClassName]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].Columns[ClassClassLabel]"
+                          cachedDataType="wstr"
+                          cachedLength="13"
+                          cachedName="ClassClassLabel"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[ClassClassLabel]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassClassLabel]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].Columns[ClassClassSorting]"
+                          cachedDataType="i4"
+                          cachedName="ClassClassSorting"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[ClassClassSorting]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassClassSorting]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].Columns[CustomerSegmentFrequencyCode]"
+                          cachedDataType="wstr"
+                          cachedLength="2"
+                          cachedName="CustomerSegmentFrequencyCode"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[CustomerSegmentFrequencyCode]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerSegmentFrequencyCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].Columns[CustomerSegmentFrequencyName]"
+                          cachedDataType="wstr"
+                          cachedLength="27"
+                          cachedName="CustomerSegmentFrequencyName"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[CustomerSegmentFrequencyName]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerSegmentFrequencyName]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].Columns[ClassSegmentFrequencyLabel]"
+                          cachedDataType="wstr"
+                          cachedLength="32"
+                          cachedName="ClassSegmentFrequencyLabel"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[ClassSegmentFrequencyLabel]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassSegmentFrequencyLabel]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].Columns[ClassSegmentFrequencySorting]"
+                          cachedDataType="i4"
+                          cachedName="ClassSegmentFrequencySorting"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[ClassSegmentFrequencySorting]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassSegmentFrequencySorting]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].Columns[CustomerFrequencyWindowCode]"
+                          cachedDataType="wstr"
+                          cachedLength="2"
+                          cachedName="CustomerFrequencyWindowCode"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[CustomerFrequencyWindowCode]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerFrequencyWindowCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].Columns[CustomerFrequencyWindowName]"
+                          cachedDataType="wstr"
+                          cachedLength="22"
+                          cachedName="CustomerFrequencyWindowName"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[CustomerFrequencyWindowName]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerFrequencyWindowName]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].Columns[ClassFrequencyWindowLabel]"
+                          cachedDataType="wstr"
+                          cachedLength="26"
+                          cachedName="ClassFrequencyWindowLabel"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[ClassFrequencyWindowLabel]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassFrequencyWindowLabel]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].Columns[ClassFrequencyWindowBand]"
+                          cachedDataType="wstr"
+                          cachedLength="4"
+                          cachedName="ClassFrequencyWindowBand"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[ClassFrequencyWindowBand]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassFrequencyWindowBand]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].Columns[ClassFrequencyWindowBandSorting]"
+                          cachedDataType="i4"
+                          cachedName="ClassFrequencyWindowBandSorting"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[ClassFrequencyWindowBandSorting]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassFrequencyWindowBandSorting]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].Columns[ClassFrequencyWindowCategory]"
+                          cachedDataType="wstr"
+                          cachedLength="9"
+                          cachedName="ClassFrequencyWindowCategory"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[ClassFrequencyWindowCategory]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassFrequencyWindowCategory]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].Columns[ClassFrequencyWindowCategorySorting]"
+                          cachedDataType="i4"
+                          cachedName="ClassFrequencyWindowCategorySorting"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[ClassFrequencyWindowCategorySorting]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassFrequencyWindowCategorySorting]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[CustomerClassKey]"
+                          dataType="wstr"
+                          length="7"
+                          name="CustomerClassKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[CustomerClassCode]"
+                          dataType="wstr"
+                          length="1"
+                          name="CustomerClassCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[CustomerClassName]"
+                          dataType="wstr"
+                          length="9"
+                          name="CustomerClassName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[ClassClassLabel]"
+                          dataType="wstr"
+                          length="13"
+                          name="ClassClassLabel" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[ClassClassSorting]"
+                          dataType="i4"
+                          name="ClassClassSorting" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[CustomerSegmentFrequencyCode]"
+                          dataType="wstr"
+                          length="2"
+                          name="CustomerSegmentFrequencyCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[CustomerSegmentFrequencyName]"
+                          dataType="wstr"
+                          length="27"
+                          name="CustomerSegmentFrequencyName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[ClassSegmentFrequencyLabel]"
+                          dataType="wstr"
+                          length="32"
+                          name="ClassSegmentFrequencyLabel" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[ClassSegmentFrequencySorting]"
+                          dataType="i4"
+                          name="ClassSegmentFrequencySorting" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[CustomerFrequencyWindowCode]"
+                          dataType="wstr"
+                          length="2"
+                          name="CustomerFrequencyWindowCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[CustomerFrequencyWindowName]"
+                          dataType="wstr"
+                          length="22"
+                          name="CustomerFrequencyWindowName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[ClassFrequencyWindowLabel]"
+                          dataType="wstr"
+                          length="26"
+                          name="ClassFrequencyWindowLabel" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[ClassFrequencyWindowBand]"
+                          dataType="wstr"
+                          length="4"
+                          name="ClassFrequencyWindowBand" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[ClassFrequencyWindowBandSorting]"
+                          dataType="i4"
+                          name="ClassFrequencyWindowBandSorting" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[ClassFrequencyWindowCategory]"
+                          dataType="wstr"
+                          length="9"
+                          name="ClassFrequencyWindowCategory" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[ClassFrequencyWindowCategorySorting]"
+                          dataType="i4"
+                          name="ClassFrequencyWindowCategorySorting" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT CustomerClassCode + N'-' + CustomerSegmentFrequencyCode+ N'-' + CustomerFrequencyWindowCode AS CustomerClassKey,* FROM
+
+(
+SELECT N'R' AS CustomerClassCode, N'Recurring' AS CustomerClassName, N'R - Recurring' AS ClassClassLabel, 0 AS ClassClassSorting
+UNION
+SELECT N'N' AS CustomerClassCode, N'New bizz' AS CustomerClassName, N'N - New bizz' AS ClassClassLabel, 1 AS ClassClassSorting
+UNION
+SELECT N'C' AS CustomerClassCode, N'Churn' AS CustomerClassName, N'C - Churn' AS ClassClassLabel, 2 AS ClassClassSorting
+UNION
+SELECT N'L' AS CustomerClassCode, N'Lost' AS CustomerClassName, N'L - Lost' AS ClassClassLabel, 3 AS ClassClassSorting
+UNION
+SELECT N'W' AS CustomerClassCode, N'Winback' AS CustomerClassName, N'W - Winback' AS ClassClassLabel, 4 AS ClassClassSorting
+) c
+CROSS JOIN
+(
+SELECT N'0' AS CustomerSegmentFrequencyCode, N'No Sales' AS CustomerSegmentFrequencyName, N'0 - No Sales' AS ClassSegmentFrequencyLabel, 0 AS ClassSegmentFrequencySorting
+UNION
+SELECT N'1' AS CustomerSegmentFrequencyCode, N'Sales in one segment' AS CustomerSegmentFrequencyName, N'1 - Sales in one segment' AS ClassSegmentFrequencyLabel, 1 AS ClassSegmentFrequencySorting
+UNION
+SELECT N'2' AS CustomerSegmentFrequencyCode, N'Sales in two segments' AS CustomerSegmentFrequencyName, N'2 - Sales in two segments' AS ClassSegmentFrequencyLabel, 2 AS ClassSegmentFrequencySorting
+UNION
+SELECT N'3' AS CustomerSegmentFrequencyCode, N'Sales in three segments' AS CustomerSegmentFrequencyName, N'3 - Sales in three segments' AS ClassSegmentFrequencyLabel, 3 AS ClassSegmentFrequencySorting
+UNION
+SELECT N'4' AS CustomerSegmentFrequencyCode, N'Sales in four segments' AS CustomerSegmentFrequencyName, N'4 - Sales in four segments' AS ClassSegmentFrequencyLabel, 4 AS ClassSegmentFrequencySorting
+UNION
+SELECT N'5' AS CustomerSegmentFrequencyCode, N'Sales in five segments' AS CustomerSegmentFrequencyName, N'5 - Sales in five segments' AS ClassSegmentFrequencyLabel, 5 AS ClassSegmentFrequencySorting
+UNION
+SELECT N'6' AS CustomerSegmentFrequencyCode, N'Sales in six segments' AS CustomerSegmentFrequencyName, N'6 - Sales in six segments' AS ClassSegmentFrequencyLabel, 6 AS ClassSegmentFrequencySorting
+UNION
+SELECT N'7' AS CustomerSegmentFrequencyCode, N'Sales in seven segments' AS CustomerSegmentFrequencyName, N'7 - Sales in seven segments' AS ClassSegmentFrequencyLabel, 7 AS ClassSegmentFrequencySorting
+UNION
+SELECT N'8' AS CustomerSegmentFrequencyCode, N'Sales in eight segments' AS CustomerSegmentFrequencyName, N'8 - Sales in eight segments' AS ClassSegmentFrequencyLabel, 8 AS ClassSegmentFrequencySorting
+UNION
+SELECT N'9' AS CustomerSegmentFrequencyCode, N'Sales in nine segments' AS CustomerSegmentFrequencyName, N'9 - Sales in nine segments' AS ClassSegmentFrequencyLabel, 9 AS ClassSegmentFrequencySorting
+UNION
+SELECT N'10' AS CustomerSegmentFrequencyCode, N'Sales in ten segments' AS CustomerSegmentFrequencyName, N'10 - Sales in ten segments' AS ClassSegmentFrequencyLabel, 10 AS ClassSegmentFrequencySorting
+UNION
+SELECT N'11' AS CustomerSegmentFrequencyCode, N'Sales in eleven segments' AS CustomerSegmentFrequencyName, N'11 - Sales in eleven segments' AS ClassSegmentFrequencyLabel, 3 AS ClassSegmentFrequencySorting
+UNION
+SELECT N'12' AS CustomerSegmentFrequencyCode, N'Sales in twelve segments' AS CustomerSegmentFrequencyName, N'12 - Sales in twelve segments' AS ClassSegmentFrequencyLabel, 4 AS ClassSegmentFrequencySorting
+UNION
+SELECT N'13' AS CustomerSegmentFrequencyCode, N'Sales in thirteen segments' AS CustomerSegmentFrequencyName, N'13 - Sales in thirteen segments' AS ClassSegmentFrequencyLabel, 5 AS ClassSegmentFrequencySorting
+UNION
+SELECT N'14' AS CustomerSegmentFrequencyCode, N'Sales in fourteen segments' AS CustomerSegmentFrequencyName, N'14 - Sales in fourteen segments' AS ClassSegmentFrequencyLabel, 6 AS ClassSegmentFrequencySorting
+UNION
+SELECT N'15' AS CustomerSegmentFrequencyCode, N'Sales in fifteen segments' AS CustomerSegmentFrequencyName, N'15 - Sales in fifteen segments' AS ClassSegmentFrequencyLabel, 7 AS ClassSegmentFrequencySorting
+UNION
+SELECT N'16' AS CustomerSegmentFrequencyCode, N'Sales in sixteen segments' AS CustomerSegmentFrequencyName, N'16 - Sales in sixteen segments' AS ClassSegmentFrequencyLabel, 8 AS ClassSegmentFrequencySorting
+UNION
+SELECT N'17' AS CustomerSegmentFrequencyCode, N'Sales in seventeen segments' AS CustomerSegmentFrequencyName, N'17 - Sales in seventeen segments' AS ClassSegmentFrequencyLabel, 9 AS ClassSegmentFrequencySorting
+UNION
+SELECT N'18' AS CustomerSegmentFrequencyCode, N'Sales in eighteen segments' AS CustomerSegmentFrequencyName, N'18 - Sales in eighteen segments' AS ClassSegmentFrequencyLabel, 10 AS ClassSegmentFrequencySorting
+
+) cf
+CROSS JOIN
+(
+SELECT N'0' AS CustomerFrequencyWindowCode, N'No Sales' AS CustomerFrequencyWindowName, N'0 - No Sales' AS ClassFrequencyWindowLabel, N'0' AS ClassFrequencyWindowBand, 0 AS ClassFrequencyWindowBandSorting, N'Non buyer' AS ClassFrequencyWindowCategory, 0 AS ClassFrequencyWindowCategorySorting
+UNION
+SELECT N'1' AS CustomerFrequencyWindowCode, N'Sales in one month' AS CustomerFrequencyWindowName, N'1 - Sales in one month' AS ClassFrequencyWindowLabel, N'1-2' AS ClassFrequencyWindowBand, 1 AS ClassFrequencyWindowBandSorting, N'Casual' AS ClassFrequencyWindowCategory, 1 AS ClassFrequencyWindowCategorySorting
+UNION
+SELECT N'2' AS CustomerFrequencyWindowCode, N'Sales in two months' AS CustomerFrequencyWindowName, N'2 - Sales in two months' AS ClassFrequencyWindowLabel, N'1-2' AS ClassFrequencyWindowBand, 1 AS ClassFrequencyWindowBandSorting, N'Casual' AS ClassFrequencyWindowCategory, 1 AS ClassFrequencyWindowCategorySorting
+UNION
+SELECT N'3' AS CustomerFrequencyWindowCode, N'Sales in three month' AS CustomerFrequencyWindowName, N'3 - Sales in three month' AS ClassFrequencyWindowLabel, N'3-4' AS ClassFrequencyWindowBand, 2 AS ClassFrequencyWindowBandSorting, N'Casual' AS ClassFrequencyWindowCategory, 1 AS ClassFrequencyWindowCategorySorting
+UNION
+SELECT N'4' AS CustomerFrequencyWindowCode, N'Sales in four months' AS CustomerFrequencyWindowName, N'4 - Sales in four months' AS ClassFrequencyWindowLabel, N'3-4' AS ClassFrequencyWindowBand, 2 AS ClassFrequencyWindowBandSorting, N'Casual' AS ClassFrequencyWindowCategory, 1 AS ClassFrequencyWindowCategorySorting
+UNION
+SELECT N'5' AS CustomerFrequencyWindowCode, N'Sales in five month' AS CustomerFrequencyWindowName, N'5 - Sales in five month' AS ClassFrequencyWindowLabel, N'5-7' AS ClassFrequencyWindowBand, 3 AS ClassFrequencyWindowBandSorting, N'Frequent' AS ClassFrequencyWindowCategory, 2 AS ClassFrequencyWindowCategorySorting
+UNION
+SELECT N'6' AS CustomerFrequencyWindowCode, N'Sales in six months' AS CustomerFrequencyWindowName, N'6 - Sales in six months' AS ClassFrequencyWindowLabel, N'5-7' AS ClassFrequencyWindowBand, 3 AS ClassFrequencyWindowBandSorting, N'Frequent' AS ClassFrequencyWindowCategory, 2 AS ClassFrequencyWindowCategorySorting
+UNION
+SELECT N'7' AS CustomerFrequencyWindowCode, N'Sales in seven months' AS CustomerFrequencyWindowName, N'7 - Sales in seven months' AS ClassFrequencyWindowLabel, N'5-7' AS ClassFrequencyWindowBand, 3 AS ClassFrequencyWindowBandSorting, N'Frequent' AS ClassFrequencyWindowCategory, 2 AS ClassFrequencyWindowCategorySorting
+UNION
+SELECT N'8' AS CustomerFrequencyWindowCode, N'Sales in eight months' AS CustomerFrequencyWindowName, N'8 - Sales in eight months' AS ClassFrequencyWindowLabel, N'8-9' AS ClassFrequencyWindowBand, 4 AS ClassFrequencyWindowBandSorting, N'Regular' AS ClassFrequencyWindowCategory, 3 AS ClassFrequencyWindowCategorySorting
+UNION
+SELECT N'9' AS CustomerFrequencyWindowCode, N'Sales in nine months' AS CustomerFrequencyWindowName, N'9 - Sales in nine months' AS ClassFrequencyWindowLabel, N'8-9' AS ClassFrequencyWindowBand, 4 AS ClassFrequencyWindowBandSorting, N'Regular' AS ClassFrequencyWindowCategory, 3 AS ClassFrequencyWindowCategorySorting
+UNION
+SELECT N'10' AS CustomerFrequencyWindowCode, N'Sales in ten months' AS CustomerFrequencyWindowName, N'7 - Sales in ten months' AS ClassFrequencyWindowLabel, N'&gt;=10' AS ClassFrequencyWindowBand, 5 AS ClassFrequencyWindowBandSorting, N'Regular' AS ClassFrequencyWindowCategory, 3 AS ClassFrequencyWindowCategorySorting
+UNION
+SELECT N'11' AS CustomerFrequencyWindowCode, N'Sales in eleven months' AS CustomerFrequencyWindowName, N'8 - Sales in eleven months' AS ClassFrequencyWindowLabel, N'&gt;=10' AS ClassFrequencyWindowBand, 5 AS ClassFrequencyWindowBandSorting, N'Regular' AS ClassFrequencyWindowCategory, 3 AS ClassFrequencyWindowCategorySorting
+UNION
+SELECT N'12' AS CustomerFrequencyWindowCode, N'Sales in twelve months' AS CustomerFrequencyWindowName, N'9 - Sales in twelve months' AS ClassFrequencyWindowLabel, N'&gt;=10' AS ClassFrequencyWindowBand, 5 AS ClassFrequencyWindowBandSorting, N'Regular' AS ClassFrequencyWindowCategory, 3 AS ClassFrequencyWindowCategorySorting
+) fw</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerClassKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerClassKey]"
+                          length="7"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerClassKey]"
+                          name="CustomerClassKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerClassCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerClassCode]"
+                          length="1"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerClassCode]"
+                          name="CustomerClassCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerClassName]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerClassName]"
+                          length="9"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerClassName]"
+                          name="CustomerClassName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassClassLabel]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[ClassClassLabel]"
+                          length="13"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassClassLabel]"
+                          name="ClassClassLabel"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassClassSorting]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[ClassClassSorting]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassClassSorting]"
+                          name="ClassClassSorting"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerSegmentFrequencyCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerSegmentFrequencyCode]"
+                          length="2"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerSegmentFrequencyCode]"
+                          name="CustomerSegmentFrequencyCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerSegmentFrequencyName]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerSegmentFrequencyName]"
+                          length="27"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerSegmentFrequencyName]"
+                          name="CustomerSegmentFrequencyName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassSegmentFrequencyLabel]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[ClassSegmentFrequencyLabel]"
+                          length="32"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassSegmentFrequencyLabel]"
+                          name="ClassSegmentFrequencyLabel"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassSegmentFrequencySorting]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[ClassSegmentFrequencySorting]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassSegmentFrequencySorting]"
+                          name="ClassSegmentFrequencySorting"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerFrequencyWindowCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerFrequencyWindowCode]"
+                          length="2"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerFrequencyWindowCode]"
+                          name="CustomerFrequencyWindowCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerFrequencyWindowName]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerFrequencyWindowName]"
+                          length="22"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[CustomerFrequencyWindowName]"
+                          name="CustomerFrequencyWindowName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassFrequencyWindowLabel]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[ClassFrequencyWindowLabel]"
+                          length="26"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassFrequencyWindowLabel]"
+                          name="ClassFrequencyWindowLabel"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassFrequencyWindowBand]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[ClassFrequencyWindowBand]"
+                          length="4"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassFrequencyWindowBand]"
+                          name="ClassFrequencyWindowBand"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassFrequencyWindowBandSorting]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[ClassFrequencyWindowBandSorting]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassFrequencyWindowBandSorting]"
+                          name="ClassFrequencyWindowBandSorting"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassFrequencyWindowCategory]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[ClassFrequencyWindowCategory]"
+                          length="9"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassFrequencyWindowCategory]"
+                          name="ClassFrequencyWindowCategory"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassFrequencyWindowCategorySorting]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[ClassFrequencyWindowCategorySorting]"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].Columns[ClassFrequencyWindowCategorySorting]"
+                          name="ClassFrequencyWindowCategorySorting"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerClassKey]"
+                          dataType="wstr"
+                          length="7"
+                          name="CustomerClassKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerClassCode]"
+                          dataType="wstr"
+                          length="1"
+                          name="CustomerClassCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerClassName]"
+                          dataType="wstr"
+                          length="9"
+                          name="CustomerClassName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[ClassClassLabel]"
+                          dataType="wstr"
+                          length="13"
+                          name="ClassClassLabel" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[ClassClassSorting]"
+                          dataType="i4"
+                          name="ClassClassSorting" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerSegmentFrequencyCode]"
+                          dataType="wstr"
+                          length="2"
+                          name="CustomerSegmentFrequencyCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerSegmentFrequencyName]"
+                          dataType="wstr"
+                          length="27"
+                          name="CustomerSegmentFrequencyName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[ClassSegmentFrequencyLabel]"
+                          dataType="wstr"
+                          length="32"
+                          name="ClassSegmentFrequencyLabel" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[ClassSegmentFrequencySorting]"
+                          dataType="i4"
+                          name="ClassSegmentFrequencySorting" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerFrequencyWindowCode]"
+                          dataType="wstr"
+                          length="2"
+                          name="CustomerFrequencyWindowCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerFrequencyWindowName]"
+                          dataType="wstr"
+                          length="22"
+                          name="CustomerFrequencyWindowName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[ClassFrequencyWindowLabel]"
+                          dataType="wstr"
+                          length="26"
+                          name="ClassFrequencyWindowLabel" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[ClassFrequencyWindowBand]"
+                          dataType="wstr"
+                          length="4"
+                          name="ClassFrequencyWindowBand" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[ClassFrequencyWindowBandSorting]"
+                          dataType="i4"
+                          name="ClassFrequencyWindowBandSorting" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[ClassFrequencyWindowCategory]"
+                          dataType="wstr"
+                          length="9"
+                          name="ClassFrequencyWindowCategory" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output].ExternalColumns[ClassFrequencyWindowCategorySorting]"
+                          dataType="i4"
+                          name="ClassFrequencyWindowCategorySorting" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[CustomerClassKey]"
+                          dataType="wstr"
+                          length="7"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[CustomerClassKey]"
+                          name="CustomerClassKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[CustomerClassCode]"
+                          dataType="wstr"
+                          length="1"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[CustomerClassCode]"
+                          name="CustomerClassCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[CustomerClassName]"
+                          dataType="wstr"
+                          length="9"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[CustomerClassName]"
+                          name="CustomerClassName" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ClassClassLabel]"
+                          dataType="wstr"
+                          length="13"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ClassClassLabel]"
+                          name="ClassClassLabel" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ClassClassSorting]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ClassClassSorting]"
+                          name="ClassClassSorting" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[CustomerSegmentFrequencyCode]"
+                          dataType="wstr"
+                          length="2"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[CustomerSegmentFrequencyCode]"
+                          name="CustomerSegmentFrequencyCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[CustomerSegmentFrequencyName]"
+                          dataType="wstr"
+                          length="27"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[CustomerSegmentFrequencyName]"
+                          name="CustomerSegmentFrequencyName" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ClassSegmentFrequencyLabel]"
+                          dataType="wstr"
+                          length="32"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ClassSegmentFrequencyLabel]"
+                          name="ClassSegmentFrequencyLabel" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ClassSegmentFrequencySorting]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ClassSegmentFrequencySorting]"
+                          name="ClassSegmentFrequencySorting" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[CustomerFrequencyWindowCode]"
+                          dataType="wstr"
+                          length="2"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[CustomerFrequencyWindowCode]"
+                          name="CustomerFrequencyWindowCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[CustomerFrequencyWindowName]"
+                          dataType="wstr"
+                          length="22"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[CustomerFrequencyWindowName]"
+                          name="CustomerFrequencyWindowName" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ClassFrequencyWindowLabel]"
+                          dataType="wstr"
+                          length="26"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ClassFrequencyWindowLabel]"
+                          name="ClassFrequencyWindowLabel" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ClassFrequencyWindowBand]"
+                          dataType="wstr"
+                          length="4"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ClassFrequencyWindowBand]"
+                          name="ClassFrequencyWindowBand" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ClassFrequencyWindowBandSorting]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ClassFrequencyWindowBandSorting]"
+                          name="ClassFrequencyWindowBandSorting" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ClassFrequencyWindowCategory]"
+                          dataType="wstr"
+                          length="9"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ClassFrequencyWindowCategory]"
+                          name="ClassFrequencyWindowCategory" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ClassFrequencyWindowCategorySorting]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ClassFrequencyWindowCategorySorting]"
+                          name="ClassFrequencyWindowCategorySorting" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass.Paths[DER Audit_Output_OLE DES CustomerClass]"
+                  endId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass.Inputs[DER Audit_Output_OLE DES CustomerClass]"
+                  name="DER Audit_Output_OLE DES CustomerClass"
+                  startId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass.Paths[OLE SRC Extract_Output_DER Audit]"
+                  endId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="OLE SRC Extract_Output_DER Audit"
+                  startId="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform CustomerClass\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{B4A2DE13-07E0-4C5F-AB96-0EA061BA503A}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{AF6F2BBF-6160-42D9-BC48-7A6D6452374C}"
+              SQLTask:SqlStatementSource="EXEC('TRUNCATE TABLE ' + ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform CustomerClass.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform CustomerClass]"
+          DTS:CreationName=""
+          DTS:DTSID="{53225E7C-5295-448B-BBB5-7C697BFF7171}"
+          DTS:From="Package\SEQC Transform CustomerClass\Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_Truncate Table_To_DFT Transform CustomerClass"
+          DTS:To="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SEQC Transform CustomerClass_To_SEQC MaintainDW]"
+      DTS:CreationName=""
+      DTS:DTSID="{6F7DF152-75AB-46B3-B57B-AA4654D82885}"
+      DTS:From="Package\SEQC Transform CustomerClass"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SEQC Transform CustomerClass_To_SEQC MaintainDW"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,102"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="36.0000000000001,313.5" />
+        <NodeLayout
+          Size="222,42"
+          Id="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass"
+          TopLeft="5.50000000000001,107.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform CustomerClass\Truncate Table"
+          TopLeft="41.5,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform CustomerClass.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform CustomerClass]"
+          TopLeft="116.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="233,204"
+          Size="233,248"
+          Id="Package\SEQC Transform CustomerClass"
+          TopLeft="5.50000000000003,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_SEQC Transform CustomerClass_To_SEQC MaintainDW]"
+          TopLeft="122,253.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\DER Audit"
+          TopLeft="39,107.5" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract"
+          TopLeft="24,5.5" />
+        <NodeLayout
+          Size="193,42"
+          Id="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass"
+          TopLeft="5.50000000000003,209.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass.Paths[DER Audit_Output_OLE DES CustomerClass]"
+          TopLeft="102,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass.Paths[OLE SRC Extract_Output_DER Audit]"
+          TopLeft="102,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform CustomerClass\DFT Transform CustomerClass\OLE DES CustomerClass">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

@@ -1,0 +1,246 @@
+<#@ template language="C#" hostspecific="True" tier="1" #>
+<#@ include file="biml/_IncludeFrameworkGlobals.biml" #>
+
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+
+	<!-- Projects -->
+	<Projects>
+		<PackageProject Name="KPIDemo">
+
+			<Annotations>
+				<Annotation Tag="ProjectParametersPath"><#= ShareToLocalPath(SSISProjectPath + "\\KPIDemo\\Project.params") #></Annotation>
+			</Annotations>
+
+			<Parameters>
+				<!-- Application Connections -->
+				<# foreach (DataRow row in ApplicationConnections.Rows) {#>
+				<Parameter Name="ConnectionStringDW_<#=row["Name"]#>" DataType="String" IsRequired="false" IsSensitive="false"><#=row["ConnectionString"]#></Parameter>
+				<# } #>
+
+				<!-- Source Connections - Excel, OleDb -->
+				<# foreach (DataRow row in SourceConnections.Select("ConnectionType in ('Excel', 'OleDb')")) { #>
+				<Parameter Name="ConnectionString<#=row["Name"]#>" DataType="String" IsRequired="false" IsSensitive="false"><#=row["ConnectionString"]#></Parameter>
+				<# } #>
+
+				<!-- Additional Parameters -->
+				<Parameter Name="EnvironmentSQLServer" DataType="String" IsRequired="false" IsSensitive="false">SGBI02</Parameter>
+				<Parameter Name="JobIsIncremental" DataType="Boolean" IsRequired="false" IsSensitive="false">0</Parameter>
+			</Parameters>
+
+			<Packages>
+				<# foreach (DataRow row in SourceObjects.Rows) {#>
+				<Package PackageName="<#=row["ExtractPackageName"]#>" />
+				<# } #>
+            </Packages>
+
+		</PackageProject>
+	</Projects>
+
+	<!-- Connections -->
+	<Connections>
+
+		<!-- Application Connections -->
+		<# foreach (DataRow row in ApplicationConnections.Select("ConnectionType in ('OleDb')")) {#>
+		<OleDbConnection Name="<#=row["Name"]#>" ConnectionString="<#=row["ConnectionString"]#>" />
+		<# } #>
+		
+		<!-- Source Connections - Excel, OleDb -->
+		<# foreach (DataRow row in SourceConnections.Select("ConnectionType in ('Excel', 'OleDb')")) { #>
+		<<#=row["ConnectionType"]#>Connection Name="<#=row["Name"]#>" ConnectionString="<#=row["ConnectionString"]#>" />
+		<# } #>
+
+	</Connections>
+
+	<!-- Databases -->
+	<Databases>
+
+		<!-- Application Databases -->
+		<# foreach (DataRow row in ApplicationConnections.Select("ConnectionType in ('OleDb')")) { #>
+		<Database Name="<#=row["InitialCatalog"]#>" ConnectionName="<#=row["Name"]#>" />
+		<# } #>
+			
+		<!-- Source Databases - !!only real databases, not excel etc. -->
+		<# foreach (DataRow row in SourceConnections.Select("ConnectionType in ('OleDb')")) { #>
+		<Database Name="<#=row["InitialCatalog"]#>" ConnectionName="<#=row["Name"]#>" />
+		<# } #>
+	
+	</Databases>
+	
+	<!-- Schemas -->
+	<Schemas>
+		
+		<!-- Application Extract Schemas -->
+		<# foreach (DataRow row in SourceConnections.Select("ConnectionType not in ('Excel')")) { #>
+		<Schema Name="<#=row["ExtractSchemaName"]#>" DatabaseName="<#=DataWarehouseName#>_Extract" />
+		<# } #>	
+
+		<!-- Application Fixed Schemas -->
+		<Schema Name="excel" DatabaseName="<#=DataWarehouseName#>_Extract" />
+		<Schema Name="dbo" DatabaseName="<#=DataWarehouseName#>_Extract" />
+		<Schema Name="dbo" DatabaseName="<#=DataWarehouseName#>_Stage" />
+		<Schema Name="dim" DatabaseName="<#=DataWarehouseName#>" />
+		<Schema Name="dimView" DatabaseName="<#=DataWarehouseName#>" />
+		<Schema Name="fact" DatabaseName="<#=DataWarehouseName#>" />
+		<Schema Name="factView" DatabaseName="<#=DataWarehouseName#>" />
+		<Schema Name="bridge" DatabaseName="<#=DataWarehouseName#>" />
+		<Schema Name="bridgeView" DatabaseName="<#=DataWarehouseName#>" />
+		
+		<!-- Source Schemas -->
+		<# 
+		foreach (DataRow sc_row in SourceConnections.Select("ConnectionType in ('OleDb')")) { 
+			
+			// Old method, testing simple loop to entered information by developer
+			// var sourceConnection = SchemaManager.CreateConnectionNode(row["InitialCatalog"].ToString(), row["ConnectionString"].ToString());
+			// var schemas = sourceConnection.GenerateSchemaNodes();
+			// schemas.GetBiml()
+
+			// New method for obtaining source schemas, using entered data in meta tables
+			foreach (DataRow row in SourceSchemas.Select("ConnectionName = '" + sc_row["Name"] + "'")) {
+		#>
+				
+			<Schema Name="<#=row["SchemaName"]#>" DatabaseName="<#=sc_row["InitialCatalog"]#>" />
+
+		<# 
+			}
+		} 
+		#>
+			
+	</Schemas>
+		
+	<!-- Source / Extract Tables -->
+	<Tables>
+		<# 
+		foreach (DataRow sc_row in SourceConnections.Select("ConnectionType = 'OleDb'")) { 
+			//var extractConnection = SchemaManager.CreateConnectionNode(DataWarehouseName + "_Extract", conExtract);
+			//var existingTableNodes = extractConnection.GetDatabaseSchema(null, null, ImportOptions.ExcludeCheckConstraint | ImportOptions.ExcludeColumnDefault | ImportOptions.ExcludeForeignKey | ImportOptions.ExcludeIdentity | ImportOptions.ExcludeIndex | ImportOptions.ExcludeUniqueKey);
+
+			// Collect list of relevant schemas and tables for filter
+			var sourceConnection = SchemaManager.CreateConnectionNode(sc_row["InitialCatalog"].ToString(), sc_row["ConnectionString"].ToString());
+			var schemasToImport = ExternalDataAccess.GetDataTable(conMeta, "select distinct SchemaName from etl.SourceObjectDefinitions where ConnectionName = '" + sc_row["Name"] + "'").Rows.OfType<System.Data.DataRow>().Select(r => r[0].ToString()).ToList();
+			var tablesToImport = ExternalDataAccess.GetDataTable(conMeta, "select ObjectName from etl.SourceObjectDefinitions where ConnectionName = '" + sc_row["Name"] + "'").Rows.OfType<System.Data.DataRow>().Select(r => r[0].ToString()).ToList();
+
+			// If any tables have been selected
+			if(tablesToImport.Count != 0) {
+
+				// Gather metadata for selected tables in source
+				var tableNodes = (sc_row["Name"].ToString() != "TRAMOS") ? sourceConnection.GetDatabaseSchema(schemasToImport, tablesToImport, ImportOptions.ExcludeCheckConstraint | ImportOptions.ExcludeColumnDefault | ImportOptions.ExcludeForeignKey | ImportOptions.ExcludeIdentity | ImportOptions.ExcludeIndex | ImportOptions.ExcludeUniqueKey) : sourceConnection.ImportDB("", "", ImportOptions.ExcludeCheckConstraint | ImportOptions.ExcludeColumnDefault | ImportOptions.ExcludeForeignKey | ImportOptions.ExcludeIdentity | ImportOptions.ExcludeIndex | ImportOptions.ExcludeUniqueKey);
+
+				foreach (DataRow row in SourceObjects.Select("ConnectionName = '" + sc_row["Name"] + "'")) {
+					if(tableNodes.TableNodes.Any(table => table.Name.Contains(row["ObjectName"].ToString()))) {
+						var tableNode = tableNodes.TableNodes.First(table => table.Name == row["ObjectName"].ToString());
+						var columnsToImport = tableNode.Keys.Any() ? row["StringColumnFilter"].ToString().Split(',').ToList().Concat(tableNode.Keys.First().Columns.Where(c => c.GetBiml().ToString() != "<Column  />").Select(c => c.Column.Name)).ToList().ConvertAll(c => c.ToLower()) : row["StringColumnFilter"].ToString().Split(',').ToList().ConvertAll(c => c.ToLower());
+						var tableColumns = columnsToImport.Contains("*") ? tableNode.Columns : tableNode.Columns.Where(c => columnsToImport.Contains(c.Name.ToLower()));
+				
+						tableNode.Name = (row["NavisionFlag"].ToString() == "1") ? tableNode.Name.Substring(tableNode.Name.LastIndexOf('$') + 1) : tableNode.Name; // Correct name if Navision table
+		#>
+
+						<Table Name="<#=tableNode.Name#>" SchemaName="<#=DataWarehouseName#>_Extract.<#=row["ExtractSchemaName"].ToString()#>">
+							<Columns>
+								<# foreach (var column in tableColumns) { #>
+									<# if (column.DataType != System.Data.DbType.Object) { // Remove columns with object data types #>
+										<# if (column.DataType == System.Data.DbType.AnsiString || column.DataType == System.Data.DbType.AnsiStringFixedLength) { #>
+
+											<Column Name="<#=column.Name#>" DataType="String" Length="<#=column.Length#>" IsNullable="true">
+												<Annotations>
+													<Annotation AnnotationType="Tag" Tag="ConvertToUnicode">yes</Annotation>
+												</Annotations>
+											</Column>
+
+										<# } else if (
+												(column.DataType == System.Data.DbType.String && 
+												column.Length == 16 &&
+												!tableNode.Keys.First().Columns.Any(c => c.Column.Name.Contains(column.Name)))  ||
+											    (column.DataType == System.Data.DbType.Binary && 
+											    column.Length == 16 &&
+											    !tableNode.Keys.First().Columns.Any(c => c.Column.Name.Contains(column.Name)))
+											) { // Assume NTEXT #>
+
+											<Column Name="<#=column.Name#>" DataType="String" Length="-1" IsNullable="true">
+												<Annotations>
+													<Annotation AnnotationType="Tag" Tag="ConvertNtext">yes</Annotation>
+												</Annotations>
+											</Column>
+
+										
+										<# } else { #>
+
+											<#=column.GetBiml()#>
+										
+										<# } #>
+																		
+									<# } #>
+								<# } #>
+								<# if (row["NavisionFlag"].ToString() == "1") { #>
+								<Column Name="DWNavisionCompany" DataType="String" Length="200" IsNullable="true" />
+								<# } #>
+								<Column Name="DWCreatedDate" DataType="DateTime" IsNullable="true" />
+							</Columns>
+							<Keys>
+								<# foreach (var key in tableNode.Keys) { #>
+								<PrimaryKey Name="<#=key.Name.ToString()#>" Clustered="false">
+									<Columns>
+										<# foreach (var column in key.Columns.Where(c => c.GetBiml().ToString() != "<Column  />")) { #>
+											<#=column.GetBiml()#>
+										<# } #>
+										<# if (row["NavisionFlag"].ToString() == "1") { #>
+										<Column ColumnName="DWNavisionCompany" />
+										<# } #>
+									</Columns>
+								</PrimaryKey>
+								<# } #>
+							</Keys>
+						</Table>
+
+						<# if(row["PreserveHistoryFlag"].ToString() == "1") { #>
+
+							<CloneTable Name="<#=tableNode.Name#>_History" CloneIndexes="false" CloneKeys="false" CloneStaticSources="false" NullClonedColumns="true" TableName="<#=tableNode.Name#>" SchemaName="<#=DataWarehouseName#>_Extract.<#=row["ExtractSchemaName"].ToString()#>">
+								<Columns>
+									<Column Name="DWModifiedDate" DataType="DateTime" IsNullable="true" />
+									<Column Name="DWIsCurrent" DataType="Byte" IsNullable="true" />
+									<Column Name="DWIsDeletedInSource" DataType="Byte" IsNullable="true" />
+									<Column Name="DWValidFromDate" DataType="DateTime" />
+									<Column Name="DWValidToDate" DataType="DateTime" IsNullable="true" />
+									<Column Name="DWDeletedInSourceDate" DataType="DateTime" IsNullable="true" />
+								</Columns>
+								<Keys>
+									<# foreach (var key in tableNode.Keys) { #>
+									<PrimaryKey Name="<#=key.Name.ToString()#>_History" Clustered="false">
+										<Columns>
+											<# foreach (var column in key.Columns.Where(c => c.GetBiml().ToString() != "<Column  />")) { #>
+												<#=column.GetBiml()#>
+											<# } #>
+											<# if (row["NavisionFlag"].ToString() == "1") { #>
+											<Column ColumnName="DWNavisionCompany" />
+											<# } #>
+											<Column ColumnName="DWValidFromDate" />
+										</Columns>
+									</PrimaryKey>
+									<# } #>
+								</Keys>
+							</CloneTable>
+
+						<# } #>
+
+					<#
+					} else {
+						throw new Exception("The table '" + row["ObjectName"].ToString() + "' could not be found in the source");
+					}
+				}
+			}
+		}
+		#>
+
+		<!-- Excel file tables -->
+		<#	
+		foreach (DataRow row in SourceObjects.Select("ConnectionType in ('Excel')")) {
+		#>
+			<#=GetExcelBiml(row["ExtractSchemaName"].ToString(), row["ConnectionName"].ToString(), row["ConnectionString"].ToString(), row["InitialCatalog"].ToString(), row["StringColumnFilter"].ToString(), row["ExtractAllColumnsFlag"].ToString())#>
+		<#
+		} 
+		#>
+
+	</Tables>	
+
+	<# //MessageBox.Show(RootNode.GetBiml().ToString()); #>
+
+</Biml>

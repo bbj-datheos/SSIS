@@ -1,0 +1,44 @@
+<#@ property name="ConnectionName" type="String" #>
+<#@ property name="ObjectName" type="String" #>
+<#@ property name="ExtractSchemaName" type="String" #>
+<#@ property name="SchemaName" type="String" #>
+<#@ property name="ColumnList" type="String" #>
+<#@ property name="ExtractSQLFilter" type="String" #>
+
+<Package Name="ExtractIncremental<#=ExtractSchemaName#>_<#=ObjectName#>" ConstraintMode="Linear" ProtectionLevel="EncryptSensitiveWithUserKey">
+	<Connections>
+		<Connection ConnectionName="Extract" />
+		<Connection ConnectionName="<#=ConnectionName#>" />
+	</Connections>
+	<Tasks>
+		<ExecuteSQL Name="Truncate Extract Table" ConnectionName="Extract">
+			<DirectInput>truncate table <#=ExtractSchemaName + "." + ObjectName #></DirectInput>
+		</ExecuteSQL> 
+		<Dataflow Name="Extract Data">
+			<Transformations>
+				<OleDbSource Name="Source" ConnectionName="<#=ConnectionName#>">
+					<DirectInput>
+						select 
+							<#=ColumnList#> 
+						from 
+							<#=SchemaName + "." + ObjectName#>
+
+						<# if(!String.IsNullOrEmpty(ExtractSQLFilter)) {#>
+						where
+							<#=ExtractSQLFilter#>	
+						<#}#>
+
+					</DirectInput>
+				</OleDbSource>
+				<DerivedColumns Name="Derived Column">
+					<Columns>
+						<Column Name="DWCreatedDate" DataType="DateTime">getdate()</Column> 
+					</Columns>
+				</DerivedColumns>
+				<OleDbDestination Name="Destination" ConnectionName="Extract">
+					<ExternalTableOutput Table="<#=ExtractSchemaName + "." + ObjectName#>" />
+				</OleDbDestination>
+			</Transformations>
+		</Dataflow>
+	</Tasks>
+</Package>

@@ -1,0 +1,939 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/1/2017 11:19:08 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="nna-ext"
+  DTS:DTSID="{7B32DDD9-1AFC-4773-B8D1-C5DB11088DDF}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_BudgetType"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="52"
+  DTS:VersionGUID="{7B58A703-2C78-4021-9E5D-1C128AAAA16E}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{D02F8F38-64CA-44EF-8AAB-A1CB135B7CE8}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{D7FD03A0-E974-426B-816C-0BFFFEBCD0F5}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{8E41B7E5-777C-4EA7-9129-F4AB4B53ECAA}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{1D5E2D34-3CE9-41D0-981C-BF53D33E68C3}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">dim</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{0D22212D-5AB1-4E56-818C-2DE388B05793}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.BudgetType</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{C0D3424B-D99A-40F9-8EE6-7B43414B5C97}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">BudgetType</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{AD6003AF-F508-4BA6-9551-C1DB5C28DB9F}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{95FDF6EF-7D5E-495C-A2A6-21E1CE17F965}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{D7FD03A0-E974-426B-816C-0BFFFEBCD0F5}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform BudgetType"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{3BC3C736-99E1-4732-AD38-D59126F6FD35}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform BudgetType">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{0D90F2E6-597C-478D-AB62-46A7F8C71924}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform BudgetType"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES BudgetType"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES Item">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].Columns[BudgetTypeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="305"
+                          cachedName="BudgetTypeKey"
+                          externalMetadataColumnId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[BudgetTypeKey]"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].Columns[BudgetTypeVersion]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="BudgetTypeVersion"
+                          externalMetadataColumnId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[BudgetTypeVersion]"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeVersion]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].Columns[BudgetTypeIsCurrentBudget]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="BudgetTypeIsCurrentBudget"
+                          externalMetadataColumnId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[BudgetTypeIsCurrentBudget]"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeIsCurrentBudget]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].Columns[BudgetTypeIsCurrentForecast]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="BudgetTypeIsCurrentForecast"
+                          externalMetadataColumnId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[BudgetTypeIsCurrentForecast]"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeIsCurrentForecast]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].Columns[BudgetTypeCategory]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="BudgetTypeCategory"
+                          externalMetadataColumnId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[BudgetTypeCategory]"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeCategory]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].Columns[BudgetBrandType]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="BudgetBrandType"
+                          externalMetadataColumnId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[BudgetBrandType]"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetBrandType]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].Columns[BudgetTypeMeasure]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="BudgetTypeMeasure"
+                          externalMetadataColumnId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[BudgetTypeMeasure]"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeMeasure]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[BudgetTypeKey]"
+                          dataType="wstr"
+                          length="100"
+                          name="BudgetTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[BudgetTypeVersion]"
+                          dataType="wstr"
+                          length="50"
+                          name="BudgetTypeVersion" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[BudgetTypeIsCurrentBudget]"
+                          dataType="wstr"
+                          length="50"
+                          name="BudgetTypeIsCurrentBudget" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[BudgetTypeIsCurrentForecast]"
+                          dataType="wstr"
+                          length="50"
+                          name="BudgetTypeIsCurrentForecast" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[BudgetTypeCategory]"
+                          dataType="wstr"
+                          length="50"
+                          name="BudgetTypeCategory" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[BudgetBrandType]"
+                          dataType="wstr"
+                          length="50"
+                          name="BudgetBrandType" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[BudgetTypeMeasure]"
+                          dataType="wstr"
+                          length="50"
+                          name="BudgetTypeMeasure" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT DISTINCT 
+	[BudgetTypeVersion] + N'-'
+		+ [BudgetTypeIsCurrentBudget] + N'-'
+		+ [BudgetTypeIsCurrentForecast] + N'-'
+		+ [BudgetTypeCategory] + N'-'
+		+ [BudgetBrandType] + N'-'
+		+ [BudgetTypeMeasure] AS [BudgetTypeKey]
+	,[BudgetTypeVersion]
+	,[BudgetTypeIsCurrentBudget]
+	,[BudgetTypeIsCurrentForecast]
+	,[BudgetTypeCategory]
+	,[BudgetBrandType]
+	,[BudgetTypeMeasure]
+FROM
+	[EETDW_Extract].[control].[BudgetReadInSales]--[EETDW_Extract].[control].[EET_SalesBudget]--[EETDW_Extract].[control].[BudgetReadInSales]
+
+UNION 
+
+SELECT DISTINCT 
+	[BudgetTypeVersion] + N'-'
+		+ [BudgetTypeIsCurrentBudget] + N'-'
+		+ [BudgetTypeIsCurrentForecast] + N'-'
+		+ [BudgetTypeCategory] + N'-'
+		+ [BudgetBrandType] + N'-'
+		+ [BudgetTypeMeasure] AS BudgetTypeKey
+	,[BudgetTypeVersion]
+	,[BudgetTypeIsCurrentBudget]
+	,[BudgetTypeIsCurrentForecast]
+	,[BudgetTypeCategory]
+	,[BudgetBrandType]
+	,[BudgetTypeMeasure]
+FROM
+	[EETDW_Extract].[control].[EET_BLBudget]
+
+UNION 
+
+SELECT DISTINCT 
+	[BudgetTypeVersion] + N'-'
+		+ [BudgetTypeIsCurrentBudget] + N'-'
+		+ [BudgetTypeIsCurrentForecast] + N'-'
+		+ [BudgetTypeCategory] + N'-'
+		+ [BudgetBrandType] + N'-'
+		+ [BudgetTypeMeasure] AS BudgetTypeKey
+	,[BudgetTypeVersion]
+	,[BudgetTypeIsCurrentBudget]
+	,[BudgetTypeIsCurrentForecast]
+	,[BudgetTypeCategory]
+	,[BudgetBrandType]
+	,[BudgetTypeMeasure]
+FROM
+	[EETDW_Extract].[control].[EET_GLBudget]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].ExternalColumns[BudgetTypeKey]"
+                          length="305"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeKey]"
+                          name="BudgetTypeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeVersion]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].ExternalColumns[BudgetTypeVersion]"
+                          length="50"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeVersion]"
+                          name="BudgetTypeVersion"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeIsCurrentBudget]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].ExternalColumns[BudgetTypeIsCurrentBudget]"
+                          length="50"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeIsCurrentBudget]"
+                          name="BudgetTypeIsCurrentBudget"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeIsCurrentForecast]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].ExternalColumns[BudgetTypeIsCurrentForecast]"
+                          length="50"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeIsCurrentForecast]"
+                          name="BudgetTypeIsCurrentForecast"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeCategory]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].ExternalColumns[BudgetTypeCategory]"
+                          length="50"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeCategory]"
+                          name="BudgetTypeCategory"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetBrandType]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].ExternalColumns[BudgetBrandType]"
+                          length="50"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetBrandType]"
+                          name="BudgetBrandType"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeMeasure]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].ExternalColumns[BudgetTypeMeasure]"
+                          length="50"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeMeasure]"
+                          name="BudgetTypeMeasure"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].ExternalColumns[BudgetTypeKey]"
+                          dataType="wstr"
+                          length="305"
+                          name="BudgetTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].ExternalColumns[BudgetTypeVersion]"
+                          dataType="wstr"
+                          length="50"
+                          name="BudgetTypeVersion" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].ExternalColumns[BudgetTypeIsCurrentBudget]"
+                          dataType="wstr"
+                          length="50"
+                          name="BudgetTypeIsCurrentBudget" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].ExternalColumns[BudgetTypeIsCurrentForecast]"
+                          dataType="wstr"
+                          length="50"
+                          name="BudgetTypeIsCurrentForecast" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].ExternalColumns[BudgetTypeCategory]"
+                          dataType="wstr"
+                          length="50"
+                          name="BudgetTypeCategory" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].ExternalColumns[BudgetBrandType]"
+                          dataType="wstr"
+                          length="50"
+                          name="BudgetBrandType" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output].ExternalColumns[BudgetTypeMeasure]"
+                          dataType="wstr"
+                          length="50"
+                          name="BudgetTypeMeasure" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error].Columns[BudgetTypeKey]"
+                          dataType="wstr"
+                          length="305"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error].Columns[BudgetTypeKey]"
+                          name="BudgetTypeKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error].Columns[BudgetTypeVersion]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error].Columns[BudgetTypeVersion]"
+                          name="BudgetTypeVersion" />
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error].Columns[BudgetTypeIsCurrentBudget]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error].Columns[BudgetTypeIsCurrentBudget]"
+                          name="BudgetTypeIsCurrentBudget" />
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error].Columns[BudgetTypeIsCurrentForecast]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error].Columns[BudgetTypeIsCurrentForecast]"
+                          name="BudgetTypeIsCurrentForecast" />
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error].Columns[BudgetTypeCategory]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error].Columns[BudgetTypeCategory]"
+                          name="BudgetTypeCategory" />
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error].Columns[BudgetBrandType]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error].Columns[BudgetBrandType]"
+                          name="BudgetBrandType" />
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error].Columns[BudgetTypeMeasure]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error].Columns[BudgetTypeMeasure]"
+                          name="BudgetTypeMeasure" />
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType.Paths[DER Audit_Output_OLE DES Item]"
+                  endId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType.Inputs[DER Audit_Output_OLE DES Item]"
+                  name="DER Audit_Output_OLE DES Item"
+                  startId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC Transform BudgetType\DFT Transform BudgetType.Paths[OLE SRC Extract_Output_DER Audit]"
+                  endId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="OLE SRC Extract_Output_DER Audit"
+                  startId="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform BudgetType\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{C8943F56-6056-406C-96D8-0FE521B7561E}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{8E41B7E5-777C-4EA7-9129-F4AB4B53ECAA}"
+              SQLTask:SqlStatementSource="EXEC('TRUNCATE TABLE ' + ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform BudgetType.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{17ACA05A-918B-4CC8-B60C-FA4178639A3C}"
+          DTS:From="Package\SEQC Transform BudgetType\Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\SEQC Transform BudgetType\DFT Transform BudgetType" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SEQC Transform Item_To_SEQC MaintainDW]"
+      DTS:CreationName=""
+      DTS:DTSID="{3E3C58B9-2A51-4B9B-8F67-A17D2AD8BBB8}"
+      DTS:From="Package\SEQC Transform BudgetType"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SEQC Transform Item_To_SEQC MaintainDW"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,103"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="29.5000000000001,313.5" />
+        <NodeLayout
+          Size="209,42"
+          Id="Package\SEQC Transform BudgetType\DFT Transform BudgetType"
+          TopLeft="5.50000000000001,107.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform BudgetType\Truncate Table"
+          TopLeft="35,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform BudgetType.PrecedenceConstraints[Constraint]"
+          TopLeft="110,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="220,205"
+          Size="220,248"
+          Id="Package\SEQC Transform BudgetType"
+          TopLeft="5.50000000000003,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_SEQC Transform Item_To_SEQC MaintainDW]"
+          TopLeft="115.5,253.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform BudgetType\DFT Transform BudgetType">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="180,42"
+          Id="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType"
+          TopLeft="10.5,208.5" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform BudgetType\DFT Transform BudgetType\DER Audit"
+          TopLeft="20.5,107.5" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract"
+          TopLeft="5.50000000000001,6.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform BudgetType\DFT Transform BudgetType.Paths[OLE SRC Extract_Output_DER Audit]"
+          TopLeft="83.5,48.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,59"
+              Start="0,0"
+              End="0,51.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,51.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform BudgetType\DFT Transform BudgetType.Paths[DER Audit_Output_OLE DES Item]"
+          TopLeft="83.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="17,59"
+              Start="0,0"
+              End="17,51.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,25.5"
+                    Point2="0,29.5"
+                    Point3="4,29.5" />
+                  <mssgle:LineSegment
+                    End="13,29.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="13,29.5"
+                    Point2="17,29.5"
+                    Point3="17,33.5" />
+                  <mssgle:LineSegment
+                    End="17,51.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE DES BudgetType">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform BudgetType\DFT Transform BudgetType\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

@@ -1,0 +1,744 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="1/15/2017 11:18:10 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="bbj-ext"
+  DTS:DTSID="{7EB9E152-25D5-4A08-9326-CA32E69DC5FB}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_ExchangeType"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="1"
+  DTS:VersionGUID="{AD7D588E-A661-4EC4-9320-CD77950BEC7A}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{B8089DC4-743E-452D-813B-F30F1B104130}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{CA83C1ED-DF83-42A4-8D63-86FC960ABFC3}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{3482569E-1F76-4B49-8F9C-4F418DF20C6A}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{1DF15BFF-A089-4BA1-BD1E-347CB0F5D38F}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">dim</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{7A5E0AD0-87B8-4044-9947-61CC93870AC7}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.ExchangeType</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{01879309-8F75-4DD7-8468-662EAC441079}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">ExchangeType</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{DE37B8BB-FF4D-4AA5-A01E-0169D250AF68}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{CFE6E045-B796-412E-8628-6862BDD9581E}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{CA83C1ED-DF83-42A4-8D63-86FC960ABFC3}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform ExchangeType"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{C85845DA-F5F8-4A6D-ABB1-18B9D8C5D406}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform ExchangeType">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{6A2BA285-4AD0-46E0-AD04-F8657F97D6B7}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform ExchangeType"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES ExchangeType"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Inputs[DER Audit_Output_OLE DES ExchangeType]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES ExchangeType">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Inputs[DER Audit_Output_OLE DES ExchangeType].Columns[ExchangeTypeKey]"
+                          cachedDataType="i4"
+                          cachedName="ExchangeTypeKey"
+                          externalMetadataColumnId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Inputs[DER Audit_Output_OLE DES ExchangeType].ExternalColumns[ExchangeTypeKey]"
+                          lineageId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Output].Columns[ExchangeTypeKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Inputs[DER Audit_Output_OLE DES ExchangeType].Columns[ExchangeTypeCode]"
+                          cachedDataType="wstr"
+                          cachedLength="3"
+                          cachedName="ExchangeTypeCode"
+                          externalMetadataColumnId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Inputs[DER Audit_Output_OLE DES ExchangeType].ExternalColumns[ExchangeTypeCode]"
+                          lineageId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Output].Columns[ExchangeTypeCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Inputs[DER Audit_Output_OLE DES ExchangeType].Columns[ExchangeTypeName]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="ExchangeTypeName"
+                          externalMetadataColumnId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Inputs[DER Audit_Output_OLE DES ExchangeType].ExternalColumns[ExchangeTypeName]"
+                          lineageId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Output].Columns[ExchangeTypeName]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Inputs[DER Audit_Output_OLE DES ExchangeType].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Inputs[DER Audit_Output_OLE DES ExchangeType].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Inputs[DER Audit_Output_OLE DES ExchangeType].ExternalColumns[ExchangeTypeKey]"
+                          dataType="i4"
+                          name="ExchangeTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Inputs[DER Audit_Output_OLE DES ExchangeType].ExternalColumns[ExchangeTypeCode]"
+                          dataType="wstr"
+                          length="3"
+                          name="ExchangeTypeCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Inputs[DER Audit_Output_OLE DES ExchangeType].ExternalColumns[ExchangeTypeName]"
+                          dataType="wstr"
+                          length="30"
+                          name="ExchangeTypeName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Inputs[DER Audit_Output_OLE DES ExchangeType].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Inputs[DER Audit_Output_OLE DES ExchangeType]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 0 AS ExchangeTypeKey, N'LCY' AS ExchangeTypeCode, N'Local Currency' AS ExchangeTypeName
+UNION
+SELECT 1 AS ExchangeTypeKey, N'AVG' AS ExchangeTypeCode, N'Average over Period' AS ExchangeTypeName
+UNION
+SELECT 2 AS ExchangeTypeKey, N'ULT' AS ExchangeTypeCode, N'Ultimo - End of Period' AS ExchangeTypeName</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Output].Columns[ExchangeTypeKey]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Output].ExternalColumns[ExchangeTypeKey]"
+                          lineageId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Output].Columns[ExchangeTypeKey]"
+                          name="ExchangeTypeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Output].Columns[ExchangeTypeCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Output].ExternalColumns[ExchangeTypeCode]"
+                          length="3"
+                          lineageId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Output].Columns[ExchangeTypeCode]"
+                          name="ExchangeTypeCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Output].Columns[ExchangeTypeName]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Output].ExternalColumns[ExchangeTypeName]"
+                          length="30"
+                          lineageId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Output].Columns[ExchangeTypeName]"
+                          name="ExchangeTypeName"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Output].ExternalColumns[ExchangeTypeKey]"
+                          dataType="i4"
+                          name="ExchangeTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Output].ExternalColumns[ExchangeTypeCode]"
+                          dataType="wstr"
+                          length="3"
+                          name="ExchangeTypeCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Output].ExternalColumns[ExchangeTypeName]"
+                          dataType="wstr"
+                          length="22"
+                          name="ExchangeTypeName" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Error].Columns[ExchangeTypeKey]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Error].Columns[ExchangeTypeKey]"
+                          name="ExchangeTypeKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Error].Columns[ExchangeTypeCode]"
+                          dataType="wstr"
+                          length="3"
+                          lineageId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Error].Columns[ExchangeTypeCode]"
+                          name="ExchangeTypeCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Error].Columns[ExchangeTypeName]"
+                          dataType="wstr"
+                          length="22"
+                          lineageId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Error].Columns[ExchangeTypeName]"
+                          name="ExchangeTypeName" />
+                        <outputColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType.Paths[DER Audit_Output_OLE DES ExchangeType]"
+                  endId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType.Inputs[DER Audit_Output_OLE DES ExchangeType]"
+                  name="DER Audit_Output_OLE DES ExchangeType"
+                  startId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType.Paths[OLE SRC Extract_Output_DER Audit]"
+                  endId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="OLE SRC Extract_Output_DER Audit"
+                  startId="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform ExchangeType\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{5FB9822E-372C-4B91-9CA0-5191D1DCD6C7}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{3482569E-1F76-4B49-8F9C-4F418DF20C6A}"
+              SQLTask:SqlStatementSource="EXEC('TRUNCATE TABLE ' + ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform ExchangeType.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform ExchangeType]"
+          DTS:CreationName=""
+          DTS:DTSID="{4080AC8A-E87A-4EEF-8C7B-F59738887492}"
+          DTS:From="Package\SEQC Transform ExchangeType\Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_Truncate Table_To_DFT Transform ExchangeType"
+          DTS:To="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SEQC Transform ExchangeType_To_SEQC MaintainDW]"
+      DTS:CreationName=""
+      DTS:DTSID="{E7224F40-09DF-49C5-B76A-45F851F80C70}"
+      DTS:From="Package\SEQC Transform ExchangeType"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SEQC Transform ExchangeType_To_SEQC MaintainDW"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,102"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="35.5000000000001,313.5" />
+        <NodeLayout
+          Size="221,42"
+          Id="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType"
+          TopLeft="5.50000000000001,107.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform ExchangeType\Truncate Table"
+          TopLeft="41,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform ExchangeType.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform ExchangeType]"
+          TopLeft="116,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="232,204"
+          Size="232,248"
+          Id="Package\SEQC Transform ExchangeType"
+          TopLeft="5.50000000000003,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_SEQC Transform ExchangeType_To_SEQC MaintainDW]"
+          TopLeft="121.5,253.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\DER Audit"
+          TopLeft="38.5,107.5" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract"
+          TopLeft="23.5,5.5" />
+        <NodeLayout
+          Size="192,42"
+          Id="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType"
+          TopLeft="5.50000000000003,209.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType.Paths[DER Audit_Output_OLE DES ExchangeType]"
+          TopLeft="101.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType.Paths[OLE SRC Extract_Output_DER Audit]"
+          TopLeft="101.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform ExchangeType\DFT Transform ExchangeType\OLE DES ExchangeType">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

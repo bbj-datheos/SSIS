@@ -1,0 +1,2055 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/6/2017 2:38:35 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="mim-ext"
+  DTS:DTSID="{346232A0-D0EB-4D9C-895D-E8FA9FE23618}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_SalesItemLedgerEntry"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="34"
+  DTS:VersionGUID="{5DB2778F-9FBE-4A64-8201-5FA70D5BE2A6}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{B16E20DE-18A9-42D2-8331-7521BFD41D51}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{80F736F7-46A7-4567-BCF5-0B98C6180B28}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{0695CA70-9E2E-4CCA-8803-5A3BB3D8D6B8}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{6777B120-FD15-464C-88C0-7DB4EF33FDD2}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">fact</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{0E58F83D-1A44-465C-9DBA-E6808CA64F81}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.SalesItemLedgerEntry</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{9A9DE38E-C0AD-41D0-9B51-5E30C718ADF3}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">SalesItemLedgerEntry</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{7412B977-C2FD-4999-AE5C-AFC11FE5E876}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{6BAE154F-36DF-4F91-B05C-3135A142E057}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{80F736F7-46A7-4567-BCF5-0B98C6180B28}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform SalesItemLedgerEntry"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{6D396DD0-F773-48BD-B823-A2357ADA7BDF}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform SalesItemLedgerEntry">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{720A7B00-7849-4795-B755-88F1B59918C8}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform SalesItemLedgerEntry"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES SalesItemLedgerEntry"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES SalesItemLedgerEntry">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[CompanyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CompanyKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[CompanyKey]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[ItemKey]"
+                          cachedDataType="wstr"
+                          cachedLength="51"
+                          cachedName="ItemKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[ItemKey]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[ItemKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[CustomerSellToKey]"
+                          cachedDataType="wstr"
+                          cachedLength="51"
+                          cachedName="CustomerSellToKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[CustomerSellToKey]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CustomerSellToKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[CustomerBillToKey]"
+                          cachedDataType="wstr"
+                          cachedLength="51"
+                          cachedName="CustomerBillToKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[CustomerBillToKey]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CustomerBillToKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[CalendarKey]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="CalendarKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[InvoiceNo]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="InvoiceNo"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[InvoiceNo]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[InvoiceNo]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[OrderNo]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="OrderNo"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[OrderNo]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[OrderNo]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[EmployeeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="41"
+                          cachedName="EmployeeKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[EmployeeKey]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[EmployeeKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[CurrencyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CurrencyKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[CurrencyKey]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CurrencyKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[OrderTypeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="OrderTypeKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[OrderTypeKey]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[OrderTypeKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[WebUserKey]"
+                          cachedDataType="wstr"
+                          cachedLength="71"
+                          cachedName="WebUserKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[WebUserKey]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[WebUserKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[CostChangeReasonKey]"
+                          cachedDataType="wstr"
+                          cachedLength="72"
+                          cachedName="CostChangeReasonKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[CostChangeReasonKey]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CostChangeReasonKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[OriginOfOrderKey]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="OriginOfOrderKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[OriginOfOrderKey]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[OriginOfOrderKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[GPPGCurrentKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="GPPGCurrentKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[GPPGCurrentKey]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[GPPGCurrentKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[GPPGHistoricalKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="GPPGHistoricalKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[GPPGHistoricalKey]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[GPPGHistoricalKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[InvoiceAmount]"
+                          cachedDataType="numeric"
+                          cachedName="InvoiceAmount"
+                          cachedPrecision="38"
+                          cachedScale="18"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[InvoiceAmount]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[InvoiceAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[OrderCostAmount]"
+                          cachedDataType="numeric"
+                          cachedName="OrderCostAmount"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[OrderCostAmount]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[OrderCostAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[OrderProfitMarginAmount]"
+                          cachedDataType="numeric"
+                          cachedName="OrderProfitMarginAmount"
+                          cachedPrecision="38"
+                          cachedScale="18"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[OrderProfitMarginAmount]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[OrderProfitMarginAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[UnitCostAmount]"
+                          cachedDataType="numeric"
+                          cachedName="UnitCostAmount"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[UnitCostAmount]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[UnitCostAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[MarginPostedToG/LAmount]"
+                          cachedDataType="numeric"
+                          cachedName="MarginPostedToG/LAmount"
+                          cachedPrecision="38"
+                          cachedScale="18"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[MarginPostedToG/LAmount]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[MarginPostedToG/LAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[OrderCostChangeAmount]"
+                          cachedDataType="numeric"
+                          cachedName="OrderCostChangeAmount"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[OrderCostChangeAmount]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[OrderCostChangeAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[InvoicedQuantity]"
+                          cachedDataType="numeric"
+                          cachedName="InvoicedQuantity"
+                          cachedPrecision="38"
+                          cachedScale="18"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[InvoicedQuantity]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[InvoicedQuantity]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[CostPostedToG/LAmount]"
+                          cachedDataType="numeric"
+                          cachedName="CostPostedToG/LAmount"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[CostPostedToG/LAmount]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CostPostedToG/LAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[CalendarOrderKey]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="CalendarOrderKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[CalendarOrderKey]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CalendarOrderKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[BidNo]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="BidNo"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[BidNo]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[BidNo]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[DocumentKey]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="DocumentKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[DocumentKey]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[DocumentKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[InventoryTypeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="222"
+                          cachedName="InventoryTypeKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[InventoryTypeKey]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[InventoryTypeKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[DutyQuantity]"
+                          cachedDataType="numeric"
+                          cachedName="DutyQuantity"
+                          cachedPrecision="38"
+                          cachedScale="6"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[DutyQuantity]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[DutyQuantity]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[UnitsPerParcel]"
+                          cachedDataType="numeric"
+                          cachedName="UnitsPerParcel"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[UnitsPerParcel]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[UnitsPerParcel]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[TurnoverInvoicedDKK]"
+                          cachedDataType="numeric"
+                          cachedName="TurnoverInvoicedDKK"
+                          cachedPrecision="38"
+                          cachedScale="18"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[TurnoverInvoicedDKK]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[TurnoverInvoicedDKK]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[SalesProfitDKK]"
+                          cachedDataType="numeric"
+                          cachedName="SalesProfitDKK"
+                          cachedPrecision="38"
+                          cachedScale="18"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[SalesProfitDKK]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[SalesProfitDKK]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[FinancialGrossProfitDKK]"
+                          cachedDataType="numeric"
+                          cachedName="FinancialGrossProfitDKK"
+                          cachedPrecision="38"
+                          cachedScale="18"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[FinancialGrossProfitDKK]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[FinancialGrossProfitDKK]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[TurnoverInvoicedLCY]"
+                          cachedDataType="numeric"
+                          cachedName="TurnoverInvoicedLCY"
+                          cachedPrecision="38"
+                          cachedScale="18"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[TurnoverInvoicedLCY]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[TurnoverInvoicedLCY]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[SalesProfitLCY]"
+                          cachedDataType="numeric"
+                          cachedName="SalesProfitLCY"
+                          cachedPrecision="38"
+                          cachedScale="18"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[SalesProfitLCY]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[SalesProfitLCY]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].Columns[FinancialGrossProfitLCY]"
+                          cachedDataType="numeric"
+                          cachedName="FinancialGrossProfitLCY"
+                          cachedPrecision="38"
+                          cachedScale="18"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[FinancialGrossProfitLCY]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[FinancialGrossProfitLCY]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[ItemKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="ItemKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[CustomerSellToKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="CustomerSellToKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[CustomerBillToKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="CustomerBillToKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[InvoiceNo]"
+                          dataType="wstr"
+                          length="20"
+                          name="InvoiceNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[OrderNo]"
+                          dataType="wstr"
+                          length="20"
+                          name="OrderNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[EmployeeKey]"
+                          dataType="wstr"
+                          length="41"
+                          name="EmployeeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[CurrencyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CurrencyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[OrderTypeKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="OrderTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[WebUserKey]"
+                          dataType="wstr"
+                          length="71"
+                          name="WebUserKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[CostChangeReasonKey]"
+                          dataType="wstr"
+                          length="81"
+                          name="CostChangeReasonKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[OriginOfOrderKey]"
+                          dataType="wstr"
+                          length="20"
+                          name="OriginOfOrderKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[InvoiceAmount]"
+                          dataType="numeric"
+                          name="InvoiceAmount"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[OrderCostAmount]"
+                          dataType="numeric"
+                          name="OrderCostAmount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[OrderProfitMarginAmount]"
+                          dataType="numeric"
+                          name="OrderProfitMarginAmount"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[UnitCostAmount]"
+                          dataType="numeric"
+                          name="UnitCostAmount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[MarginPostedToG/LAmount]"
+                          dataType="numeric"
+                          name="MarginPostedToG/LAmount"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[OrderCostChangeAmount]"
+                          dataType="numeric"
+                          name="OrderCostChangeAmount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[InvoicedQuantity]"
+                          dataType="numeric"
+                          name="InvoicedQuantity"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[CostPostedToG/LAmount]"
+                          dataType="numeric"
+                          name="CostPostedToG/LAmount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[GPPGCurrentKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="GPPGCurrentKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[GPPGHistoricalKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="GPPGHistoricalKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[CalendarOrderKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarOrderKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[BidNo]"
+                          dataType="wstr"
+                          length="30"
+                          name="BidNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[DocumentKey]"
+                          dataType="wstr"
+                          length="100"
+                          name="DocumentKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[InventoryTypeKey]"
+                          dataType="wstr"
+                          length="100"
+                          name="InventoryTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[UnitsPerParcel]"
+                          dataType="numeric"
+                          name="UnitsPerParcel"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[DutyQuantity]"
+                          dataType="numeric"
+                          name="DutyQuantity"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[TurnoverInvoicedDKK]"
+                          dataType="numeric"
+                          name="TurnoverInvoicedDKK"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[SalesProfitDKK]"
+                          dataType="numeric"
+                          name="SalesProfitDKK"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[FinancialGrossProfitDKK]"
+                          dataType="numeric"
+                          name="FinancialGrossProfitDKK"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[TurnoverInvoicedLCY]"
+                          dataType="numeric"
+                          name="TurnoverInvoicedLCY"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[SalesProfitLCY]"
+                          dataType="numeric"
+                          name="SalesProfitLCY"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry].ExternalColumns[FinancialGrossProfitLCY]"
+                          dataType="numeric"
+                          name="FinancialGrossProfitLCY"
+                          precision="38"
+                          scale="18" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
+	ISNULL((SELECT MAX([Code]) FROM [EETDW_Extract].[navcom].[Business Unit] WHERE [Consolidate]=1 AND [Company Name]=ile.[DWNavisionCompany] AND [Department Code]=ile.[Department Code])
+	   ,(SELECT MAX([Code]) FROM [EETDW_Extract].[navcom].[Business Unit] WHERE [Consolidate]=1 AND [Company Name]=ile.[DWNavisionCompany] AND [Department Code]='')) AS [CompanyKey]
+	,CONVERT(NVARCHAR(20),ile.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(30),ile.[Item No.]) AS [ItemKey]
+	,CONVERT(NVARCHAR(20),ile.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(30), ile.[Source No.]) AS [CustomerSellToKey]
+	,CASE 
+		WHEN LEN(cust.[Bill-to Customer No.]) &gt; 0 
+		THEN CONVERT(NVARCHAR(20),ile.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(30), cust.[Bill-to Customer No.])
+		ELSE CONVERT(NVARCHAR(20),ile.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(30), ile.[Source No.]) 
+		END AS [CustomerBillToKey]
+	,ile.[Posting Date] AS CalendarKey
+	,ile.[Order Date] AS CalendarOrderKey
+	,CONVERT(NVARCHAR(20),ile.[Document No.]) AS InvoiceNo
+	,CONVERT(NVARCHAR(20),CASE WHEN ile.[Order No.]='' THEN ile.[Document No.] + ile.[No. Series] ELSE ile.[Order No.] END) AS OrderNo
+	,CONVERT(NVARCHAR(20),ile.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(20),ile.[Salespers./Purch. Code]) AS EmployeeKey
+	,CONVERT(NVARCHAR(10),ile.[Source Currency Code]) AS CurrencyKey
+	,CONVERT(nvarchar(10),
+		CASE 
+			WHEN LEN(ile.[RMA No.]) &gt; 0 AND ile.[Drop Shipment] &lt;&gt; 0 THEN N'1-0-0-' + ISNULL(CONVERT(nvarchar(10),ReasonCode.[No.]),N'0')
+			WHEN LEN(ile.[RMA No.]) &gt; 0 AND ile.[Drop Shipment]  = 0 THEN N'1-0-1-' + ISNULL(CONVERT(nvarchar(10),ReasonCode.[No.]),N'0')
+			WHEN LEN(ile.[RMA No.]) = 0 AND ile.[Drop Shipment] &lt;&gt; 0 THEN N'0-0-1-0' 	
+			ELSE N'0-0-0-0'
+		END
+	) AS [OrderTypeKey] --SRG Added a new part of the key to include RMA Reason 20191008
+	,CONVERT(NVARCHAR(20),ile.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(50),ISNULL(sih.[Login],N'')) AS WebUserKey
+	,CASE WHEN ISNULL(ile.[Bid No],N'')='' THEN CONVERT(NVARCHAR(20),ile.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(20),ile.[Cost changed Reasoncode])
+		ELSE CONVERT(NVARCHAR(20),ile.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(20),ile.[Cost changed Reasoncode]) + N'-' + CONVERT(NVARCHAR(30),ile.[Bid No]) END AS CostChangeReasonKey
+	,CONVERT(NVARCHAR(20),ISNULL(ile.[Origin of order],N'          ')) AS OriginOfOrderKey
+	,CONVERT(NVARCHAR(10), it.[Gen. Prod. Posting Group]) AS GPPGCurrentKey
+	,CONVERT(NVARCHAR(10), ile.[Gen. Prod. Posting Group]) AS GPPGHistoricalKey
+	,(ile.Amount *-1.0)																													AS InvoiceAmount -- Turnover
+	,CONVERT(numeric(38,18),(CONVERT(numeric(38,18),ile.Amount) *-1.0) * CONVERT(numeric(38,18),Exchange.ExchangeRate))					AS TurnoverInvoicedDKK --Turnover
+	,(ile.Amount *-1.0)																													AS TurnoverInvoicedLCY --Turnover
+	,ile.[Order Cost Amount] AS OrderCostAmount -- Sales Cost
+	,(ile.[Order Profit Margin] * -1.0)																									AS OrderProfitMarginAmount -- Sales Profit
+	,CONVERT(numeric(38,18),(CONVERT(numeric(38,18),ile.[Order Profit Margin]) * -1.0) * CONVERT(numeric(38,18),Exchange.ExchangeRate))	AS SalesProfitDKK -- Sales Profit
+	,(ile.[Order Profit Margin] * -1.0)																									AS SalesProfitLCY -- Sales Profit
+	,ile.[Unit Cost] AS UnitCostAmount -- Financial cost
+	,CASE 
+		WHEN ccr.[Cost changed Type] IN (0,1,3)
+		THEN ((ile.Amount - ile.[Cost Posted to G/L] - ile.[Order Cost Change Amount]) * -1)
+		ELSE ((ile.Amount - ile.[Cost Posted to G/L]) * -1)
+	END AS [MarginPostedToG/LAmount]
+	,CONVERT(numeric(38,18),
+		CASE 
+			WHEN ccr.[Cost changed Type] IN (0,1,3)
+			THEN ((CONVERT(numeric(38,18),ile.Amount) - CONVERT(numeric(38,18),ile.[Cost Posted to G/L]) - CONVERT(numeric(38,18),ile.[Order Cost Change Amount])) * -1.0)* CONVERT(numeric(38,18),Exchange.ExchangeRate)
+			ELSE ((CONVERT(numeric(38,18),ile.Amount) - CONVERT(numeric(38,18),ile.[Cost Posted to G/L])) * -1.0)* CONVERT(numeric(38,18),Exchange.ExchangeRate)
+		END
+	 ) AS [FinancialGrossProfitDKK]	--SRG 20200207
+	,CASE 
+		WHEN ccr.[Cost changed Type] IN (0,1,3)
+		THEN ((ile.Amount - ile.[Cost Posted to G/L] - ile.[Order Cost Change Amount]) * -1)
+		ELSE ((ile.Amount - ile.[Cost Posted to G/L]) * -1)
+	END AS [FinancialGrossProfitLCY] --SRG 20200207
+	,ile.[Order Cost Change Amount] AS OrderCostChangeAmount
+	,(ile.[Invoiced Quantity] * -1) AS [InvoicedQuantity]
+	,ile.[Cost Posted to G/L] AS [CostPostedToG/LAmount]-- added by bbj 20180626
+	,it.[Units per Parcel] AS UnitsPerParcel-- added by SRG: 20191210
+	,CASE WHEN it.[Units per Parcel] &lt;&gt; 0 THEN it.[Units per Parcel] * ile.[Invoiced Quantity] * - 1 ELSE ile.[Invoiced Quantity] * - 1 END AS DutyQuantity -- added by SRG: 20191210
+	,CONVERT(NVARCHAR(30),ile.[Bid No]) AS BidNo--end bbj -- added by bbj 20180824
+	,CONVERT(NVARCHAR(100),N'ILE-' + ile.[Document No.] + N'-' + CASE WHEN ile.[Order No.]='' THEN ile.[Document No.] + ile.[No. Series] ELSE ile.[Order No.] END  + N'-' + ISNULL(sih.[Org. Sales Order No.],N'')) AS DocumentKey --end bbj -- added by bbj 20180913
+	,ile.[DWNavisionCompany]+N'-'+ile.[Owner] +N'-'+ ile.[Location Code] AS [InventoryTypeKey] --end bbj
+FROM
+	nav.[Item Ledger Entry] AS ile
+	LEFT JOIN nav.Customer AS cust
+	ON cust.[No.] = ile.[Source No.] AND cust.DWNavisionCompany = ile.DWNavisionCompany
+	LEFT JOIN nav.[Sales Invoice Header] AS sih
+	ON sih.[No.] = ile.[Document No.]  AND sih.[Order No.] = ile.[Order No.]  AND sih.DWNavisionCompany = ile.DWNavisionCompany 
+	LEFT JOIN nav.[Cost changed Reasoncodes] ccr 
+	on ccr.DWNavisionCompany = ile.DWNavisionCompany AND ccr.Code = ile.[Cost changed Reasoncode]
+	LEFT JOIN nav.Item AS it
+	ON it.[No.] = ile.[Item No.] AND it.DWNavisionCompany = ile.DWNavisionCompany
+	LEFT JOIN (
+		SELECT DISTINCT
+			CONVERT(nvarchar(10),[No.]) AS [No.]
+		FROM
+			[nav].[RMA Reasoncode]
+		WHERE
+			[DWNavisionCompany] = 'EET Group'
+	) AS ReasonCode
+	ON ReasonCode.[No.] = ile.[Reason Code] 
+--Added to only show the english reason code, as the dimension is kind of handheld.
+--If it becomes more dynamic, the where should be removed.
+--ADDED by SRG 20191008
+	LEFT JOIN (
+		SELECT
+			[Currency Code]
+			,[Company Name]
+			,CONVERT(nvarchar(4),DATEPART(YEAR,[Period])) + N'-' + RIGHT(N'0'+CONVERT(nvarchar(2),DATEPART(MONTH,[Period])),2) AS MonthKey
+			,MAX(CONVERT(numeric(38,18),CONVERT(numeric(38,18),[Rel. Exchange Rate Amount])/CONVERT(numeric(38,18),rer.[Exchange Rate Amount]))) AS ExchangeRate
+		FROM
+			[EETDW_Extract].[navcom].[Reporting Exchange Rate] rer
+			INNER JOIN [EETDW_Extract].[navcom].[Business Unit] bu
+			ON (bu.Consolidate=1 AND [Currency Code]=bu.[Reporting Currency Code])
+			OR (bu.Consolidate=1 AND [Currency Code]=LEFT(bu.[Reporting Currency Code],3) AND rer.[Exchange Rate Type] NOT IN (-1,2,3))
+		WHERE
+			[Exchange Rate Type] = 0
+			AND CONVERT(date,[Period]) &gt; '2013-12-31'
+		GROUP BY
+			[Currency Code]
+			,[Company Name]
+			,CONVERT(nvarchar(4),DATEPART(YEAR,[Period])) + N'-' + RIGHT(N'0'+CONVERT(nvarchar(2),DATEPART(MONTH,[Period])),2)
+	) AS Exchange
+	ON [Company Name] = ile.DWNavisionCompany
+	AND CONVERT(nvarchar(4),DATEPART(YEAR,ile.[Posting Date])) + N'-' + RIGHT(N'0'+CONVERT(nvarchar(2),DATEPART(MONTH,ile.[Posting Date])),2) = MonthKey
+WHERE
+	ile.[Entry Type] = 1
+	and ile.[Invoiced Quantity] &lt;&gt; 0
+
+UNION ALL
+
+SELECT
+	ISNULL((SELECT MAX([Code]) FROM [EETDW_Extract].[navcom].[Business Unit] WHERE [Consolidate]=1 AND [Company Name]=rle.[DWNavisionCompany] AND [Department Code]=rle.[Department Code])
+	   ,(SELECT MAX([Code]) FROM [EETDW_Extract].[navcom].[Business Unit] WHERE [Consolidate]=1 AND [Company Name]=rle.[DWNavisionCompany] AND [Department Code]='')) AS [CompanyKey]
+	,CONVERT(NVARCHAR(20),rle.[DWNavisionCompany])  + N'-' + CONVERT(NVARCHAR(30),'RES_' + rle.[Resource No.]) AS [ItemKey]
+	,CONVERT(NVARCHAR(20),rle.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(30), rle.[Source No.]) AS [CustomerSellToKey]
+	,CASE 
+		WHEN LEN(cust.[Bill-to Customer No.]) &gt; 0 
+			THEN CONVERT(NVARCHAR(20),rle.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(30), cust.[Bill-to Customer No.])
+			ELSE CONVERT(NVARCHAR(20),rle.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(30), rle.[Source No.])
+	 END AS [CustomerBillToKey]
+	 ,rle.[Posting Date] AS CalendarKey
+	 ,rle.[Order Date] AS CalendarOrderKey
+	,CONVERT(NVARCHAR(20),rle.[Document No.]) AS InvoiceNo
+	,CONVERT(NVARCHAR(20),CASE WHEN rle.[Order No.]='' THEN rle.[Document No.] + rle.[No. Series] ELSE rle.[Order No.] END) AS OrderNo
+	,CONVERT(NVARCHAR(20),rle.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(20),rle.[Salesperson Code]) AS EmployeeKey
+	,ISNULL((SELECT MAX([Local Currency Code]) FROM [EETDW_Extract].[navcom].[Business Unit] WHERE [Consolidate]=1 AND [Company Name]=rle.[DWNavisionCompany] AND [Department Code]=rle.[Department Code])
+		,(SELECT MAX([Local Currency Code]) FROM [EETDW_Extract].[navcom].[Business Unit] WHERE [Consolidate]=1 AND [Company Name]=rle.[DWNavisionCompany] AND [Department Code]='')) AS [CurrencyKey]
+	,CONVERT(nvarchar(10),N'1-1-1-0') AS [OrderTypeKey] --SRG Added a new part of the key to include RMA Reason 20191008
+	,CONVERT(NVARCHAR(20),rle.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(20),'') as CostChangeReasonKey
+	,CONVERT(NVARCHAR(20),rle.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(50),ISNULL(sih.[Login],N'')) AS WebUserKey
+	,CONVERT(NVARCHAR(20),ISNULL(sih.[Origin of order],N'          ')) AS OriginOfOrderKey
+	,CONVERT(NVARCHAR(10), rs.[Gen. Prod. Posting Group]) AS GPPGCurrentKey
+	,CONVERT(NVARCHAR(10), rle.[Gen. Prod. Posting Group]) AS GPPGHistoricalKey
+	,(rle.[Total Price] * -1.0)																																					AS InvoiceAmount -- Turnover
+	,CONVERT(numeric(38,18),(CONVERT(numeric(38,18),rle.[Total Price]) * -1.0) * CONVERT(numeric(38,18),Exchange.ExchangeRate))													AS TurnoverInvoicedDKK --Turnover
+	,(rle.[Total Price] * -1.0)																																					AS TurnoverInvoicedLCY --Turnover
+	,rle.[Total Cost] AS OrderCostAmount -- Sales Cost
+	,((rle.[Total Price] - rle.[Total Cost]) * -1.0)																															AS OrderProfitMarginAmount -- Sales Profit
+	,CONVERT(numeric(38,18),((CONVERT(numeric(38,18),rle.[Total Price]) - CONVERT(numeric(38,18),rle.[Total Cost])) * -1.0) * CONVERT(numeric(38,18),Exchange.ExchangeRate))	AS SalesProfitDKK -- Sales Profit
+	,((rle.[Total Price] - rle.[Total Cost]) * -1.0)																															AS SalesProfitLCY -- Sales Profit
+	,0 AS UnitCostAmount -- Financial cost -- changed 20180615 by bbj after input from Mikael
+	,(rle.[Total Price] * -1)																																					AS [MarginPostedToG/LAmount]	-- end bbj
+	,CONVERT(numeric(38,18),(CONVERT(numeric(38,18),rle.[Total Price]) * -1.0) * CONVERT(numeric(38,18),Exchange.ExchangeRate))													AS [FinancialGrossProfitDKK]--SRG 20200207
+	,(rle.[Total Price] * -1)																																					AS [FinancialGrossProfitLCY]--SRG 20200207
+	,0 AS OrderCostChangeAmount
+	,(rle.Quantity * -1) AS [InvoicedQuantity]
+	,0 AS [CostPostedToG/LAmount]-- added by bbj 20180626
+	,0 AS [UnitsPerParcel] -- added by SRG: 20191210
+	,0 AS DutyQuantity -- added by SRG: 20191210
+	,CONVERT(NVARCHAR(30),'') AS BidNo --end bbj -- added by bbj 20180824
+	,CONVERT(NVARCHAR(100),N'RLE-' + rle.[Document No.] + N'-' + CASE WHEN rle.[Order No.]='' THEN rle.[Document No.] + rle.[No. Series] ELSE rle.[Order No.] END  + N'-' + ISNULL(sih.[Org. Sales Order No.],N'')) AS DocumentKey --end bbj
+	,rle.[DWNavisionCompany]+N'-' +N'-' AS [InventoryTypeKey] --end bbj
+from
+	nav.[Res_ Ledger Entry] rle
+	LEFT JOIN nav.Customer AS cust
+	ON cust.[No.] = rle.[Source No.] AND cust.DWNavisionCompany = rle.DWNavisionCompany
+	LEFT JOIN nav.[Sales Invoice Header] AS sih
+	ON sih.[No.] = rle.[Document No.]  AND sih.[Order No.] = rle.[Order No.]  AND sih.DWNavisionCompany = rle.DWNavisionCompany 
+	LEFT JOIN nav.Resource AS rs
+	ON rs.[No.] = rle.[Resource No.] AND rs.DWNavisionCompany = rle.DWNavisionCompany
+	LEFT JOIN (
+		SELECT
+			 [Currency Code]
+			,[Company Name]
+			,CONVERT(nvarchar(4),DATEPART(YEAR,[Period])) + N'-' + RIGHT(N'0'+CONVERT(nvarchar(2),DATEPART(MONTH,[Period])),2) AS MonthKey
+			,MAX(CONVERT(numeric(38,18),CONVERT(numeric(38,18),[Rel. Exchange Rate Amount])/CONVERT(numeric(38,18),rer.[Exchange Rate Amount]))) AS ExchangeRate
+		FROM
+			[EETDW_Extract].[navcom].[Reporting Exchange Rate] rer
+			INNER JOIN [EETDW_Extract].[navcom].[Business Unit] bu
+			ON (bu.Consolidate=1 AND [Currency Code]=bu.[Reporting Currency Code])
+			OR (bu.Consolidate=1 AND [Currency Code]=LEFT(bu.[Reporting Currency Code],3) AND rer.[Exchange Rate Type] NOT IN (-1,2,3))
+		WHERE
+			[Exchange Rate Type] = 0
+			AND CONVERT(date,[Period]) &gt; '2013-12-31'
+		GROUP BY
+			 [Currency Code]
+			,[Company Name]
+			,CONVERT(nvarchar(4),DATEPART(YEAR,[Period])) + N'-' + RIGHT(N'0'+CONVERT(nvarchar(2),DATEPART(MONTH,[Period])),2)
+	) AS Exchange
+	ON [Company Name] = rle.DWNavisionCompany
+	AND CONVERT(nvarchar(4),DATEPART(YEAR,rle.[Posting Date])) + N'-' + RIGHT(N'0'+CONVERT(nvarchar(2),DATEPART(MONTH,rle.[Posting Date])),2) = MonthKey
+where
+	rle.[Entry Type] = 1</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]"
+                          name="CompanyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[ItemKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemKey]"
+                          length="51"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[ItemKey]"
+                          name="ItemKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CustomerSellToKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerSellToKey]"
+                          length="51"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CustomerSellToKey]"
+                          name="CustomerSellToKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CustomerBillToKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerBillToKey]"
+                          length="51"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CustomerBillToKey]"
+                          name="CustomerBillToKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]"
+                          name="CalendarKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[InvoiceNo]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[InvoiceNo]"
+                          length="20"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[InvoiceNo]"
+                          name="InvoiceNo"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[OrderNo]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderNo]"
+                          length="20"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[OrderNo]"
+                          name="OrderNo"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[EmployeeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[EmployeeKey]"
+                          length="41"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[EmployeeKey]"
+                          name="EmployeeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CurrencyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CurrencyKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CurrencyKey]"
+                          name="CurrencyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[OrderTypeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderTypeKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[OrderTypeKey]"
+                          name="OrderTypeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[WebUserKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserKey]"
+                          length="71"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[WebUserKey]"
+                          name="WebUserKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CostChangeReasonKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CostChangeReasonKey]"
+                          length="72"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CostChangeReasonKey]"
+                          name="CostChangeReasonKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[OriginOfOrderKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[OriginOfOrderKey]"
+                          length="20"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[OriginOfOrderKey]"
+                          name="OriginOfOrderKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[GPPGCurrentKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[GPPGCurrentKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[GPPGCurrentKey]"
+                          name="GPPGCurrentKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[GPPGHistoricalKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[GPPGHistoricalKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[GPPGHistoricalKey]"
+                          name="GPPGHistoricalKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[InvoiceAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[InvoiceAmount]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[InvoiceAmount]"
+                          name="InvoiceAmount"
+                          precision="38"
+                          scale="18"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[OrderCostAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderCostAmount]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[OrderCostAmount]"
+                          name="OrderCostAmount"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[OrderProfitMarginAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderProfitMarginAmount]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[OrderProfitMarginAmount]"
+                          name="OrderProfitMarginAmount"
+                          precision="38"
+                          scale="18"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[UnitCostAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[UnitCostAmount]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[UnitCostAmount]"
+                          name="UnitCostAmount"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[MarginPostedToG/LAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[MarginPostedToG/LAmount]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[MarginPostedToG/LAmount]"
+                          name="MarginPostedToG/LAmount"
+                          precision="38"
+                          scale="18"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[OrderCostChangeAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderCostChangeAmount]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[OrderCostChangeAmount]"
+                          name="OrderCostChangeAmount"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[InvoicedQuantity]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[InvoicedQuantity]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[InvoicedQuantity]"
+                          name="InvoicedQuantity"
+                          precision="38"
+                          scale="18"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CostPostedToG/LAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CostPostedToG/LAmount]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CostPostedToG/LAmount]"
+                          name="CostPostedToG/LAmount"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CalendarOrderKey]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarOrderKey]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[CalendarOrderKey]"
+                          name="CalendarOrderKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[BidNo]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[BidNo]"
+                          length="30"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[BidNo]"
+                          name="BidNo"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[DocumentKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[DocumentKey]"
+                          length="100"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[DocumentKey]"
+                          name="DocumentKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[InventoryTypeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[InventoryTypeKey]"
+                          length="222"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[InventoryTypeKey]"
+                          name="InventoryTypeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[DutyQuantity]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[DutyQuantity]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[DutyQuantity]"
+                          name="DutyQuantity"
+                          precision="38"
+                          scale="6"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[UnitsPerParcel]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[UnitsPerParcel]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[UnitsPerParcel]"
+                          name="UnitsPerParcel"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[TurnoverInvoicedDKK]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[TurnoverInvoicedDKK]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[TurnoverInvoicedDKK]"
+                          name="TurnoverInvoicedDKK"
+                          precision="38"
+                          scale="18"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[SalesProfitDKK]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[SalesProfitDKK]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[SalesProfitDKK]"
+                          name="SalesProfitDKK"
+                          precision="38"
+                          scale="18"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[FinancialGrossProfitDKK]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[FinancialGrossProfitDKK]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[FinancialGrossProfitDKK]"
+                          name="FinancialGrossProfitDKK"
+                          precision="38"
+                          scale="18"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[TurnoverInvoicedLCY]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[TurnoverInvoicedLCY]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[TurnoverInvoicedLCY]"
+                          name="TurnoverInvoicedLCY"
+                          precision="38"
+                          scale="18"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[SalesProfitLCY]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[SalesProfitLCY]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[SalesProfitLCY]"
+                          name="SalesProfitLCY"
+                          precision="38"
+                          scale="18"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[FinancialGrossProfitLCY]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[FinancialGrossProfitLCY]"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].Columns[FinancialGrossProfitLCY]"
+                          name="FinancialGrossProfitLCY"
+                          precision="38"
+                          scale="18"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="ItemKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerSellToKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="CustomerSellToKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerBillToKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="CustomerBillToKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[InvoiceNo]"
+                          dataType="wstr"
+                          length="20"
+                          name="InvoiceNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderNo]"
+                          dataType="wstr"
+                          length="20"
+                          name="OrderNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[EmployeeKey]"
+                          dataType="wstr"
+                          length="41"
+                          name="EmployeeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CurrencyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CurrencyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderTypeKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="OrderTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserKey]"
+                          dataType="wstr"
+                          length="71"
+                          name="WebUserKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CostChangeReasonKey]"
+                          dataType="wstr"
+                          length="72"
+                          name="CostChangeReasonKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[OriginOfOrderKey]"
+                          dataType="wstr"
+                          length="20"
+                          name="OriginOfOrderKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[GPPGCurrentKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="GPPGCurrentKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[GPPGHistoricalKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="GPPGHistoricalKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[InvoiceAmount]"
+                          dataType="numeric"
+                          name="InvoiceAmount"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderCostAmount]"
+                          dataType="numeric"
+                          name="OrderCostAmount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderProfitMarginAmount]"
+                          dataType="numeric"
+                          name="OrderProfitMarginAmount"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[UnitCostAmount]"
+                          dataType="numeric"
+                          name="UnitCostAmount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[MarginPostedToG/LAmount]"
+                          dataType="numeric"
+                          name="MarginPostedToG/LAmount"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderCostChangeAmount]"
+                          dataType="numeric"
+                          name="OrderCostChangeAmount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[InvoicedQuantity]"
+                          dataType="numeric"
+                          name="InvoicedQuantity"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CostPostedToG/LAmount]"
+                          dataType="numeric"
+                          name="CostPostedToG/LAmount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarOrderKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarOrderKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[BidNo]"
+                          dataType="wstr"
+                          length="30"
+                          name="BidNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[DocumentKey]"
+                          dataType="wstr"
+                          length="100"
+                          name="DocumentKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[InventoryTypeKey]"
+                          dataType="wstr"
+                          length="222"
+                          name="InventoryTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[DutyQuantity]"
+                          dataType="numeric"
+                          name="DutyQuantity"
+                          precision="38"
+                          scale="6" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[UnitsPerParcel]"
+                          dataType="numeric"
+                          name="UnitsPerParcel"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[TurnoverInvoicedDKK]"
+                          dataType="numeric"
+                          name="TurnoverInvoicedDKK"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[SalesProfitDKK]"
+                          dataType="numeric"
+                          name="SalesProfitDKK"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[FinancialGrossProfitDKK]"
+                          dataType="numeric"
+                          name="FinancialGrossProfitDKK"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[TurnoverInvoicedLCY]"
+                          dataType="numeric"
+                          name="TurnoverInvoicedLCY"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[SalesProfitLCY]"
+                          dataType="numeric"
+                          name="SalesProfitLCY"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[FinancialGrossProfitLCY]"
+                          dataType="numeric"
+                          name="FinancialGrossProfitLCY"
+                          precision="38"
+                          scale="18" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[CompanyKey]"
+                          name="CompanyKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[ItemKey]"
+                          dataType="wstr"
+                          length="51"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[ItemKey]"
+                          name="ItemKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[CustomerSellToKey]"
+                          dataType="wstr"
+                          length="51"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[CustomerSellToKey]"
+                          name="CustomerSellToKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[CustomerBillToKey]"
+                          dataType="wstr"
+                          length="51"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[CustomerBillToKey]"
+                          name="CustomerBillToKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[CalendarKey]"
+                          name="CalendarKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[InvoiceNo]"
+                          dataType="wstr"
+                          length="20"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[InvoiceNo]"
+                          name="InvoiceNo" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[OrderNo]"
+                          dataType="wstr"
+                          length="20"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[OrderNo]"
+                          name="OrderNo" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[EmployeeKey]"
+                          dataType="wstr"
+                          length="41"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[EmployeeKey]"
+                          name="EmployeeKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[CurrencyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[CurrencyKey]"
+                          name="CurrencyKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[OrderTypeKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[OrderTypeKey]"
+                          name="OrderTypeKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[WebUserKey]"
+                          dataType="wstr"
+                          length="71"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[WebUserKey]"
+                          name="WebUserKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[CostChangeReasonKey]"
+                          dataType="wstr"
+                          length="72"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[CostChangeReasonKey]"
+                          name="CostChangeReasonKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[OriginOfOrderKey]"
+                          dataType="wstr"
+                          length="20"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[OriginOfOrderKey]"
+                          name="OriginOfOrderKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[GPPGCurrentKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[GPPGCurrentKey]"
+                          name="GPPGCurrentKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[GPPGHistoricalKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[GPPGHistoricalKey]"
+                          name="GPPGHistoricalKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[TurnoverInvoicedDKK]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[TurnoverInvoicedDKK]"
+                          name="TurnoverInvoicedDKK"
+                          precision="38"
+                          scale="18" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[TurnoverInvoicedLCY]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[TurnoverInvoicedLCY]"
+                          name="TurnoverInvoicedLCY"
+                          precision="38"
+                          scale="18" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[InvoiceAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[InvoiceAmount]"
+                          name="InvoiceAmount"
+                          precision="38"
+                          scale="18" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[OrderCostAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[OrderCostAmount]"
+                          name="OrderCostAmount"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[SalesProfitDKK]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[SalesProfitDKK]"
+                          name="SalesProfitDKK"
+                          precision="38"
+                          scale="18" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[SalesProfitLCY]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[SalesProfitLCY]"
+                          name="SalesProfitLCY"
+                          precision="38"
+                          scale="18" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[OrderProfitMarginAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[OrderProfitMarginAmount]"
+                          name="OrderProfitMarginAmount"
+                          precision="38"
+                          scale="18" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[UnitCostAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[UnitCostAmount]"
+                          name="UnitCostAmount"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[FinancialGrossProfitDKK]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[FinancialGrossProfitDKK]"
+                          name="FinancialGrossProfitDKK"
+                          precision="38"
+                          scale="18" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[FinancialGrossProfitLCY]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[FinancialGrossProfitLCY]"
+                          name="FinancialGrossProfitLCY"
+                          precision="38"
+                          scale="18" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[MarginPostedToG/LAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[MarginPostedToG/LAmount]"
+                          name="MarginPostedToG/LAmount"
+                          precision="38"
+                          scale="18" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[OrderCostChangeAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[OrderCostChangeAmount]"
+                          name="OrderCostChangeAmount"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[InvoicedQuantity]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[InvoicedQuantity]"
+                          name="InvoicedQuantity"
+                          precision="38"
+                          scale="18" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[UnitsPerParcel]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[UnitsPerParcel]"
+                          name="UnitsPerParcel"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[DutyQuantity]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[DutyQuantity]"
+                          name="DutyQuantity"
+                          precision="38"
+                          scale="6" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[CostPostedToG/LAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[CostPostedToG/LAmount]"
+                          name="CostPostedToG/LAmount"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[CalendarOrderKey]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[CalendarOrderKey]"
+                          name="CalendarOrderKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[BidNo]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[BidNo]"
+                          name="BidNo" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[DocumentKey]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[DocumentKey]"
+                          name="DocumentKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[InventoryTypeKey]"
+                          dataType="wstr"
+                          length="222"
+                          lineageId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Error].Columns[InventoryTypeKey]"
+                          name="InventoryTypeKey" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry.Paths[DER Audit_Output_OLE DES SalesItemLedgerEntry]"
+                  endId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry.Inputs[DER Audit_Output_OLE DES SalesItemLedgerEntry]"
+                  name="DER Audit_Output_OLE DES SalesItemLedgerEntry"
+                  startId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry.Paths[OLE SRC Extract_Output_DER Audit]"
+                  endId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="OLE SRC Extract_Output_DER Audit"
+                  startId="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform SalesItemLedgerEntry\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{6BFFBB1D-CA9E-4E24-BF01-6863485BE973}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{0695CA70-9E2E-4CCA-8803-5A3BB3D8D6B8}"
+              SQLTask:SqlStatementSource="EXEC('TRUNCATE TABLE ' + ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform SalesItemLedgerEntry.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform SalesItemLedgerEntry]"
+          DTS:CreationName=""
+          DTS:DTSID="{41AE5E5A-0CF9-40CB-B226-294423B1904B}"
+          DTS:From="Package\SEQC Transform SalesItemLedgerEntry\Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_Truncate Table_To_DFT Transform SalesItemLedgerEntry"
+          DTS:To="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SEQC Transform SalesItemLedgerEntry_To_SEQC MaintainDW]"
+      DTS:CreationName=""
+      DTS:DTSID="{C9C5F13A-4C47-47D8-881D-2657F31A9FDA}"
+      DTS:From="Package\SEQC Transform SalesItemLedgerEntry"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SEQC Transform SalesItemLedgerEntry_To_SEQC MaintainDW"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,103"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="53.0000000000001,313.5" />
+        <NodeLayout
+          Size="256,42"
+          Id="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry"
+          TopLeft="5.50000000000003,107.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform SalesItemLedgerEntry\Truncate Table"
+          TopLeft="58.5,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform SalesItemLedgerEntry.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform SalesItemLedgerEntry]"
+          TopLeft="133.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="267,205"
+          Size="267,248"
+          Id="Package\SEQC Transform SalesItemLedgerEntry"
+          TopLeft="5.50000000000003,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_SEQC Transform SalesItemLedgerEntry_To_SEQC MaintainDW]"
+          TopLeft="139,253.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract"
+          TopLeft="41,4.5" />
+        <NodeLayout
+          Size="227,42"
+          Id="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry"
+          TopLeft="7.50000000000003,209.5" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\DER Audit"
+          TopLeft="56,107.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry.Paths[OLE SRC Extract_Output_DER Audit]"
+          TopLeft="119,46.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,61"
+              Start="0,0"
+              End="0,53.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,53.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry.Paths[DER Audit_Output_OLE DES SalesItemLedgerEntry]"
+          TopLeft="120,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform SalesItemLedgerEntry\DFT Transform SalesItemLedgerEntry\OLE DES SalesItemLedgerEntry">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

@@ -1,0 +1,2213 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="1/2/2017 2:24:14 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="bbj-ext"
+  DTS:DTSID="{874C1442-6BBA-4490-AB7C-6F0CE042A81D}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Extractnav_Currency"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="2"
+  DTS:VersionGUID="{42146132-A7E9-4DD1-A7F9-82CF61A13F95}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{84720867-C245-4BF3-B1BF-9F5133743E40}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{7AE5BB4D-CFED-447D-B45F-5E79A4D6C95B}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Navision]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{EC6F4C1C-9267-4796-9D46-F559CF4368D2}"
+      DTS:ObjectName="Navision">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringNavision]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=financialsdk;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=True;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{931E5C98-D0DB-45E7-AC1D-CD26A897D554}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&quot;select &quot; + &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;@[User::NavisionColumnList] + &#xA;&#x9;&#x9;&#x9;&#x9;&quot; from &quot; +  &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;@[User::NavisionSchema] + &quot;.[&quot; +  @[User::NavisionCompany] + &quot;$&quot; + @[User::NavisionTable] + &quot;]&quot; +&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&quot; &quot;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ExtractSQL">
+      <DTS:VariableValue
+        DTS:DataType="8">select [timestamp], [Code], [Last Date Modified], [Last Date Adjusted], [Unrealized Gains Acc.], [Realized Gains Acc.], [Unrealized Losses Acc.], [Realized Losses Acc.], [Invoice Rounding Precision], [Invoice Rounding Type], [Amount Rounding Precision], [Unit-Amount Rounding Precision], [Description], [Amount Decimal Places], [Unit-Amount Decimal Places], [Realized G/L Gains Account], [Realized G/L Losses Account], [Appln. Rounding Precision], [EMU Currency], [Currency Factor], [Residual Gains Account], [Residual Losses Account], [Conv. LCY Rndg. Debit Acc.], [Conv. LCY Rndg. Credit Acc.], [Enheter mot NOK], [No. of Forward Agreement], [EUR-Currency in BG/PG payment], [Payment No.], [Import rates], [Import Tolerance], [Blocked] from dbo.[EET Group$Currency] </DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{0061E264-780E-4942-86F3-E935153A7B36}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ExtractTable">
+      <DTS:VariableValue
+        DTS:DataType="8">nav.[Currency]</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{7D55AE5B-2AB4-4CDF-937C-B511F36288E1}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="NavisionColumnList">
+      <DTS:VariableValue
+        DTS:DataType="8">[timestamp], [Code], [Last Date Modified], [Last Date Adjusted], [Unrealized Gains Acc.], [Realized Gains Acc.], [Unrealized Losses Acc.], [Realized Losses Acc.], [Invoice Rounding Precision], [Invoice Rounding Type], [Amount Rounding Precision], [Unit-Amount Rounding Precision], [Description], [Amount Decimal Places], [Unit-Amount Decimal Places], [Realized G/L Gains Account], [Realized G/L Losses Account], [Appln. Rounding Precision], [EMU Currency], [Currency Factor], [Residual Gains Account], [Residual Losses Account], [Conv. LCY Rndg. Debit Acc.], [Conv. LCY Rndg. Credit Acc.], [Enheter mot NOK], [No. of Forward Agreement], [EUR-Currency in BG/PG payment], [Payment No.], [Import rates], [Import Tolerance], [Blocked]</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{C749D780-E48D-4944-B733-74E83EE65E44}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="NavisionCompanies">
+      <DTS:VariableValue
+        DTS:DataSubType="ManagedSerializable"
+        DTS:DataType="13">
+        <SOAP-ENV:Envelope xmlns:clr="http://schemas.microsoft.com/soap/encoding/clr/1.0" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+          <SOAP-ENV:Body>
+            <xsd:anyType
+              id="ref-1"></xsd:anyType>
+          </SOAP-ENV:Body>
+        </SOAP-ENV:Envelope>
+      </DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{585C51EB-2F77-4939-8A61-01B50A22F683}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="NavisionCompany">
+      <DTS:VariableValue
+        DTS:DataType="8">EET Group</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{939FC1C5-0568-4488-955A-95BA56A08537}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="NavisionConnectionName">
+      <DTS:VariableValue
+        DTS:DataType="8">Navision</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{CFC4F6D5-66E3-442F-B430-888A71C69B02}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="NavisionSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{79D89351-F0C6-4540-B58B-CDBCD9E33EC5}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="NavisionTable">
+      <DTS:VariableValue
+        DTS:DataType="8">Currency</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\EST Gather Navision Companies"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{F7418C15-B333-4558-8CE3-6680AF12B962}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST Gather Navision Companies"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{7AE5BB4D-CFED-447D-B45F-5E79A4D6C95B}"
+          SQLTask:SqlStatementSource="select CompanyName from etl.SourceConnectionNavisionSetup scn inner join etl.SourceConnections sc on scn.SourceConnectionID = sc.ID where ExtractFlag = 1 and sc.Name = ?"
+          SQLTask:ResultType="ResultSetType_Rowset" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::NavisionCompanies" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::NavisionConnectionName"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="130"
+            SQLTask:ParameterSize="0" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EST Truncate Extract Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{577344FA-0511-4057-8B0E-6512A6165C70}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST Truncate Extract Table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{84720867-C245-4BF3-B1BF-9F5133743E40}"
+          SQLTask:SqlStatementSource="EXEC('truncate table ' + ? )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::ExtractTable"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="130"
+            SQLTask:ParameterSize="0" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\FELC Iterate Navision Companies"
+      DTS:CreationName="STOCK:FOREACHLOOP"
+      DTS:DTSID="{8A347AFD-514A-46D8-ACEA-B7761ABA2D8E}"
+      DTS:ExecutableType="STOCK:FOREACHLOOP"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="FELC Iterate Navision Companies">
+      <DTS:ForEachEnumerator
+        DTS:CreationName="Microsoft.ForEachADOEnumerator"
+        DTS:DTSID="{A2EF78A9-C0DE-454D-9815-DAD5B9C85971}"
+        DTS:ObjectName="{A2EF78A9-C0DE-454D-9815-DAD5B9C85971}">
+        <DTS:ObjectData>
+          <FEEADO
+            EnumType="EnumerateRowsInFirstTable"
+            VarName="User::NavisionCompanies" />
+        </DTS:ObjectData>
+      </DTS:ForEachEnumerator>
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\FELC Iterate Navision Companies\Extract Data"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{F5217797-B36A-40CC-A466-AF8C5790A35D}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Extract Data"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes"
+                  componentClassID="Microsoft.DataConvert"
+                  contactInfo="Data Conversion;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="Convert datatypes"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes]"
+                      name="ODS Source_Output_Convert datatypes">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Code]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="Code"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Code]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Unrealized Gains Acc.]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="Unrealized Gains Acc."
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Unrealized Gains Acc.]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Realized Gains Acc.]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="Realized Gains Acc."
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Realized Gains Acc.]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Unrealized Losses Acc.]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="Unrealized Losses Acc."
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Unrealized Losses Acc.]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Realized Losses Acc.]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="Realized Losses Acc."
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Realized Losses Acc.]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Description]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="Description"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Description]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Amount Decimal Places]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="5"
+                          cachedName="Amount Decimal Places"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Amount Decimal Places]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Unit-Amount Decimal Places]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="5"
+                          cachedName="Unit-Amount Decimal Places"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Unit-Amount Decimal Places]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Realized G/L Gains Account]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="Realized G/L Gains Account"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Realized G/L Gains Account]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Realized G/L Losses Account]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="Realized G/L Losses Account"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Realized G/L Losses Account]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Residual Gains Account]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="Residual Gains Account"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Residual Gains Account]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Residual Losses Account]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="Residual Losses Account"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Residual Losses Account]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Conv. LCY Rndg. Debit Acc.]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="20"
+                          cachedName="Conv. LCY Rndg. Debit Acc."
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Conv. LCY Rndg. Debit Acc.]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Conv. LCY Rndg. Credit Acc.]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="20"
+                          cachedName="Conv. LCY Rndg. Credit Acc."
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Conv. LCY Rndg. Credit Acc.]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[No. of Forward Agreement]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="No. of Forward Agreement"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[No. of Forward Agreement]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Payment No.]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="2"
+                          cachedName="Payment No."
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Payment No.]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Code]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="10"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Code]"
+                          name="Code"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Code]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Unrealized Gains Acc.]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Unrealized Gains Acc.]"
+                          name="Unrealized Gains Acc."
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Unrealized Gains Acc.]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Realized Gains Acc.]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Realized Gains Acc.]"
+                          name="Realized Gains Acc."
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Realized Gains Acc.]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Unrealized Losses Acc.]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Unrealized Losses Acc.]"
+                          name="Unrealized Losses Acc."
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Unrealized Losses Acc.]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Realized Losses Acc.]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Realized Losses Acc.]"
+                          name="Realized Losses Acc."
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Realized Losses Acc.]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Description]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Description]"
+                          name="Description"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Description]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Amount Decimal Places]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="5"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Amount Decimal Places]"
+                          name="Amount Decimal Places"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Amount Decimal Places]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Unit-Amount Decimal Places]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="5"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Unit-Amount Decimal Places]"
+                          name="Unit-Amount Decimal Places"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Unit-Amount Decimal Places]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Realized G/L Gains Account]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Realized G/L Gains Account]"
+                          name="Realized G/L Gains Account"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Realized G/L Gains Account]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Realized G/L Losses Account]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Realized G/L Losses Account]"
+                          name="Realized G/L Losses Account"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Realized G/L Losses Account]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Residual Gains Account]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Residual Gains Account]"
+                          name="Residual Gains Account"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Residual Gains Account]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Residual Losses Account]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Residual Losses Account]"
+                          name="Residual Losses Account"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Residual Losses Account]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Conv. LCY Rndg. Debit Acc.]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="20"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Conv. LCY Rndg. Debit Acc.]"
+                          name="Conv. LCY Rndg. Debit Acc."
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Conv. LCY Rndg. Debit Acc.]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Conv. LCY Rndg. Credit Acc.]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="20"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Conv. LCY Rndg. Credit Acc.]"
+                          name="Conv. LCY Rndg. Credit Acc."
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Conv. LCY Rndg. Credit Acc.]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[No. of Forward Agreement]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="10"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[No. of Forward Agreement]"
+                          name="No. of Forward Agreement"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[No. of Forward Agreement]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Payment No.]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="2"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Payment No.]"
+                          name="Payment No."
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Payment No.]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER System Columns"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Inputs[Convert datatypes_Output_DER System Columns]"
+                      name="Convert datatypes_Output_DER System Columns">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Inputs[Convert datatypes_Output_DER System Columns]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">getdate()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">getdate()</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Output].Columns[DWNavisionCompany]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          length="200"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Output].Columns[DWNavisionCompany]"
+                          name="DWNavisionCompany"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">@[User::NavisionCompany]</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">@[User::NavisionCompany]</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Inputs[Convert datatypes_Output_DER System Columns]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="ODD Destination"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::ExtractTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER System Columns_Output_ODD Destination">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Output].Columns[DWCreatedDate]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[DWNavisionCompany]"
+                          cachedDataType="wstr"
+                          cachedLength="200"
+                          cachedName="DWNavisionCompany"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[DWNavisionCompany]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Output].Columns[DWNavisionCompany]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Code]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="Code"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Code]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Code]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Unrealized Gains Acc.]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="Unrealized Gains Acc."
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Unrealized Gains Acc.]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Unrealized Gains Acc.]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Realized Gains Acc.]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="Realized Gains Acc."
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Realized Gains Acc.]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Realized Gains Acc.]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Unrealized Losses Acc.]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="Unrealized Losses Acc."
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Unrealized Losses Acc.]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Unrealized Losses Acc.]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Realized Losses Acc.]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="Realized Losses Acc."
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Realized Losses Acc.]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Realized Losses Acc.]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Description]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="Description"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Description]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Description]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Amount Decimal Places]"
+                          cachedDataType="wstr"
+                          cachedLength="5"
+                          cachedName="Amount Decimal Places"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Amount Decimal Places]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Amount Decimal Places]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Unit-Amount Decimal Places]"
+                          cachedDataType="wstr"
+                          cachedLength="5"
+                          cachedName="Unit-Amount Decimal Places"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Unit-Amount Decimal Places]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Unit-Amount Decimal Places]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Realized G/L Gains Account]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="Realized G/L Gains Account"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Realized G/L Gains Account]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Realized G/L Gains Account]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Realized G/L Losses Account]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="Realized G/L Losses Account"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Realized G/L Losses Account]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Realized G/L Losses Account]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Residual Gains Account]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="Residual Gains Account"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Residual Gains Account]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Residual Gains Account]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Residual Losses Account]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="Residual Losses Account"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Residual Losses Account]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Residual Losses Account]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Conv. LCY Rndg. Debit Acc.]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="Conv. LCY Rndg. Debit Acc."
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Conv. LCY Rndg. Debit Acc.]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Conv. LCY Rndg. Debit Acc.]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Conv. LCY Rndg. Credit Acc.]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="Conv. LCY Rndg. Credit Acc."
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Conv. LCY Rndg. Credit Acc.]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Conv. LCY Rndg. Credit Acc.]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[No. of Forward Agreement]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="No. of Forward Agreement"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[No. of Forward Agreement]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[No. of Forward Agreement]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Payment No.]"
+                          cachedDataType="wstr"
+                          cachedLength="2"
+                          cachedName="Payment No."
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Payment No.]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Payment No.]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[timestamp]"
+                          cachedDataType="bytes"
+                          cachedLength="8"
+                          cachedName="timestamp"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[timestamp]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[timestamp]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Last Date Modified]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="Last Date Modified"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Last Date Modified]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Last Date Modified]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Last Date Adjusted]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="Last Date Adjusted"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Last Date Adjusted]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Last Date Adjusted]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Invoice Rounding Precision]"
+                          cachedDataType="numeric"
+                          cachedName="Invoice Rounding Precision"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Invoice Rounding Precision]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Invoice Rounding Precision]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Invoice Rounding Type]"
+                          cachedDataType="i4"
+                          cachedName="Invoice Rounding Type"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Invoice Rounding Type]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Invoice Rounding Type]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Amount Rounding Precision]"
+                          cachedDataType="numeric"
+                          cachedName="Amount Rounding Precision"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Amount Rounding Precision]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Amount Rounding Precision]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Unit-Amount Rounding Precision]"
+                          cachedDataType="numeric"
+                          cachedName="Unit-Amount Rounding Precision"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Unit-Amount Rounding Precision]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Unit-Amount Rounding Precision]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Appln. Rounding Precision]"
+                          cachedDataType="numeric"
+                          cachedName="Appln. Rounding Precision"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Appln. Rounding Precision]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Appln. Rounding Precision]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[EMU Currency]"
+                          cachedDataType="ui1"
+                          cachedName="EMU Currency"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[EMU Currency]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[EMU Currency]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Currency Factor]"
+                          cachedDataType="numeric"
+                          cachedName="Currency Factor"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Currency Factor]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Currency Factor]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Enheter mot NOK]"
+                          cachedDataType="i4"
+                          cachedName="Enheter mot NOK"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Enheter mot NOK]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Enheter mot NOK]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[EUR-Currency in BG/PG payment]"
+                          cachedDataType="ui1"
+                          cachedName="EUR-Currency in BG/PG payment"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[EUR-Currency in BG/PG payment]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[EUR-Currency in BG/PG payment]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Import rates]"
+                          cachedDataType="ui1"
+                          cachedName="Import rates"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Import rates]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Import rates]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Import Tolerance]"
+                          cachedDataType="numeric"
+                          cachedName="Import Tolerance"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Import Tolerance]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Import Tolerance]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Blocked]"
+                          cachedDataType="ui1"
+                          cachedName="Blocked"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Blocked]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Blocked]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[timestamp]"
+                          dataType="bytes"
+                          length="8"
+                          name="timestamp" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Code]"
+                          dataType="wstr"
+                          length="10"
+                          name="Code" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Last Date Modified]"
+                          dataType="dbTimeStamp"
+                          name="Last Date Modified" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Last Date Adjusted]"
+                          dataType="dbTimeStamp"
+                          name="Last Date Adjusted" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Unrealized Gains Acc.]"
+                          dataType="wstr"
+                          length="30"
+                          name="Unrealized Gains Acc." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Realized Gains Acc.]"
+                          dataType="wstr"
+                          length="30"
+                          name="Realized Gains Acc." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Unrealized Losses Acc.]"
+                          dataType="wstr"
+                          length="30"
+                          name="Unrealized Losses Acc." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Realized Losses Acc.]"
+                          dataType="wstr"
+                          length="30"
+                          name="Realized Losses Acc." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Invoice Rounding Precision]"
+                          dataType="numeric"
+                          name="Invoice Rounding Precision"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Invoice Rounding Type]"
+                          dataType="i4"
+                          name="Invoice Rounding Type" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Amount Rounding Precision]"
+                          dataType="numeric"
+                          name="Amount Rounding Precision"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Unit-Amount Rounding Precision]"
+                          dataType="numeric"
+                          name="Unit-Amount Rounding Precision"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Description]"
+                          dataType="wstr"
+                          length="30"
+                          name="Description" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Amount Decimal Places]"
+                          dataType="wstr"
+                          length="5"
+                          name="Amount Decimal Places" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Unit-Amount Decimal Places]"
+                          dataType="wstr"
+                          length="5"
+                          name="Unit-Amount Decimal Places" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Realized G/L Gains Account]"
+                          dataType="wstr"
+                          length="30"
+                          name="Realized G/L Gains Account" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Realized G/L Losses Account]"
+                          dataType="wstr"
+                          length="30"
+                          name="Realized G/L Losses Account" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Appln. Rounding Precision]"
+                          dataType="numeric"
+                          name="Appln. Rounding Precision"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[EMU Currency]"
+                          dataType="ui1"
+                          name="EMU Currency" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Currency Factor]"
+                          dataType="numeric"
+                          name="Currency Factor"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Residual Gains Account]"
+                          dataType="wstr"
+                          length="30"
+                          name="Residual Gains Account" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Residual Losses Account]"
+                          dataType="wstr"
+                          length="30"
+                          name="Residual Losses Account" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Conv. LCY Rndg. Debit Acc.]"
+                          dataType="wstr"
+                          length="20"
+                          name="Conv. LCY Rndg. Debit Acc." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Conv. LCY Rndg. Credit Acc.]"
+                          dataType="wstr"
+                          length="20"
+                          name="Conv. LCY Rndg. Credit Acc." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Enheter mot NOK]"
+                          dataType="i4"
+                          name="Enheter mot NOK" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[No. of Forward Agreement]"
+                          dataType="wstr"
+                          length="10"
+                          name="No. of Forward Agreement" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[EUR-Currency in BG/PG payment]"
+                          dataType="ui1"
+                          name="EUR-Currency in BG/PG payment" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Payment No.]"
+                          dataType="wstr"
+                          length="2"
+                          name="Payment No." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Import rates]"
+                          dataType="ui1"
+                          name="Import rates" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Import Tolerance]"
+                          dataType="numeric"
+                          name="Import Tolerance"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Blocked]"
+                          dataType="ui1"
+                          name="Blocked" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[DWNavisionCompany]"
+                          dataType="wstr"
+                          length="200"
+                          name="DWNavisionCompany" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="ODS Source"
+                  usesDispositions="true"
+                  validateExternalMetadata="False"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable">User::ExtractSQL</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Navision]"
+                      connectionManagerRefId="Package.ConnectionManagers[Navision]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[timestamp]"
+                          dataType="bytes"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[timestamp]"
+                          length="8"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[timestamp]"
+                          name="timestamp"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Code]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Code]"
+                          length="10"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Code]"
+                          name="Code"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Last Date Modified]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Last Date Modified]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Last Date Modified]"
+                          name="Last Date Modified"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Last Date Adjusted]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Last Date Adjusted]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Last Date Adjusted]"
+                          name="Last Date Adjusted"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Unrealized Gains Acc.]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Unrealized Gains Acc.]"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Unrealized Gains Acc.]"
+                          name="Unrealized Gains Acc."
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Realized Gains Acc.]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Realized Gains Acc.]"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Realized Gains Acc.]"
+                          name="Realized Gains Acc."
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Unrealized Losses Acc.]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Unrealized Losses Acc.]"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Unrealized Losses Acc.]"
+                          name="Unrealized Losses Acc."
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Realized Losses Acc.]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Realized Losses Acc.]"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Realized Losses Acc.]"
+                          name="Realized Losses Acc."
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Invoice Rounding Precision]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Invoice Rounding Precision]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Invoice Rounding Precision]"
+                          name="Invoice Rounding Precision"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Invoice Rounding Type]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Invoice Rounding Type]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Invoice Rounding Type]"
+                          name="Invoice Rounding Type"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Amount Rounding Precision]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Amount Rounding Precision]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Amount Rounding Precision]"
+                          name="Amount Rounding Precision"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Unit-Amount Rounding Precision]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Unit-Amount Rounding Precision]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Unit-Amount Rounding Precision]"
+                          name="Unit-Amount Rounding Precision"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Description]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Description]"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Description]"
+                          name="Description"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Amount Decimal Places]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Amount Decimal Places]"
+                          length="5"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Amount Decimal Places]"
+                          name="Amount Decimal Places"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Unit-Amount Decimal Places]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Unit-Amount Decimal Places]"
+                          length="5"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Unit-Amount Decimal Places]"
+                          name="Unit-Amount Decimal Places"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Realized G/L Gains Account]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Realized G/L Gains Account]"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Realized G/L Gains Account]"
+                          name="Realized G/L Gains Account"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Realized G/L Losses Account]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Realized G/L Losses Account]"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Realized G/L Losses Account]"
+                          name="Realized G/L Losses Account"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Appln. Rounding Precision]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Appln. Rounding Precision]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Appln. Rounding Precision]"
+                          name="Appln. Rounding Precision"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[EMU Currency]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[EMU Currency]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[EMU Currency]"
+                          name="EMU Currency"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Currency Factor]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Currency Factor]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Currency Factor]"
+                          name="Currency Factor"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Residual Gains Account]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Residual Gains Account]"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Residual Gains Account]"
+                          name="Residual Gains Account"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Residual Losses Account]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Residual Losses Account]"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Residual Losses Account]"
+                          name="Residual Losses Account"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Conv. LCY Rndg. Debit Acc.]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Conv. LCY Rndg. Debit Acc.]"
+                          length="20"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Conv. LCY Rndg. Debit Acc.]"
+                          name="Conv. LCY Rndg. Debit Acc."
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Conv. LCY Rndg. Credit Acc.]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Conv. LCY Rndg. Credit Acc.]"
+                          length="20"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Conv. LCY Rndg. Credit Acc.]"
+                          name="Conv. LCY Rndg. Credit Acc."
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Enheter mot NOK]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Enheter mot NOK]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Enheter mot NOK]"
+                          name="Enheter mot NOK"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[No. of Forward Agreement]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[No. of Forward Agreement]"
+                          length="10"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[No. of Forward Agreement]"
+                          name="No. of Forward Agreement"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[EUR-Currency in BG/PG payment]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[EUR-Currency in BG/PG payment]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[EUR-Currency in BG/PG payment]"
+                          name="EUR-Currency in BG/PG payment"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Payment No.]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Payment No.]"
+                          length="2"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Payment No.]"
+                          name="Payment No."
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Import rates]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Import rates]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Import rates]"
+                          name="Import rates"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Import Tolerance]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Import Tolerance]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Import Tolerance]"
+                          name="Import Tolerance"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Blocked]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Blocked]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Blocked]"
+                          name="Blocked"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[timestamp]"
+                          dataType="bytes"
+                          length="8"
+                          name="timestamp" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Code]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="Code" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Last Date Modified]"
+                          dataType="dbTimeStamp"
+                          name="Last Date Modified" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Last Date Adjusted]"
+                          dataType="dbTimeStamp"
+                          name="Last Date Adjusted" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Unrealized Gains Acc.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="Unrealized Gains Acc." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Realized Gains Acc.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="Realized Gains Acc." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Unrealized Losses Acc.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="Unrealized Losses Acc." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Realized Losses Acc.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="Realized Losses Acc." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Invoice Rounding Precision]"
+                          dataType="numeric"
+                          name="Invoice Rounding Precision"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Invoice Rounding Type]"
+                          dataType="i4"
+                          name="Invoice Rounding Type" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Amount Rounding Precision]"
+                          dataType="numeric"
+                          name="Amount Rounding Precision"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Unit-Amount Rounding Precision]"
+                          dataType="numeric"
+                          name="Unit-Amount Rounding Precision"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Description]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="Description" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Amount Decimal Places]"
+                          codePage="1252"
+                          dataType="str"
+                          length="5"
+                          name="Amount Decimal Places" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Unit-Amount Decimal Places]"
+                          codePage="1252"
+                          dataType="str"
+                          length="5"
+                          name="Unit-Amount Decimal Places" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Realized G/L Gains Account]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="Realized G/L Gains Account" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Realized G/L Losses Account]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="Realized G/L Losses Account" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Appln. Rounding Precision]"
+                          dataType="numeric"
+                          name="Appln. Rounding Precision"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[EMU Currency]"
+                          dataType="ui1"
+                          name="EMU Currency" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Currency Factor]"
+                          dataType="numeric"
+                          name="Currency Factor"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Residual Gains Account]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="Residual Gains Account" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Residual Losses Account]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="Residual Losses Account" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Conv. LCY Rndg. Debit Acc.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="20"
+                          name="Conv. LCY Rndg. Debit Acc." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Conv. LCY Rndg. Credit Acc.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="20"
+                          name="Conv. LCY Rndg. Credit Acc." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Enheter mot NOK]"
+                          dataType="i4"
+                          name="Enheter mot NOK" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[No. of Forward Agreement]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="No. of Forward Agreement" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[EUR-Currency in BG/PG payment]"
+                          dataType="ui1"
+                          name="EUR-Currency in BG/PG payment" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Payment No.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="2"
+                          name="Payment No." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Import rates]"
+                          dataType="ui1"
+                          name="Import rates" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Import Tolerance]"
+                          dataType="numeric"
+                          name="Import Tolerance"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Blocked]"
+                          dataType="ui1"
+                          name="Blocked" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[timestamp]"
+                          dataType="bytes"
+                          length="8"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[timestamp]"
+                          name="timestamp" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Code]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Code]"
+                          name="Code" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Last Date Modified]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Last Date Modified]"
+                          name="Last Date Modified" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Last Date Adjusted]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Last Date Adjusted]"
+                          name="Last Date Adjusted" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Unrealized Gains Acc.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Unrealized Gains Acc.]"
+                          name="Unrealized Gains Acc." />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Realized Gains Acc.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Realized Gains Acc.]"
+                          name="Realized Gains Acc." />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Unrealized Losses Acc.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Unrealized Losses Acc.]"
+                          name="Unrealized Losses Acc." />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Realized Losses Acc.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Realized Losses Acc.]"
+                          name="Realized Losses Acc." />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Invoice Rounding Precision]"
+                          dataType="numeric"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Invoice Rounding Precision]"
+                          name="Invoice Rounding Precision"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Invoice Rounding Type]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Invoice Rounding Type]"
+                          name="Invoice Rounding Type" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Amount Rounding Precision]"
+                          dataType="numeric"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Amount Rounding Precision]"
+                          name="Amount Rounding Precision"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Unit-Amount Rounding Precision]"
+                          dataType="numeric"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Unit-Amount Rounding Precision]"
+                          name="Unit-Amount Rounding Precision"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Description]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Description]"
+                          name="Description" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Amount Decimal Places]"
+                          codePage="1252"
+                          dataType="str"
+                          length="5"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Amount Decimal Places]"
+                          name="Amount Decimal Places" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Unit-Amount Decimal Places]"
+                          codePage="1252"
+                          dataType="str"
+                          length="5"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Unit-Amount Decimal Places]"
+                          name="Unit-Amount Decimal Places" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Realized G/L Gains Account]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Realized G/L Gains Account]"
+                          name="Realized G/L Gains Account" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Realized G/L Losses Account]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Realized G/L Losses Account]"
+                          name="Realized G/L Losses Account" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Appln. Rounding Precision]"
+                          dataType="numeric"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Appln. Rounding Precision]"
+                          name="Appln. Rounding Precision"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[EMU Currency]"
+                          dataType="ui1"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[EMU Currency]"
+                          name="EMU Currency" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Currency Factor]"
+                          dataType="numeric"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Currency Factor]"
+                          name="Currency Factor"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Residual Gains Account]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Residual Gains Account]"
+                          name="Residual Gains Account" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Residual Losses Account]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Residual Losses Account]"
+                          name="Residual Losses Account" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Conv. LCY Rndg. Debit Acc.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="20"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Conv. LCY Rndg. Debit Acc.]"
+                          name="Conv. LCY Rndg. Debit Acc." />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Conv. LCY Rndg. Credit Acc.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="20"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Conv. LCY Rndg. Credit Acc.]"
+                          name="Conv. LCY Rndg. Credit Acc." />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Enheter mot NOK]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Enheter mot NOK]"
+                          name="Enheter mot NOK" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[No. of Forward Agreement]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[No. of Forward Agreement]"
+                          name="No. of Forward Agreement" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[EUR-Currency in BG/PG payment]"
+                          dataType="ui1"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[EUR-Currency in BG/PG payment]"
+                          name="EUR-Currency in BG/PG payment" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Payment No.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="2"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Payment No.]"
+                          name="Payment No." />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Import rates]"
+                          dataType="ui1"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Import rates]"
+                          name="Import rates" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Import Tolerance]"
+                          dataType="numeric"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Import Tolerance]"
+                          name="Import Tolerance"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Blocked]"
+                          dataType="ui1"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Blocked]"
+                          name="Blocked" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\FELC Iterate Navision Companies\Extract Data.Paths[Convert datatypes_Output_DER System Columns]"
+                  endId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Inputs[Convert datatypes_Output_DER System Columns]"
+                  name="Convert datatypes_Output_DER System Columns"
+                  startId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output]" />
+                <path
+                  refId="Package\FELC Iterate Navision Companies\Extract Data.Paths[DER System Columns_Output_ODD Destination]"
+                  endId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination]"
+                  name="DER System Columns_Output_ODD Destination"
+                  startId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Output]" />
+                <path
+                  refId="Package\FELC Iterate Navision Companies\Extract Data.Paths[ODS Source_Output_Convert datatypes]"
+                  endId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes]"
+                  name="ODS Source_Output_Convert datatypes"
+                  startId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:ForEachVariableMappings>
+        <DTS:ForEachVariableMapping
+          DTS:CreationName=""
+          DTS:DTSID="{14E6ABD0-DC59-4FC9-B5F2-38452F65F839}"
+          DTS:ObjectName="{14E6ABD0-DC59-4FC9-B5F2-38452F65F839}"
+          DTS:ValueIndex="0"
+          DTS:VariableName="User::NavisionCompany" />
+      </DTS:ForEachVariableMappings>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_EST Gather Navision Companies_To_FELC Iterate Navision Companies]"
+      DTS:CreationName=""
+      DTS:DTSID="{B068FD98-4175-4365-A878-5696A344B55E}"
+      DTS:From="Package\EST Gather Navision Companies"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_EST Gather Navision Companies_To_FELC Iterate Navision Companies"
+      DTS:To="Package\FELC Iterate Navision Companies" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_EST Truncate Extract Table_To_EST Gather Navision Companies]"
+      DTS:CreationName=""
+      DTS:DTSID="{CE06AC2A-FF98-43B0-AC49-A16F276D5933}"
+      DTS:From="Package\EST Truncate Extract Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_EST Truncate Extract Table_To_EST Gather Navision Companies"
+      DTS:To="Package\EST Gather Navision Companies" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="230,42"
+          Id="Package\EST Gather Navision Companies"
+          TopLeft="5.50000000000001,107.5" />
+        <NodeLayout
+          Size="207,42"
+          Id="Package\EST Truncate Extract Table"
+          TopLeft="20,6.5" />
+        <NodeLayout
+          Size="137,42"
+          Id="Package\FELC Iterate Navision Companies\Extract Data"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="150,103"
+          Size="148,146"
+          Id="Package\FELC Iterate Navision Companies"
+          TopLeft="46.5,209.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_EST Gather Navision Companies_To_FELC Iterate Navision Companies]"
+          TopLeft="120.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_EST Truncate Extract Table_To_EST Gather Navision Companies]"
+          TopLeft="122,48.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,59"
+              Start="0,0"
+              End="0,51.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,51.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

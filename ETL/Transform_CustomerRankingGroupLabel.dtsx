@@ -1,0 +1,1117 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="3/10/2017 10:56:54 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="mim-ext"
+  DTS:DTSID="{8EC84A10-C22F-45CA-AE21-8F14A714BB54}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_CustomerRankingGroupLabel"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="3"
+  DTS:VersionGUID="{1FC92BAF-EF85-430C-B374-09EFF59F1A81}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{72C28041-9497-4EF7-A991-FCE200900B06}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{4B847C95-547B-4691-A2A9-DAC3377901C7}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{03EE752F-A92C-49F2-9638-CDD9DE573EC1}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{2C701DCC-1E20-4116-B969-BB053A695131}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">bridge</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{C220B31A-C569-4992-8760-691DDC785F0B}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.CustomerRankingGroupLabel</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{1D041355-C822-4492-8D57-EB4FA907577D}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">CustomerRankingGroupLabel</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{CA231EB1-9E81-452C-AE95-3F8D2FD445C4}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{2517C710-DC11-495C-AD79-91FB8ED412E6}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{4B847C95-547B-4691-A2A9-DAC3377901C7}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform CustomerRankingGroupLabel"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{F74F7393-81B0-41E9-A7DF-801FD3C1B3F9}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform CustomerRankingGroupLabel">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{5EC11114-136C-45B2-8089-00BF1874DF3B}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform CustomerRankingGroupLabel"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[GETDATE]()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES CustomerRankingGroupLabel"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[Brand]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES CustomerRankingGroupLabel">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].Columns[CompanyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CompanyKey"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[CompanyKey]"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].Columns[rank0]"
+                          cachedDataType="i8"
+                          cachedName="rank0"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[rank0]"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[rank0]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].Columns[rank1]"
+                          cachedDataType="i8"
+                          cachedName="rank1"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[rank1]"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[rank1]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].Columns[rank2]"
+                          cachedDataType="i8"
+                          cachedName="rank2"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[rank2]"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[rank2]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].Columns[rank3]"
+                          cachedDataType="i8"
+                          cachedName="rank3"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[rank3]"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[rank3]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].Columns[rank4]"
+                          cachedDataType="i8"
+                          cachedName="rank4"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[rank4]"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[rank4]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].Columns[CustomerRankingGroupIntermediateKey]"
+                          cachedDataType="wstr"
+                          cachedLength="144"
+                          cachedName="CustomerRankingGroupIntermediateKey"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[CustomerRankingGroupIntermediateKey]"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[CustomerRankingGroupIntermediateKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].Columns[GPPGKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="GPPGKey"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[GPPGKey]"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[GPPGKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].Columns[BrandKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="BrandKey"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[BrandKey]"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[BrandKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].Columns[CustomerKey]"
+                          cachedDataType="wstr"
+                          cachedLength="51"
+                          cachedName="CustomerKey"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[CustomerKey]"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[CustomerKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[BrandKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="BrandKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[rank0]"
+                          dataType="i8"
+                          name="rank0" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[rank1]"
+                          dataType="i8"
+                          name="rank1" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[rank2]"
+                          dataType="i8"
+                          name="rank2" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[rank3]"
+                          dataType="i8"
+                          name="rank3" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[rank4]"
+                          dataType="i8"
+                          name="rank4" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[CustomerRankingGroupIntermediateKey]"
+                          dataType="wstr"
+                          length="144"
+                          name="CustomerRankingGroupIntermediateKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[GPPGKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="GPPGKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel].ExternalColumns[CustomerKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="CustomerKey" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">/*
+select count(*) from dbo.RankingTest
+
+select * from dbo.RankingTest2 as rt2
+left join dbo.RankingTest as rt
+ON rt2.CompanyKey = rt.CompanyKey and rt2.rank0 = rt.rank0 and rt2.rank1 = rt.rank2 and rt2.rank2 = rt.rank2 
+and rt2.rank3 = rt.rank3 and rt2.rank4 = rt.rank4
+where rt.CompanyKey IS NULL
+
+
+select rank0, rank1, rank2, rank3, rank4 
+from dbo.RankingTest2
+group by rank0, rank1, rank2, rank3, rank4
+having count(*) &gt; 1
+
+27625 EET Switzerland-+41223086666	3771.960000000000000000	27625
+27626 EET Norway-41477
+
+select * from dbo.RankingTest2
+where rank0 = 8509
+*/
+
+SELECT 
+--count(*)
+
+--s.*,
+s.[CompanyKey]
+,s.GPPGHistoricalKey AS GPPGKey
+,i.ItemBrandCode AS BrandKey
+,s.CustomerBillToKey AS CustomerKey
+--,count (distinct s.[CompanyKey]) AS DistCompany
+,r0.RankValue AS rank0,r1.RankValue AS rank1,r2.RankValue AS rank2,r3.RankValue AS rank3,r4.RankValue AS rank4
+,CAST(s.[CompanyKey] AS nvarchar) + N'-' + CAST(s.GPPGHistoricalKey AS nvarchar) + N'-' +
+	CAST(i.ItemBrandCode AS nvarchar) + N'-' + s.CustomerBillToKey AS CustomerRankingGroupIntermediateKey
+--into dbo.RankingTestAll
+
+FROM [EETDW_Stage].[dbo].[SalesItemLedgerEntry] s
+INNER JOIN [EETDW_Stage].[dbo].[Item] i ON s.[ItemKey]=i.[ItemKey]
+LEFT JOIN
+(SELECT 
+	
+
+--	,gppg.GPPGActive
+	[CustomerBillToKey]
+	,sum(OrderProfitMarginAmount * ex.[Rel. Exchange Rate Amount] / 100) AS ProfitMargin
+	,ROW_NUMBER() OVER(ORDER BY sum(OrderProfitMarginAmount) DESC, [CustomerBillToKey] ASC) AS RankValue
+--	INTO [EETDW].[fact].[SalesItemLedgerEntryCompanyBrandCustomer]
+FROM [EETDW_Stage].[dbo].[SalesItemLedgerEntry]
+INNER JOIN [EETDW_Stage].[dbo].[ExchangeRate] as ex
+	ON [SalesItemLedgerEntry].CompanyKey = ex.CompanyKey AND ex.[ExchangeRateTypeID] = 1 AND year([SalesItemLedgerEntry].CalendarKey)*100 + month([SalesItemLedgerEntry].CalendarKey) = ex.MonthID
+--INNER JOIN [EETDW_Stage].[dbo].[Item] i ON [SalesItemLedgerEntry].[ItemKey]=i.[ItemKey]
+INNER JOIN [EETDW_Stage].[dbo].[Customer]
+	ON [Customer].[CustomerKey] = [SalesItemLedgerEntry].[CustomerBillToKey]
+WHERE [Customer].[CustomerGeneralBusinessPostingGroupCode] = 'ALL'
+	AND [CalendarKey] BETWEEN
+					(SELECT [StartDate] FROM [EETDW_Extract].[control].[Parameters] WHERE [TextLabel] = 'CustomerRanking') 
+					AND (SELECT [EndDate] FROM [EETDW_Extract].[control].[Parameters] WHERE [TextLabel] = 'CustomerRanking')
+GROUP BY [CustomerBillToKey] --, gppg.GPPGActive
+--ORDER BY [CompanyKey], [ItemBrandCode], sum(OrderProfitMarginAmount) DESC
+) r0 ON s.[CustomerBillToKey]=r0.[CustomerBillToKey] 
+LEFT JOIN
+(SELECT 
+	
+
+--	,gppg.GPPGActive
+	 [GPPGHistoricalKey]
+	,[CustomerBillToKey]
+	,sum(OrderProfitMarginAmount * ex.[Rel. Exchange Rate Amount] / 100) AS ProfitMargin
+	,ROW_NUMBER() OVER(PARTITION BY [GPPGHistoricalKey] ORDER BY sum(OrderProfitMarginAmount) DESC, [CustomerBillToKey] ASC) AS RankValue
+--	INTO [EETDW].[fact].[SalesItemLedgerEntryCompanyBrandCustomer]
+FROM [EETDW_Stage].[dbo].[SalesItemLedgerEntry]
+INNER JOIN [EETDW_Stage].[dbo].[ExchangeRate] as ex
+	ON [SalesItemLedgerEntry].CompanyKey = ex.CompanyKey AND ex.[ExchangeRateTypeID] = 1 AND year([SalesItemLedgerEntry].CalendarKey)*100 + month([SalesItemLedgerEntry].CalendarKey) = ex.MonthID
+--INNER JOIN [EETDW_Stage].[dbo].[Item] i ON [SalesItemLedgerEntry].[ItemKey]=i.[ItemKey]
+INNER JOIN [EETDW_Stage].[dbo].[Customer]
+	ON [Customer].[CustomerKey] = [SalesItemLedgerEntry].[CustomerBillToKey]
+WHERE [Customer].[CustomerGeneralBusinessPostingGroupCode] = 'ALL'
+	AND [CalendarKey] BETWEEN
+				(SELECT [StartDate] FROM [EETDW_Extract].[control].[Parameters] WHERE [TextLabel] = 'CustomerRanking') 
+			AND (SELECT [EndDate] FROM [EETDW_Extract].[control].[Parameters] WHERE [TextLabel] = 'CustomerRanking')
+GROUP BY [GPPGHistoricalKey], [CustomerBillToKey] --, gppg.GPPGActive
+--ORDER BY [CompanyKey], [ItemBrandCode], sum(OrderProfitMarginAmount) DESC
+) r1 ON s.[GPPGHistoricalKey]=r1.[GPPGHistoricalKey] AND s.[CustomerBillToKey]=r1.[CustomerBillToKey] 
+LEFT JOIN
+(SELECT 
+	
+
+--	,gppg.GPPGActive
+	 [ItemBrandCode]
+	,[CustomerBillToKey]
+	,sum(OrderProfitMarginAmount * ex.[Rel. Exchange Rate Amount] / 100) AS ProfitMargin
+	,ROW_NUMBER() OVER(PARTITION BY [ItemBrandCode] ORDER BY sum(OrderProfitMarginAmount) DESC, [CustomerBillToKey] ASC) AS RankValue
+--	INTO [EETDW].[fact].[SalesItemLedgerEntryCompanyBrandCustomer]
+FROM [EETDW_Stage].[dbo].[SalesItemLedgerEntry]
+INNER JOIN [EETDW_Stage].[dbo].[ExchangeRate] as ex
+	ON [SalesItemLedgerEntry].CompanyKey = ex.CompanyKey AND ex.[ExchangeRateTypeID] = 1 AND year([SalesItemLedgerEntry].CalendarKey)*100 + month([SalesItemLedgerEntry].CalendarKey) = ex.MonthID
+INNER JOIN [EETDW_Stage].[dbo].[Item] i ON [SalesItemLedgerEntry].[ItemKey]=i.[ItemKey]
+INNER JOIN [EETDW_Stage].[dbo].[Customer]
+	ON [Customer].[CustomerKey] = [SalesItemLedgerEntry].[CustomerBillToKey]
+WHERE [Customer].[CustomerGeneralBusinessPostingGroupCode] = 'ALL'
+	AND [CalendarKey] BETWEEN 
+				(SELECT [StartDate] FROM [EETDW_Extract].[control].[Parameters] WHERE [TextLabel] = 'CustomerRanking') 
+			AND (SELECT [EndDate] FROM [EETDW_Extract].[control].[Parameters] WHERE [TextLabel] = 'CustomerRanking')
+GROUP BY [ItemBrandCode], [CustomerBillToKey] --, gppg.GPPGActive
+--ORDER BY [CompanyKey], [ItemBrandCode], sum(OrderProfitMarginAmount) DESC
+) r2 ON i.[ItemBrandCode]=r2.[ItemBrandCode] AND s.[CustomerBillToKey]=r2.[CustomerBillToKey] 
+LEFT JOIN
+(SELECT 
+	
+	[CompanyKey]
+--	,gppg.GPPGActive
+	,[GPPGHistoricalKey]
+	,[CustomerBillToKey]
+	,sum(OrderProfitMarginAmount) AS ProfitMargin
+	,ROW_NUMBER() OVER(PARTITION BY [CompanyKey], [GPPGHistoricalKey] ORDER BY sum(OrderProfitMarginAmount) DESC, [CustomerBillToKey] ASC) AS RankValue
+--	INTO [EETDW].[fact].[SalesItemLedgerEntryCompanyBrandCustomer]
+FROM [EETDW_Stage].[dbo].[SalesItemLedgerEntry]
+--INNER JOIN [EETDW_Stage].[dbo].[Item] i ON [SalesItemLedgerEntry].[ItemKey]=i.[ItemKey]
+INNER JOIN [EETDW_Stage].[dbo].[Customer]
+	ON [Customer].[CustomerKey] = [SalesItemLedgerEntry].[CustomerBillToKey]
+WHERE [Customer].[CustomerGeneralBusinessPostingGroupCode] = 'ALL'
+	AND [CalendarKey] BETWEEN
+				(SELECT [StartDate] FROM [EETDW_Extract].[control].[Parameters] WHERE [TextLabel] = 'CustomerRanking') 
+			AND (SELECT [EndDate] FROM [EETDW_Extract].[control].[Parameters] WHERE [TextLabel] = 'CustomerRanking')
+GROUP BY [CompanyKey], [GPPGHistoricalKey], [CustomerBillToKey] --, gppg.GPPGActive
+--ORDER BY [CompanyKey], [ItemBrandCode], sum(OrderProfitMarginAmount) DESC
+) r3 ON s.[CompanyKey]=r3.[CompanyKey] AND s.[GPPGHistoricalKey]=r3.[GPPGHistoricalKey] AND s.[CustomerBillToKey]=r3.[CustomerBillToKey] 
+LEFT JOIN
+(SELECT 
+	
+	[CompanyKey]
+--	,gppg.GPPGActive
+	,[ItemBrandCode]
+	,[CustomerBillToKey]
+	,sum(OrderProfitMarginAmount) AS ProfitMargin
+	,ROW_NUMBER() OVER(PARTITION BY [CompanyKey], [ItemBrandCode] ORDER BY sum(OrderProfitMarginAmount) DESC, [CustomerBillToKey] ASC) AS RankValue
+--	INTO [EETDW].[fact].[SalesItemLedgerEntryCompanyBrandCustomer]
+FROM [EETDW_Stage].[dbo].[SalesItemLedgerEntry]
+INNER JOIN [EETDW_Stage].[dbo].[Item] i ON [SalesItemLedgerEntry].[ItemKey]=i.[ItemKey]
+INNER JOIN [EETDW_Stage].[dbo].[Customer]
+	ON [Customer].[CustomerKey] = [SalesItemLedgerEntry].[CustomerBillToKey]
+WHERE [Customer].[CustomerGeneralBusinessPostingGroupCode] = 'ALL'
+	AND [CalendarKey] BETWEEN
+					(SELECT [StartDate] FROM [EETDW_Extract].[control].[Parameters] WHERE [TextLabel] = 'CustomerRanking') 
+				AND (SELECT [EndDate] FROM [EETDW_Extract].[control].[Parameters] WHERE [TextLabel] = 'CustomerRanking')
+GROUP BY [CompanyKey], [ItemBrandCode], [CustomerBillToKey] --, gppg.GPPGActive
+--ORDER BY [CompanyKey], [ItemBrandCode], sum(OrderProfitMarginAmount) DESC
+) r4 ON s.[CompanyKey]=r4.[CompanyKey] AND i.[ItemBrandCode]=r4.[ItemBrandCode] AND s.[CustomerBillToKey]=r4.[CustomerBillToKey]
+
+--where s.[OrderNo]='3661527' and s.InvoiceNo='4988715' AND s.ItemKey='EET Group-HU-MGEM2DH/A'
+
+GROUP BY 
+s.[CompanyKey]
+,s.GPPGHistoricalKey
+,i.ItemBrandCode
+,s.CustomerBillToKey
+,r0.RankValue,r1.RankValue,r2.RankValue,r3.RankValue,r4.RankValue
+--having NOT (r0.RankValue IS NULL AND r1.RankValue IS NULL AND r2.RankValue IS NULL AND r3.RankValue IS NULL AND r4.RankValue IS NULL)
+--HAVING count (distinct s.[CompanyKey]) &gt; 1
+--ORDER BY 1,2,3,4,5
+-- 496555
+HAVING r0.RankValue &lt;= 200 OR r1.RankValue &lt;= 100 OR r2.RankValue &lt;= 100 OR r3.RankValue &lt;= 100 OR r4.RankValue &lt;= 100</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]"
+                          name="CompanyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[rank0]"
+                          dataType="i8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[rank0]"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[rank0]"
+                          name="rank0"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[rank1]"
+                          dataType="i8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[rank1]"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[rank1]"
+                          name="rank1"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[rank2]"
+                          dataType="i8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[rank2]"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[rank2]"
+                          name="rank2"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[rank3]"
+                          dataType="i8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[rank3]"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[rank3]"
+                          name="rank3"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[rank4]"
+                          dataType="i8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[rank4]"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[rank4]"
+                          name="rank4"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[CustomerRankingGroupIntermediateKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerRankingGroupIntermediateKey]"
+                          length="144"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[CustomerRankingGroupIntermediateKey]"
+                          name="CustomerRankingGroupIntermediateKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[GPPGKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[GPPGKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[GPPGKey]"
+                          name="GPPGKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[BrandKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[BrandKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[BrandKey]"
+                          name="BrandKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[CustomerKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerKey]"
+                          length="51"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].Columns[CustomerKey]"
+                          name="CustomerKey"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[rank0]"
+                          dataType="i8"
+                          name="rank0" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[rank1]"
+                          dataType="i8"
+                          name="rank1" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[rank2]"
+                          dataType="i8"
+                          name="rank2" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[rank3]"
+                          dataType="i8"
+                          name="rank3" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[rank4]"
+                          dataType="i8"
+                          name="rank4" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerRankingGroupIntermediateKey]"
+                          dataType="wstr"
+                          length="144"
+                          name="CustomerRankingGroupIntermediateKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[GPPGKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="GPPGKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[BrandKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="BrandKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="CustomerKey" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[CompanyKey]"
+                          name="CompanyKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[GPPGKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[GPPGKey]"
+                          name="GPPGKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[BrandKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[BrandKey]"
+                          name="BrandKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[CustomerKey]"
+                          dataType="wstr"
+                          length="51"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[CustomerKey]"
+                          name="CustomerKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[rank0]"
+                          dataType="i8"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[rank0]"
+                          name="rank0" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[rank1]"
+                          dataType="i8"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[rank1]"
+                          name="rank1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[rank2]"
+                          dataType="i8"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[rank2]"
+                          name="rank2" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[rank3]"
+                          dataType="i8"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[rank3]"
+                          name="rank3" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[rank4]"
+                          dataType="i8"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[rank4]"
+                          name="rank4" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[CustomerRankingGroupIntermediateKey]"
+                          dataType="wstr"
+                          length="144"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[CustomerRankingGroupIntermediateKey]"
+                          name="CustomerRankingGroupIntermediateKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel.Paths[Output]"
+                  endId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel.Inputs[DER Audit_Output_OLE DES CustomerRankingGroupLabel]"
+                  name="Output"
+                  startId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel.Paths[Output1]"
+                  endId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="Output"
+                  startId="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform CustomerRankingGroupLabel\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{61C8CBEC-7327-488A-B683-F36F574B188D}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{03EE752F-A92C-49F2-9638-CDD9DE573EC1}"
+              SQLTask:SqlStatementSource="EXEC('TRUNCATE TABLE ' + ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform CustomerRankingGroupLabel.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform CustomerRankingGroupLabel]"
+          DTS:CreationName=""
+          DTS:DTSID="{056BD189-3B57-4973-9566-846C9F067917}"
+          DTS:From="Package\SEQC Transform CustomerRankingGroupLabel\Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_Truncate Table_To_DFT Transform CustomerRankingGroupLabel"
+          DTS:To="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SEQC Transform CustomerRankingGroupLabel_To_SEQC MaintainDW]"
+      DTS:CreationName=""
+      DTS:DTSID="{5A7CDEBD-F5DF-4571-8B65-94C70DF528FE}"
+      DTS:From="Package\SEQC Transform CustomerRankingGroupLabel"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SEQC Transform CustomerRankingGroupLabel_To_SEQC MaintainDW"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,103"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="69.5000000000001,313.5" />
+        <NodeLayout
+          Size="289,42"
+          Id="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel"
+          TopLeft="5.50000000000003,107.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform CustomerRankingGroupLabel\Truncate Table"
+          TopLeft="75,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform CustomerRankingGroupLabel.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform CustomerRankingGroupLabel]"
+          TopLeft="150,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="300,205"
+          Size="300,248"
+          Id="Package\SEQC Transform CustomerRankingGroupLabel"
+          TopLeft="5.50000000000003,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_SEQC Transform CustomerRankingGroupLabel_To_SEQC MaintainDW]"
+          TopLeft="155.5,253.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="260,42"
+          Id="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel"
+          TopLeft="5.50000000000003,209.5" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\DER Audit"
+          TopLeft="72.5,107.5" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract"
+          TopLeft="57.5,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel.Paths[Output1]"
+          TopLeft="135.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel.Paths[Output]"
+          TopLeft="135.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE DES CustomerRankingGroupLabel">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform CustomerRankingGroupLabel\DFT Transform CustomerRankingGroupLabel\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

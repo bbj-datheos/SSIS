@@ -1,0 +1,619 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/6/2017 2:38:35 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="mim-ext"
+  DTS:DTSID="{C8C70B3D-48E3-4190-B64C-77BD433AD3FA}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_DebtorEntries"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="51"
+  DTS:VersionGUID="{614E3D4B-AEA0-4744-808F-E83A5B956DC0}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{19E620F2-B493-45E2-91DA-E98D329DFBCC}"
+      DTS:ObjectName="DW">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_DW]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=TEST-BI-01;Initial Catalog=EETDW;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{297BF35D-A1BB-45AC-BD3B-38D92CB59E07}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;SELECT * FROM &quot; + @[$Project::TransformFactViewSchema]+ &quot;.&quot;+@[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SelectAllFromTransform">
+      <DTS:VariableValue
+        DTS:DataType="8">SELECT * FROM TransformFactView.DebtorEntries</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{B2BED752-EF8D-4B6F-B11D-6340E0E37DE6}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;TransformFact.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="StageTable">
+      <DTS:VariableValue
+        DTS:DataType="8">TransformFact.DebtorEntries</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{6A554863-AC58-4C2C-9422-68A11706A285}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">DebtorEntries</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform DebtorEntries"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{CCBE2ACF-8A0D-4836-95A7-346C235ED284}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform DebtorEntries">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{E83C9CA7-6E22-4033-B23F-514879C54208}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform DebtorEntries"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES DebtorEntries"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::StageTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES CustomerClassCount">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CompanyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CompanyKey"
+                          externalMetadataColumnId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CompanyKey]"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[EmployeeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="EmployeeKey"
+                          externalMetadataColumnId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[EmployeeKey]"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].Columns[EmployeeKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[DocumentTypeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="DocumentTypeKey"
+                          externalMetadataColumnId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[DocumentTypeKey]"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].Columns[DocumentTypeKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CalendarKey]"
+                          cachedDataType="dbDate"
+                          cachedName="CalendarKey"
+                          externalMetadataColumnId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[DebtorEntryCount]"
+                          cachedDataType="i4"
+                          cachedName="DebtorEntryCount"
+                          externalMetadataColumnId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[DebtorEntryCount]"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].Columns[DebtorEntryCount]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[EmployeeKey]"
+                          dataType="wstr"
+                          length="50"
+                          name="EmployeeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[DocumentTypeKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="DocumentTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CalendarKey]"
+                          dataType="dbDate"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[DebtorEntryCount]"
+                          dataType="i4"
+                          name="DebtorEntryCount" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+*
+FROM
+	[TransformFactView].[CustomerClassCount]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable">User::SelectAllFromTransform</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]"
+                          name="CompanyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].Columns[EmployeeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].ExternalColumns[EmployeeKey]"
+                          length="50"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].Columns[EmployeeKey]"
+                          name="EmployeeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].Columns[DocumentTypeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].ExternalColumns[DocumentTypeKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].Columns[DocumentTypeKey]"
+                          name="DocumentTypeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]"
+                          dataType="dbDate"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]"
+                          name="CalendarKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].Columns[DebtorEntryCount]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].ExternalColumns[DebtorEntryCount]"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].Columns[DebtorEntryCount]"
+                          name="DebtorEntryCount"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].ExternalColumns[EmployeeKey]"
+                          dataType="wstr"
+                          length="50"
+                          name="EmployeeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].ExternalColumns[DocumentTypeKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="DocumentTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarKey]"
+                          dataType="dbDate"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output].ExternalColumns[DebtorEntryCount]"
+                          dataType="i4"
+                          name="DebtorEntryCount" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Error].Columns[EmployeeKey]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Error].Columns[EmployeeKey]"
+                          name="EmployeeKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Error].Columns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Error].Columns[CompanyKey]"
+                          name="CompanyKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Error].Columns[DocumentTypeKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Error].Columns[DocumentTypeKey]"
+                          name="DocumentTypeKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Error].Columns[CalendarKey]"
+                          dataType="dbDate"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Error].Columns[CalendarKey]"
+                          name="CalendarKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Error].Columns[DebtorEntryCount]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Error].Columns[DebtorEntryCount]"
+                          name="DebtorEntryCount" />
+                        <outputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries.Paths[Output]"
+                  endId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries.Inputs[DER Audit_Output_OLE DES CustomerClassCount]"
+                  name="Output"
+                  startId="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform DebtorEntries\SQL Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{863A7D54-CC33-4D10-AB4C-E4A4DF81447B}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{19E620F2-B493-45E2-91DA-E98D329DFBCC}"
+              SQLTask:SqlStatementSource="&#xA;         EXEC('TRUNCATE TABLE ' + ?)&#xA;        " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::StageTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform DebtorEntries.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{7583E12F-B503-4828-A895-3CD5DDB9EA2A}"
+          DTS:From="Package\SEQC Transform DebtorEntries\SQL Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="217,42"
+          Id="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries"
+          TopLeft="5.50000000000003,107.5" />
+        <NodeLayout
+          Size="172,42"
+          Id="Package\SEQC Transform DebtorEntries\SQL Truncate Table"
+          TopLeft="44.5,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform DebtorEntries.PrecedenceConstraints[Constraint]"
+          TopLeft="130.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-16.5,60"
+              Start="0,0"
+              End="-16.5,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="-4,30" />
+                  <mssgle:LineSegment
+                    End="-12.5,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-12.5,30"
+                    Point2="-16.5,30"
+                    Point3="-16.5,34" />
+                  <mssgle:LineSegment
+                    End="-16.5,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="286,205"
+          Size="286,248"
+          Id="Package\SEQC Transform DebtorEntries"
+          TopLeft="59.5,132.5" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract"
+          TopLeft="37.5,5.5" />
+        <NodeLayout
+          Size="188,42"
+          Id="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries"
+          TopLeft="5.50000000000001,107.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries.Paths[Output]"
+          TopLeft="115.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-16,60"
+              Start="0,0"
+              End="-16,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="-4,30" />
+                  <mssgle:LineSegment
+                    End="-12,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-12,30"
+                    Point2="-16,30"
+                    Point3="-16,34" />
+                  <mssgle:LineSegment
+                    End="-16,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE DES DebtorEntries">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform DebtorEntries\DFT Transform DebtorEntries\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

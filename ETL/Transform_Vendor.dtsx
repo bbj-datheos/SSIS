@@ -1,0 +1,1553 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/15/2017 3:27:54 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="meg-ext"
+  DTS:DTSID="{70609398-1F10-45CA-9517-8AD14973AF5B}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_Vendor"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="5"
+  DTS:VersionGUID="{1282036A-28EA-47F1-8D3C-6E6646EFD10E}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{B612441C-5F10-4572-B08A-D218556584AC}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{C8950A3A-05FE-4E1D-8CF0-7DFC17383167}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{228D77BD-78F3-4DCD-B93D-3BB75CB9F22E}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{1AD148DA-B9E8-4421-B695-AD68AC5D8500}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">dim</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{E9F7A5E4-29AB-4E31-B163-BAF950F3E03F}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.Vendor</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{ED53F80A-A0AD-47C2-9690-C139FD685F33}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">Vendor</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{D1E62F7D-FB52-4161-BC59-A8EF21E134E0}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{C29A0C47-591A-4268-A45D-077E13245C2B}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{C8950A3A-05FE-4E1D-8CF0-7DFC17383167}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform Vendor"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{58C11D26-4406-44C0-A728-FD6B6F004F0A}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform Vendor">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform Vendor\DFT Transform Vendor"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{951AF7DC-CC52-43E4-8755-1E9960E5D778}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform Vendor"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform Vendor\DFT Transform Vendor\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform Vendor\DFT Transform Vendor\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform Vendor\DFT Transform Vendor\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform Vendor\DFT Transform Vendor\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform Vendor\DFT Transform Vendor\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform Vendor\DFT Transform Vendor\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES Vendor"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[Vendor]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES Vendor">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorKey]"
+                          cachedDataType="wstr"
+                          cachedLength="51"
+                          cachedName="VendorKey"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorKey]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[CompanyCode]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="CompanyCode"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[CompanyCode]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[CompanyCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorName]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="VendorName"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorName]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorName]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorGeneralBusinessPostingGroupCode]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="VendorGeneralBusinessPostingGroupCode"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorGeneralBusinessPostingGroupCode]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorGeneralBusinessPostingGroupCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorPostingGroupCode]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="VendorPostingGroupCode"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorPostingGroupCode]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorPostingGroupCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorTerritoryCode]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="VendorTerritoryCode"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorTerritoryCode]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorTerritoryCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorBusinessUnitCode]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="VendorBusinessUnitCode"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorBusinessUnitCode]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorBusinessUnitCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorGlobalBusinessPartnersCode]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="VendorGlobalBusinessPartnersCode"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorGlobalBusinessPartnersCode]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorGlobalBusinessPartnersCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorAddress]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="VendorAddress"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorAddress]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorAddress]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorPostCode]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="VendorPostCode"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorPostCode]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorPostCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorCityCode]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="VendorCityCode"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorCityCode]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorCityCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorCountryCode]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="VendorCountryCode"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorCountryCode]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorCountryCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorCurrencyCode]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="VendorCurrencyCode"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorCurrencyCode]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorCurrencyCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorVatNo]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="VendorVatNo"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorVatNo]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorVatNo]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorFiscalCode]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="VendorFiscalCode"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorFiscalCode]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorFiscalCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorPaymentTermsCode]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="VendorPaymentTermsCode"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorPaymentTermsCode]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorPaymentTermsCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorShipmentMethodCode]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="VendorShipmentMethodCode"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorShipmentMethodCode]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorShipmentMethodCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorDeliveryTermsCode]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="VendorDeliveryTermsCode"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorDeliveryTermsCode]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorDeliveryTermsCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorPurchaserCode]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="VendorPurchaserCode"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorPurchaserCode]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorPurchaserCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorBlockingIndicator]"
+                          cachedDataType="i4"
+                          cachedName="VendorBlockingIndicator"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorBlockingIndicator]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorBlockingIndicator]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorContractDate]"
+                          cachedDataType="dbDate"
+                          cachedName="VendorContractDate"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorContractDate]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorContractDate]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorStockRotation]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="VendorStockRotation"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorStockRotation]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorStockRotation]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorMDFCode]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="VendorMDFCode"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorMDFCode]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorMDFCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorAccountingResponsibleCode]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="VendorAccountingResponsibleCode"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorAccountingResponsibleCode]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorAccountingResponsibleCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[VendorPerformanceBonusIndicator]"
+                          cachedDataType="i4"
+                          cachedName="VendorPerformanceBonusIndicator"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorPerformanceBonusIndicator]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorPerformanceBonusIndicator]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].Columns[AvgCreditDays]"
+                          cachedDataType="i4"
+                          cachedName="AvgCreditDays"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[AvgCreditDays]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[AvgCreditDays]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="VendorKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[CompanyCode]"
+                          dataType="wstr"
+                          length="20"
+                          name="CompanyCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorName]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorGeneralBusinessPostingGroupCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="VendorGeneralBusinessPostingGroupCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorPostingGroupCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="VendorPostingGroupCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorTerritoryCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorTerritoryCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorBusinessUnitCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorBusinessUnitCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorGlobalBusinessPartnersCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorGlobalBusinessPartnersCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorAddress]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorAddress" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorPostCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorPostCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorCityCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorCityCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorCountryCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="VendorCountryCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorCurrencyCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="VendorCurrencyCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorVatNo]"
+                          dataType="wstr"
+                          length="20"
+                          name="VendorVatNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorFiscalCode]"
+                          dataType="wstr"
+                          length="20"
+                          name="VendorFiscalCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorPaymentTermsCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorPaymentTermsCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorShipmentMethodCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorShipmentMethodCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorDeliveryTermsCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorDeliveryTermsCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorPurchaserCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorPurchaserCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorBlockingIndicator]"
+                          dataType="i4"
+                          name="VendorBlockingIndicator" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorContractDate]"
+                          dataType="dbDate"
+                          name="VendorContractDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorStockRotation]"
+                          dataType="wstr"
+                          length="10"
+                          name="VendorStockRotation" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorMDFCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="VendorMDFCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorAccountingResponsibleCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorAccountingResponsibleCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[VendorPerformanceBonusIndicator]"
+                          dataType="i4"
+                          name="VendorPerformanceBonusIndicator" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor].ExternalColumns[AvgCreditDays]"
+                          dataType="i4"
+                          name="AvgCreditDays" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+	CONVERT(NVARCHAR(20),[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(30),REPLACE(REPLACE([No.],CHAR(10),'NL'),CHAR(13),'CR')) as [VendorKey]
+	,CONVERT(NVARCHAR(20),[DWNavisionCompany]) AS CompanyCode
+	,CONVERT(NVARCHAR(30),v.[Name])AS VendorName
+	,CONVERT(NVARCHAR(10),[Gen. Bus. Posting Group])AS VendorGeneralBusinessPostingGroupCode
+	,CONVERT(NVARCHAR(10),[Vendor Posting Group])AS VendorPostingGroupCode
+	,CONVERT(NVARCHAR(30),[Territory Code])AS VendorTerritoryCode
+	,CONVERT(NVARCHAR(30),v.[Business Unit])AS VendorBusinessUnitCode
+	,CONVERT(NVARCHAR(30),[Global Business Partners]) AS VendorGlobalBusinessPartnersCode
+	,CONVERT(NVARCHAR(30),REPLACE(REPLACE([Address],CHAR(10),''),CHAR(13),'')) AS VendorAddress
+	,CONVERT(NVARCHAR(30),[Post Code])AS VendorPostCode
+	,CONVERT(NVARCHAR(30),REPLACE(REPLACE([City],CHAR(10),''),CHAR(13),'')) AS VendorCityCode
+	,CONVERT(NVARCHAR(10),
+		CASE 
+			WHEN ([Country Code] = '' AND co.[Company Country Code] &lt;&gt; 'G1') THEN co.[Company Country Code]
+			WHEN ([Country Code] = '' AND co.[Company Country Code] = 'G1') THEN 'DK'
+			ELSE [Country Code]  
+		END) AS VendorCountryCode
+		,[Currency Code]
+	,CONVERT(NVARCHAR(10),
+		CASE 
+			WHEN ([Currency Code] = '' OR [Currency Code] IS NULL) 
+			THEN ISNULL((SELECT MAX([Local Currency Code]) FROM [EETDW_Extract].[navcom].[Business Unit] WHERE [Consolidate]=1 AND [Company Name]=v.[DWNavisionCompany] AND [Department Code]=v.[Department Code])
+					   ,(SELECT MAX([Local Currency Code]) FROM [EETDW_Extract].[navcom].[Business Unit] WHERE [Consolidate]=1 AND [Company Name]=v.[DWNavisionCompany] AND [Department Code]='')) 
+			ELSE [Currency Code] END) AS VendorCurrencyCode
+	,CONVERT(NVARCHAR(20), [VAT Registration No.])AS VendorVatNo
+	,CONVERT(NVARCHAR(20), [Fiscal Code])AS VendorFiscalCode
+	,CONVERT(NVARCHAR(30),[Payment Terms Code])AS VendorPaymentTermsCode
+	,CONVERT(NVARCHAR(30), [Shipment Method Code])AS VendorShipmentMethodCode
+	,CONVERT(NVARCHAR(30), [Delivery Terms Code])AS VendorDeliveryTermsCode
+	,CONVERT(NVARCHAR(30), [Purchaser Code]) AS VendorPurchaserCode
+	,CONVERT(NVARCHAR(30), [Accounting Responsible]) AS VendorAccountingResponsibleCode
+	,CONVERT(INT,Blocked)AS VendorBlockingIndicator  
+  	,CAST([Contract Date] AS Date) AS VendorContractDate
+	,CONVERT(NVARCHAR(10), [Stock Rotation]) AS VendorStockRotation
+	,CONVERT(INT,[Performance Bonus])AS VendorPerformanceBonusIndicator  
+	,CONVERT(NVARCHAR(10), [MDF]) AS VendorMDFCode
+	-- added by bbj 20180615
+,(SELECT [Avg Credit Days] FROM [EETDW_Extract].[nav].[Payment Terms] WHERE [Code]=v.[Payment Terms Code] AND [DWNavisionCompany]=v.[DWNavisionCompany]) AS [AvgCreditDays]
+--end bbj
+
+  FROM [EETDW_Extract].[nav].[Vendor] v
+  LEFT JOIN [EETDW_Extract].[navcom].[Business Unit] bu ON v.DWNavisionCompany = bu.[Company Name] and v.[Department Code] = bu.[Department Code]
+LEFT JOIN [EETDW_Extract].[navcom].[Company] co ON v.DWNavisionCompany = co.Name</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorKey]"
+                          length="51"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorKey]"
+                          name="VendorKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[CompanyCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyCode]"
+                          length="20"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[CompanyCode]"
+                          name="CompanyCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorName]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorName]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorName]"
+                          name="VendorName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorGeneralBusinessPostingGroupCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorGeneralBusinessPostingGroupCode]"
+                          length="10"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorGeneralBusinessPostingGroupCode]"
+                          name="VendorGeneralBusinessPostingGroupCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorPostingGroupCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorPostingGroupCode]"
+                          length="10"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorPostingGroupCode]"
+                          name="VendorPostingGroupCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorTerritoryCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorTerritoryCode]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorTerritoryCode]"
+                          name="VendorTerritoryCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorBusinessUnitCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorBusinessUnitCode]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorBusinessUnitCode]"
+                          name="VendorBusinessUnitCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorGlobalBusinessPartnersCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorGlobalBusinessPartnersCode]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorGlobalBusinessPartnersCode]"
+                          name="VendorGlobalBusinessPartnersCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorAddress]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorAddress]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorAddress]"
+                          name="VendorAddress"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorPostCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorPostCode]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorPostCode]"
+                          name="VendorPostCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorCityCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorCityCode]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorCityCode]"
+                          name="VendorCityCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorCountryCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorCountryCode]"
+                          length="10"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorCountryCode]"
+                          name="VendorCountryCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorCurrencyCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorCurrencyCode]"
+                          length="10"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorCurrencyCode]"
+                          name="VendorCurrencyCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorVatNo]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorVatNo]"
+                          length="20"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorVatNo]"
+                          name="VendorVatNo"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorFiscalCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorFiscalCode]"
+                          length="20"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorFiscalCode]"
+                          name="VendorFiscalCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorPaymentTermsCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorPaymentTermsCode]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorPaymentTermsCode]"
+                          name="VendorPaymentTermsCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorShipmentMethodCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorShipmentMethodCode]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorShipmentMethodCode]"
+                          name="VendorShipmentMethodCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorDeliveryTermsCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorDeliveryTermsCode]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorDeliveryTermsCode]"
+                          name="VendorDeliveryTermsCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorPurchaserCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorPurchaserCode]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorPurchaserCode]"
+                          name="VendorPurchaserCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorBlockingIndicator]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorBlockingIndicator]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorBlockingIndicator]"
+                          name="VendorBlockingIndicator"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorContractDate]"
+                          dataType="dbDate"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorContractDate]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorContractDate]"
+                          name="VendorContractDate"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorStockRotation]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorStockRotation]"
+                          length="10"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorStockRotation]"
+                          name="VendorStockRotation"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorMDFCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorMDFCode]"
+                          length="10"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorMDFCode]"
+                          name="VendorMDFCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorAccountingResponsibleCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorAccountingResponsibleCode]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorAccountingResponsibleCode]"
+                          name="VendorAccountingResponsibleCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorPerformanceBonusIndicator]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorPerformanceBonusIndicator]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[VendorPerformanceBonusIndicator]"
+                          name="VendorPerformanceBonusIndicator"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[Currency Code]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[Currency Code]"
+                          length="10"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[Currency Code]"
+                          name="Currency Code"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[AvgCreditDays]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[AvgCreditDays]"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].Columns[AvgCreditDays]"
+                          name="AvgCreditDays"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="VendorKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyCode]"
+                          dataType="wstr"
+                          length="20"
+                          name="CompanyCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorName]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorGeneralBusinessPostingGroupCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="VendorGeneralBusinessPostingGroupCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorPostingGroupCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="VendorPostingGroupCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorTerritoryCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorTerritoryCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorBusinessUnitCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorBusinessUnitCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorGlobalBusinessPartnersCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorGlobalBusinessPartnersCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorAddress]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorAddress" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorPostCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorPostCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorCityCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorCityCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorCountryCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="VendorCountryCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorCurrencyCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="VendorCurrencyCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorVatNo]"
+                          dataType="wstr"
+                          length="20"
+                          name="VendorVatNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorFiscalCode]"
+                          dataType="wstr"
+                          length="20"
+                          name="VendorFiscalCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorPaymentTermsCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorPaymentTermsCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorShipmentMethodCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorShipmentMethodCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorDeliveryTermsCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorDeliveryTermsCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorPurchaserCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorPurchaserCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorBlockingIndicator]"
+                          dataType="i4"
+                          name="VendorBlockingIndicator" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorContractDate]"
+                          dataType="dbDate"
+                          name="VendorContractDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorStockRotation]"
+                          dataType="wstr"
+                          length="10"
+                          name="VendorStockRotation" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorMDFCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="VendorMDFCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorAccountingResponsibleCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="VendorAccountingResponsibleCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorPerformanceBonusIndicator]"
+                          dataType="i4"
+                          name="VendorPerformanceBonusIndicator" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[Currency Code]"
+                          dataType="wstr"
+                          length="10"
+                          name="Currency Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output].ExternalColumns[AvgCreditDays]"
+                          dataType="i4"
+                          name="AvgCreditDays" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorKey]"
+                          dataType="wstr"
+                          length="51"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorKey]"
+                          name="VendorKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[CompanyCode]"
+                          dataType="wstr"
+                          length="20"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[CompanyCode]"
+                          name="CompanyCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorName]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorName]"
+                          name="VendorName" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorGeneralBusinessPostingGroupCode]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorGeneralBusinessPostingGroupCode]"
+                          name="VendorGeneralBusinessPostingGroupCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorPostingGroupCode]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorPostingGroupCode]"
+                          name="VendorPostingGroupCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorTerritoryCode]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorTerritoryCode]"
+                          name="VendorTerritoryCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorBusinessUnitCode]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorBusinessUnitCode]"
+                          name="VendorBusinessUnitCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorGlobalBusinessPartnersCode]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorGlobalBusinessPartnersCode]"
+                          name="VendorGlobalBusinessPartnersCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorAddress]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorAddress]"
+                          name="VendorAddress" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorPostCode]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorPostCode]"
+                          name="VendorPostCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorCityCode]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorCityCode]"
+                          name="VendorCityCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorCountryCode]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorCountryCode]"
+                          name="VendorCountryCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[Currency Code]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[Currency Code]"
+                          name="Currency Code" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorCurrencyCode]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorCurrencyCode]"
+                          name="VendorCurrencyCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorVatNo]"
+                          dataType="wstr"
+                          length="20"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorVatNo]"
+                          name="VendorVatNo" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorFiscalCode]"
+                          dataType="wstr"
+                          length="20"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorFiscalCode]"
+                          name="VendorFiscalCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorPaymentTermsCode]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorPaymentTermsCode]"
+                          name="VendorPaymentTermsCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorShipmentMethodCode]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorShipmentMethodCode]"
+                          name="VendorShipmentMethodCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorDeliveryTermsCode]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorDeliveryTermsCode]"
+                          name="VendorDeliveryTermsCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorPurchaserCode]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorPurchaserCode]"
+                          name="VendorPurchaserCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorAccountingResponsibleCode]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorAccountingResponsibleCode]"
+                          name="VendorAccountingResponsibleCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorBlockingIndicator]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorBlockingIndicator]"
+                          name="VendorBlockingIndicator" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorContractDate]"
+                          dataType="dbDate"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorContractDate]"
+                          name="VendorContractDate" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorStockRotation]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorStockRotation]"
+                          name="VendorStockRotation" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorPerformanceBonusIndicator]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorPerformanceBonusIndicator]"
+                          name="VendorPerformanceBonusIndicator" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorMDFCode]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[VendorMDFCode]"
+                          name="VendorMDFCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[AvgCreditDays]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[AvgCreditDays]"
+                          name="AvgCreditDays" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform Vendor\DFT Transform Vendor.Paths[DER Audit_Output_OLE DES Vendor]"
+                  endId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor.Inputs[DER Audit_Output_OLE DES Vendor]"
+                  name="DER Audit_Output_OLE DES Vendor"
+                  startId="Package\SEQC Transform Vendor\DFT Transform Vendor\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC Transform Vendor\DFT Transform Vendor.Paths[OLE SRC Extract_Output_DER Audit]"
+                  endId="Package\SEQC Transform Vendor\DFT Transform Vendor\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="OLE SRC Extract_Output_DER Audit"
+                  startId="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform Vendor\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{2B9C52B5-F1CC-4F28-9FDC-C939F30857FA}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{228D77BD-78F3-4DCD-B93D-3BB75CB9F22E}"
+              SQLTask:SqlStatementSource="EXEC('TRUNCATE TABLE ' + ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform Vendor.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform Vendor]"
+          DTS:CreationName=""
+          DTS:DTSID="{ECB9E738-39CB-4606-9172-664563570210}"
+          DTS:From="Package\SEQC Transform Vendor\Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_Truncate Table_To_DFT Transform Vendor"
+          DTS:To="Package\SEQC Transform Vendor\DFT Transform Vendor" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SEQC Transform Vendor_To_SEQC MaintainDW]"
+      DTS:CreationName=""
+      DTS:DTSID="{D7032C79-8BBE-4F15-8DEF-564967A2D312}"
+      DTS:From="Package\SEQC Transform Vendor"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SEQC Transform Vendor_To_SEQC MaintainDW"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,103"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="18.5000000000001,313.5" />
+        <NodeLayout
+          Size="187,42"
+          Id="Package\SEQC Transform Vendor\DFT Transform Vendor"
+          TopLeft="5.50000000000001,107.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform Vendor\Truncate Table"
+          TopLeft="24,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform Vendor.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform Vendor]"
+          TopLeft="99,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="198,205"
+          Size="198,248"
+          Id="Package\SEQC Transform Vendor"
+          TopLeft="5.50000000000003,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_SEQC Transform Vendor_To_SEQC MaintainDW]"
+          TopLeft="104.5,253.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform Vendor\DFT Transform Vendor">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="157,42"
+          Id="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor"
+          TopLeft="5.50000000000003,209.5" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract"
+          TopLeft="6.00000000000001,5.5" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform Vendor\DFT Transform Vendor\DER Audit"
+          TopLeft="21,107.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform Vendor\DFT Transform Vendor.Paths[OLE SRC Extract_Output_DER Audit]"
+          TopLeft="84,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform Vendor\DFT Transform Vendor.Paths[DER Audit_Output_OLE DES Vendor]"
+          TopLeft="84,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE DES Vendor">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform Vendor\DFT Transform Vendor\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

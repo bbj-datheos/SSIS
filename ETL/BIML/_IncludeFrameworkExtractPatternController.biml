@@ -1,0 +1,24 @@
+<#@ include file="_IncludeFrameworkGlobals.biml" #>
+
+<# 
+DataView view = new DataView(SourceObjectsAllTables);
+DataTable distinctValues = view.ToTable(true, "ControllerName");
+foreach (DataRow row in distinctValues.Rows) { 
+#>
+	<Package Name="Controller_Extract<#=row["ControllerName"]#>" ConstraintMode="Parallel" ProtectionLevel="DontSaveSensitive">
+		<Tasks>
+			<#
+			foreach (DataRow sourcerow in SourceObjectsAllTables.Select("ControllerName='" + row["ControllerName"] + "'")) {
+			#>
+				<ExecutePackage Name="Extract<#=sourcerow["ExtractSchemaName"]#>_<#=sourcerow["ObjectName"]#>" DelayValidation="true">
+					<ExternalProjectPackage Package="Extract<#=sourcerow["ExtractSchemaName"]#>_<#=sourcerow["ObjectName"]#>.dtsx" />
+					<Expressions>
+                        <Expression PropertyName="PackageName">@[System::TaskName] + ".dtsx"</Expression>
+                    </Expressions>
+                </ExecutePackage>
+			<# } #>
+		</Tasks>
+	</Package>
+<# } #>
+
+

@@ -1,0 +1,109 @@
+<#@ template language="C#" hostspecific="True" tier="0" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="System.Data.OleDb" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.Xml"  #>
+<#@ import namespace="System.Xml.Linq" #>
+<#@ import namespace="System.Xml.XPath" #>
+<#@ import namespace="Varigence.Biml.CoreLowerer.SchemaManagement" #>
+<#@ import namespace="Varigence.Flow.FlowFramework.Validation" #>
+<#@ import namespace="Varigence.Languages.Biml.Table" #> <!-- For use of core BIML functions!!! -->
+<#@ assembly name="C:\\Windows\\Microsoft.NET\\Framework\\v2.0.50727\\System.Windows.Forms.dll" #>
+<#@ assembly name="C:\\Program Files\\Reference Assemblies\\Microsoft\\Framework\\v3.5\\System.Data.DataSetExtensions.dll" #>
+<#@ assembly name="C:\\Windows\\Microsoft.NET\\Framework\\v2.0.50727\\System.Management.dll" #> <!-- For use of converting UNC to local path -->
+<#@ import namespace="System.Windows.Forms" #>
+<#@ import namespace="System.Management" #>
+<#@ include file="_IncludeFrameworkHelperFunctions.biml" #>
+
+<#+
+//public string DataWarehouseName = Environment.GetEnvironmentVariable("DWName") + "DW";
+//public string DevelopmentSQLServer = Environment.GetEnvironmentVariable("DWDevelopmentServer");
+public string DataWarehouseName = "EETDW";
+public string DevelopmentSQLServer = "HQ-BI-02\\BI";
+public string SSISProjectPath = "S:\\EETDW\\Solutions\\SSIS";
+
+
+// Generate Excel biml - Michael Ladum @ Kapacity A/S 2015
+// !!Remember to install and register Ace.12.0 for .xlsx files - http://www.microsoft.com/download/en/confirmation.aspx?id=23734
+public string GetExcelBiml (string ExtractSchemaName, string sourceConnectionName, string sourceConnectionString, string sheet, string columns, string AllColumnsFlag) {
+	
+	string ExcelBiml = "";
+	ExcelBiml += "<Table Name=\"" + sourceConnectionName + "\" SchemaName=\"" + DataWarehouseName + "_Extract." + ExtractSchemaName + "\">" + "\n";
+	ExcelBiml += "<Columns>" + "\n";
+	MessageBox.Show("Hello!!!");
+
+	// Connection to workbook, iterate sheet columns
+	using (OleDbConnection conn = new OleDbConnection(sourceConnectionString))
+	{
+		conn.Open();
+		DataTable sheetColumns = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Columns, new object[] { null, null, sheet + "$", null });
+		for (int i = 0; i <= sheetColumns.Rows.Count - 1; i++) {
+			
+			// Filter columns or AllColumns flag is set
+			if(columns.Contains(sheetColumns.Rows[i]["Column_Name"].ToString()) || AllColumnsFlag == "1") {
+				
+				// Convert Excel type to BIML Type, use BIML helper
+				string DataType = AstTableColumnBaseNode.ConvertOleDbTypeToColumnType((OleDbType)sheetColumns.Rows[i]["DATA_TYPE"]).ToString();
+				
+				// Set fixed length of 200 where applicable
+				string Length = (DataType == "StringFixedLength") ? "Length=\"200\"" : "";
+				
+				// Concat string
+				ExcelBiml += "<Column Name=\"" + sheetColumns.Rows[i]["Column_Name"].ToString() + "\" DataType=\"" + DataType + "\" " + Length + " IsNullable=\"true\" />" + "\n";
+			}
+		} 
+		conn.Close();
+	}
+
+	ExcelBiml += "<Column Name=\"ExcelFileName\" DataType=\"StringFixedLength\" Length=\"100\" IsNullable=\"true\" />" + "\n";
+	ExcelBiml += "</Columns>" + "\n";
+	ExcelBiml += "</Table>";
+
+	return ExcelBiml;
+}
+
+public static string ShareToLocalPath(string sharePath)
+{
+    try
+    {
+        var regex = new Regex(@"\\\\([^\\]*)\\([^\\]*)(\\.*)?");
+        var match = regex.Match(sharePath);
+        if (!match.Success) return "";
+
+        var shareHost = match.Groups[1].Value;
+        var shareName = match.Groups[2].Value;
+        var shareDirs = match.Groups[3].Value;
+
+        var scope = new ManagementScope(@"\\" + shareHost + @"\root\cimv2");
+        var query = new SelectQuery("SELECT * FROM Win32_Share WHERE name = '" + shareName + "'");
+
+        using (var searcher = new ManagementObjectSearcher(scope, query))
+        {
+            var result = searcher.Get();
+            foreach (var item in result) return item["path"].ToString() + shareDirs;
+        }
+
+        return "";
+    }
+    catch (Exception)
+    {
+        return "";
+    }
+}
+#>
+
+<# 
+string conExtract = @"Data Source=" + DevelopmentSQLServer + ";Initial Catalog=" + DataWarehouseName + "_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI";
+string conMeta = @"Data Source=" + DevelopmentSQLServer + ";Initial Catalog=" + DataWarehouseName + "_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI";
+string conStage = @"Data Source=" + DevelopmentSQLServer + ";Initial Catalog=" + DataWarehouseName + "_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI";	
+DataTable ApplicationConnections = ExternalDataAccess.GetDataTable(conMeta, "select * from etl.ApplicationConnections") ;
+DataTable SourceConnections = ExternalDataAccess.GetDataTable(conMeta, "select * from etl.SourceConnections where ExcludeFlag = 0 order by ID");
+DataTable SourceObjects = ExternalDataAccess.GetDataTable(conMeta, "select * from etl.SourceObjectDefinitions");
+DataTable SourceObjectsAllTables = ExternalDataAccess.GetDataTable(conMeta, "select ObjectName,Name AS ControllerName,NavisionFlag,ExtractSchemaName from etl.SourceObjects inner join etl.SourceConnections on SourceConnectionID = SourceConnections.ID");
+DataTable SourceSchemas = ExternalDataAccess.GetDataTable(conMeta, "select distinct ConnectionName, SchemaName from etl.SourceObjectDefinitions");
+#>

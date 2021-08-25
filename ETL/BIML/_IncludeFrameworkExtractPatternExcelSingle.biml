@@ -1,0 +1,66 @@
+<#@ include file="_IncludeFrameworkGlobals.biml" #>
+<#@ property name="Table" type="AstTableNode" #>
+<#@ property name="Meta" type="DataRow" #>
+
+<Package Name="Extract<#=Meta["ExtractSchemaName"]#>_<#=Meta["ObjectName"]#>" ConstraintMode="Linear" ProtectionLevel="DontSaveSensitive">
+	
+	<Connections>
+		<Connection ConnectionName="Extract">
+			<Expressions>
+				<Expression PropertyName="Extract.ConnectionString" >@[$Project::ConnectionStringDW_Extract]</Expression>
+			</Expressions>
+		</Connection> 
+		<Connection ConnectionName="<#=Meta["ConnectionName"]#>">
+			<Expressions>
+				<Expression PropertyName="<#=Meta["ConnectionName"]#>.ConnectionString" >@[$Project::ConnectionString<#=Meta["ConnectionName"]#>]</Expression>
+			</Expressions>
+		</Connection>
+	</Connections>
+
+	<Variables>
+		<Variable Name="ExtractTable" DataType="String"><#=Meta["ExtractSchemaName"] + "." + Meta["ObjectName"]#></Variable>
+    </Variables>
+	
+	<Tasks>
+
+		<ExecuteSQL Name="Truncate Extract Table" ConnectionName="Extract">
+			<DirectInput>truncate table <#=Meta["ExtractSchemaName"] + "." + Meta["ObjectName"]#></DirectInput>
+		</ExecuteSQL> 
+		 
+		<Dataflow Name="Extract Data">
+
+			<Transformations>
+
+				<ExcelSource Name="Source" ConnectionName="<#=ConnectionName#>">
+					<DirectInput>
+						<![CDATA[
+						select 
+							<#=Table.GetColumnList(c => c.Name != "DWCreatedDate")#>
+						from 
+							[<#=Meta["InitialCatalog"]#>$]
+
+						<# if(!String.IsNullOrEmpty(Meta["ExtractSQLFilter"].ToString().Trim())) {#>
+						where
+							<#=Meta["ExtractSQLFilter"]#>	
+						<#}#>
+						]]>
+					</DirectInput>
+				</ExcelSource>
+
+				<DerivedColumns Name="Derived Column">
+					<Columns>
+						<Column Name="DWCreatedDate" DataType="DateTime">getdate()</Column> 
+					</Columns>
+				</DerivedColumns>
+
+				<OleDbDestination Name="ODD Destination" ConnectionName="Extract">				
+					<TableFromVariableOutput VariableName="User.ExtractTable" />
+				</OleDbDestination>
+
+			</Transformations>
+
+		</Dataflow>
+
+	</Tasks>
+
+</Package>

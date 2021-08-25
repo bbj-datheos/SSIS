@@ -1,0 +1,882 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="1/15/2017 11:18:10 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="bbj-ext"
+  DTS:DTSID="{78A18AED-F33D-4B9D-A941-07421FB4B7EC}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_OrderStatus"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="4"
+  DTS:VersionGUID="{15F52CFA-14D3-48E0-95A7-EFD9997AC046}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{564E4857-5EDA-4EED-BD1C-93C4C6DFD668}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{3D134166-34F5-4D67-9F7B-B88B9B83E4B9}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{7A3CCF43-E957-495A-B550-E0C0F8517F57}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{77F1E27E-7357-436B-AFC4-A3929033C005}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">dim</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{E9B18BB7-5913-460C-8156-F66F1515BB06}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.OrderStatus</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{C98C97FA-325B-46BC-955E-0B124F3B671D}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">OrderStatus</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{7938050B-6E00-4CE2-A215-0FBB3BF9450C}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{E1095438-8985-406F-87A7-4AA2FB3B6014}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{3D134166-34F5-4D67-9F7B-B88B9B83E4B9}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform Company"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{124FB05D-015E-4C31-99FE-1877DC89F101}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform Company">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform Company\DFT Transform Company"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{CAE8B571-03B7-4B76-A0D8-659B6E6142F4}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform Company"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform Company\DFT Transform Company\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="OLE DB Source"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT DISTINCT
+	 CONVERT(NVARCHAR(20),sh.[Order Status]) + N'-' + CONVERT(NVARCHAR(20),sh.[Hold invoice]) AS OrderStatusKey
+	,CONVERT(nvarchar(50),
+		CASE CONVERT(nvarchar(2),sh.[Order Status])
+			WHEN N'0' THEN N'Adding'
+			WHEN N'1' THEN N'Ready for Picking'
+			WHEN N'2' THEN N'Picking in Progress'
+			WHEN N'3' THEN N'Update in Process'
+		END
+		+ N' - '+
+		CASE CONVERT(nvarchar(2),sh.[Hold invoice])
+			WHEN N'0' THEN N'Not on Hold'
+			WHEN N'1' THEN N'On Hold'
+		END
+	) AS OrderStatusName
+	,CONVERT(nvarchar(5),sh.[Order Status]) AS [OrderStatusStatusCode]
+	,CONVERT(nvarchar(20),
+		CASE CONVERT(nvarchar(2),sh.[Order Status])
+			WHEN N'0' THEN N'Adding'
+			WHEN N'1' THEN N'Ready for Picking'
+			WHEN N'2' THEN N'Picking in Progress'
+			WHEN N'3' THEN N'Update in Process'
+		END
+	) AS [OrderStatusStatusName]
+	,CONVERT(nvarchar(5),sh.[Hold invoice]) AS [OrderStatusHoldInvoiceCode]
+	,CONVERT(nvarchar(5),
+		CASE CONVERT(nvarchar(2),sh.[Hold invoice])
+			WHEN N'0' THEN N'No'
+			WHEN N'1' THEN N'Yes'
+		END
+	) AS [OrderStatusHoldInvoiceName]
+FROM
+	nav.[Sales Header] sh</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].Columns[OrderStatusKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[OrderStatusKey]"
+                          length="41"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].Columns[OrderStatusKey]"
+                          name="OrderStatusKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].Columns[OrderStatusName]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[OrderStatusName]"
+                          length="50"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].Columns[OrderStatusName]"
+                          name="OrderStatusName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].Columns[OrderStatusStatusCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[OrderStatusStatusCode]"
+                          length="5"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].Columns[OrderStatusStatusCode]"
+                          name="OrderStatusStatusCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].Columns[OrderStatusStatusName]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[OrderStatusStatusName]"
+                          length="20"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].Columns[OrderStatusStatusName]"
+                          name="OrderStatusStatusName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].Columns[OrderStatusHoldInvoiceCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[OrderStatusHoldInvoiceCode]"
+                          length="5"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].Columns[OrderStatusHoldInvoiceCode]"
+                          name="OrderStatusHoldInvoiceCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].Columns[OrderStatusHoldInvoiceName]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[OrderStatusHoldInvoiceName]"
+                          length="5"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].Columns[OrderStatusHoldInvoiceName]"
+                          name="OrderStatusHoldInvoiceName"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[OrderStatusKey]"
+                          dataType="wstr"
+                          length="41"
+                          name="OrderStatusKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[OrderStatusName]"
+                          dataType="wstr"
+                          length="50"
+                          name="OrderStatusName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[OrderStatusStatusCode]"
+                          dataType="wstr"
+                          length="5"
+                          name="OrderStatusStatusCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[OrderStatusStatusName]"
+                          dataType="wstr"
+                          length="20"
+                          name="OrderStatusStatusName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[OrderStatusHoldInvoiceCode]"
+                          dataType="wstr"
+                          length="5"
+                          name="OrderStatusHoldInvoiceCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[OrderStatusHoldInvoiceName]"
+                          dataType="wstr"
+                          length="5"
+                          name="OrderStatusHoldInvoiceName" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[OrderStatusKey]"
+                          dataType="wstr"
+                          length="41"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[OrderStatusKey]"
+                          name="OrderStatusKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[OrderStatusName]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[OrderStatusName]"
+                          name="OrderStatusName" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[OrderStatusStatusCode]"
+                          dataType="wstr"
+                          length="5"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[OrderStatusStatusCode]"
+                          name="OrderStatusStatusCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[OrderStatusStatusName]"
+                          dataType="wstr"
+                          length="20"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[OrderStatusStatusName]"
+                          name="OrderStatusStatusName" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[OrderStatusHoldInvoiceCode]"
+                          dataType="wstr"
+                          length="5"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[OrderStatusHoldInvoiceCode]"
+                          name="OrderStatusHoldInvoiceCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[OrderStatusHoldInvoiceName]"
+                          dataType="wstr"
+                          length="5"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[OrderStatusHoldInvoiceName]"
+                          name="OrderStatusHoldInvoiceName" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES OrderStatus"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[OrderStatus]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES Company">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].Columns[OrderStatusKey]"
+                          cachedDataType="wstr"
+                          cachedLength="41"
+                          cachedName="OrderStatusKey"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[OrderStatusKey]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].Columns[OrderStatusKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].Columns[OrderStatusName]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="OrderStatusName"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[OrderStatusName]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].Columns[OrderStatusName]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].Columns[OrderStatusStatusCode]"
+                          cachedDataType="wstr"
+                          cachedLength="5"
+                          cachedName="OrderStatusStatusCode"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[OrderStatusStatusCode]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].Columns[OrderStatusStatusCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].Columns[OrderStatusStatusName]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="OrderStatusStatusName"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[OrderStatusStatusName]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].Columns[OrderStatusStatusName]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].Columns[OrderStatusHoldInvoiceCode]"
+                          cachedDataType="wstr"
+                          cachedLength="5"
+                          cachedName="OrderStatusHoldInvoiceCode"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[OrderStatusHoldInvoiceCode]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].Columns[OrderStatusHoldInvoiceCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].Columns[OrderStatusHoldInvoiceName]"
+                          cachedDataType="wstr"
+                          cachedLength="5"
+                          cachedName="OrderStatusHoldInvoiceName"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[OrderStatusHoldInvoiceName]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output].Columns[OrderStatusHoldInvoiceName]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[OrderStatusKey]"
+                          dataType="wstr"
+                          length="20"
+                          name="OrderStatusKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[OrderStatusName]"
+                          dataType="wstr"
+                          length="50"
+                          name="OrderStatusName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[OrderStatusStatusCode]"
+                          dataType="wstr"
+                          length="5"
+                          name="OrderStatusStatusCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[OrderStatusStatusName]"
+                          dataType="wstr"
+                          length="20"
+                          name="OrderStatusStatusName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[OrderStatusHoldInvoiceCode]"
+                          dataType="wstr"
+                          length="5"
+                          name="OrderStatusHoldInvoiceCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[OrderStatusHoldInvoiceName]"
+                          dataType="wstr"
+                          length="5"
+                          name="OrderStatusHoldInvoiceName" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform Company\DFT Transform Company.Paths[DER Audit_Output_OLE DES Company]"
+                  endId="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus.Inputs[DER Audit_Output_OLE DES Company]"
+                  name="DER Audit_Output_OLE DES Company"
+                  startId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC Transform Company\DFT Transform Company.Paths[OLE DB Source Output]"
+                  endId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="OLE DB Source Output"
+                  startId="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source.Outputs[OLE DB Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform Company\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{0ACF2F2E-E49F-440F-B12F-A50CE3F433F5}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{7A3CCF43-E957-495A-B550-E0C0F8517F57}"
+              SQLTask:SqlStatementSource="EXEC('TRUNCATE TABLE ' + ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform Company.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform Company]"
+          DTS:CreationName=""
+          DTS:DTSID="{4D866E50-A1AB-47C7-BC9C-7C6EAD457B6E}"
+          DTS:From="Package\SEQC Transform Company\Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_Truncate Table_To_DFT Transform Company"
+          DTS:To="Package\SEQC Transform Company\DFT Transform Company" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SEQC Transform Company_To_SEQC MaintainDW]"
+      DTS:CreationName=""
+      DTS:DTSID="{BE73A521-E148-46C2-BA9F-9D7C2BEEFDBE}"
+      DTS:From="Package\SEQC Transform Company"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SEQC Transform Company_To_SEQC MaintainDW"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,103"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="23.5000000000001,313.5" />
+        <NodeLayout
+          Size="197,42"
+          Id="Package\SEQC Transform Company\DFT Transform Company"
+          TopLeft="5.50000000000001,107.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform Company\Truncate Table"
+          TopLeft="29,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform Company.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform Company]"
+          TopLeft="104,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="208,205"
+          Size="208,248"
+          Id="Package\SEQC Transform Company"
+          TopLeft="5.50000000000003,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_SEQC Transform Company_To_SEQC MaintainDW]"
+          TopLeft="109.5,253.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform Company\DFT Transform Company">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="180,42"
+          Id="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus"
+          TopLeft="5.50000000000003,209.5" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform Company\DFT Transform Company\DER Audit"
+          TopLeft="32.5,107.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform Company\DFT Transform Company.Paths[DER Audit_Output_OLE DES Company]"
+          TopLeft="95.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source"
+          TopLeft="20.5,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform Company\DFT Transform Company.Paths[OLE DB Source Output]"
+          TopLeft="95.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform Company\DFT Transform Company\OLE DES OrderStatus">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform Company\DFT Transform Company\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

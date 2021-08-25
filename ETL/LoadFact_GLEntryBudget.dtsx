@@ -1,0 +1,1936 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/28/2017 2:24:00 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="nna-ext"
+  DTS:DTSID="{90BE3A87-22CB-49E5-ADB6-A709E28BFC51}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="LoadFact_GLEntryBudget"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="46"
+  DTS:VersionGUID="{D9589E93-C08B-4849-8274-B58E716F5797}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{60DC8383-ECB2-4176-9781-10A883B655B8}"
+      DTS:ObjectName="DW">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_DW]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{84F726B2-E8AB-4DF2-993C-22EEB22ABB2A}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{0C641DB8-8BEA-4B92-959D-DB6D3334B71E}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A2FC393D-6367-4D45-96AE-EF66EFAB9117}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;fact.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">fact.GLEntryBudget</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{DFDA2843-348F-48D9-AC03-260E4D6786D8}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">GLEntryBudget</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC FullLoad GLEntryBudget"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{24EA7823-04AE-43F2-A318-151B3753C59B}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC FullLoad GLEntryBudget">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{DB9D2538-7A09-42ED-8C39-09C12AE705A7}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT GLEntryBudget"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+                  name="Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit.Inputs[Derived Column Input]"
+                      description="Input to the Derived Column Transformation"
+                      name="Derived Column Input">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit.Outputs[Derived Column Output]"
+                      description="Default Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      name="Derived Column Output"
+                      synchronousInputId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit.Outputs[Derived Column Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit.Outputs[Derived Column Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[GETDATE]()</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit.Outputs[Derived Column Output].Columns[DWModifiedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit.Outputs[Derived Column Output].Columns[DWModifiedDate]"
+                          name="DWModifiedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[GETDATE]()</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit.Outputs[Derived Column Error Output]"
+                      description="Error Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Derived Column Error Output"
+                      synchronousInputId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Error Handling"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+                  name="Error Handling"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Error Handling.Inputs[Derived Column Input]"
+                      description="Input to the Derived Column Transformation"
+                      name="Derived Column Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Error Handling.Inputs[Derived Column Input].Columns[CalendarID]"
+                          cachedDataType="i4"
+                          cachedName="CalendarID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Outputs[Lookup Match Output].Columns[CalendarID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[REPLACENULL](#{Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Outputs[Lookup Match Output].Columns[CalendarID]},19000101)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(CalendarID,19000101)</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Error Handling.Inputs[Derived Column Input].Columns[CompanyID]"
+                          cachedDataType="i4"
+                          cachedName="CompanyID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Outputs[Lookup Match Output].Columns[CompanyID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[REPLACENULL](#{Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Outputs[Lookup Match Output].Columns[CompanyID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(CompanyID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Error Handling.Inputs[Derived Column Input].Columns[BudgetTypeID]"
+                          cachedDataType="i4"
+                          cachedName="BudgetTypeID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Outputs[Lookup Match Output].Columns[BudgetTypeID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[REPLACENULL](#{Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Outputs[Lookup Match Output].Columns[BudgetTypeID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(BudgetTypeID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Error Handling.Inputs[Derived Column Input].Columns[NavisionDimensionID]"
+                          cachedDataType="i4"
+                          cachedName="NavisionDimensionID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Outputs[Lookup Match Output].Columns[NavisionDimensionID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[REPLACENULL](#{Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Outputs[Lookup Match Output].Columns[NavisionDimensionID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(NavisionDimensionID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Error Handling.Outputs[Derived Column Output]"
+                      description="Default Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      name="Derived Column Output"
+                      synchronousInputId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Error Handling.Inputs[Derived Column Input]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Error Handling.Outputs[Derived Column Error Output]"
+                      description="Error Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Derived Column Error Output"
+                      synchronousInputId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Error Handling.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Error Handling.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Error Handling.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Error Handling.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Error Handling.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+                  description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+                  name="Lookup BudgetType"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+	 [BudgetTypeID]
+	,UPPER([BudgetTypeKey]) AS [BudgetTypeKey] 
+FROM
+	[EETDW].[dim].[BudgetType]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT
+	 [BudgetTypeID]
+	,UPPER([BudgetTypeKey]) AS [BudgetTypeKey] 
+FROM
+	[EETDW].[dim].[BudgetType]) [refTable]
+where [refTable].[BudgetTypeKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="BudgetTypeID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="BudgetTypeKey" dataType="DT_WSTR" length="200" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[BudgetTypeKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Inputs[Lookup Input]"
+                      name="Lookup Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Inputs[Lookup Input].Columns[BudgetTypeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="BudgetTypeKey"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[BudgetTypeKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">BudgetTypeKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Outputs[Lookup Match Output]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Lookup Match Output"
+                      synchronousInputId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Inputs[Lookup Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Outputs[Lookup Match Output].Columns[BudgetTypeID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Copy Column"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Outputs[Lookup Match Output].Columns[BudgetTypeID]"
+                          name="BudgetTypeID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">BudgetTypeID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Outputs[Lookup No Match Output]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="Lookup No Match Output"
+                      synchronousInputId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Inputs[Lookup Input]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Outputs[Lookup Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Lookup Error Output"
+                      synchronousInputId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Inputs[Lookup Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+                  description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+                  name="Lookup Calendar"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+	 [CalendarID]
+	,[CalendarDate]
+FROM
+	[EETDW].[dim].[Calendar]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT
+	 [CalendarID]
+	,[CalendarDate]
+FROM
+	[EETDW].[dim].[Calendar]) [refTable]
+where [refTable].[CalendarDate] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="CalendarID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CalendarDate" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[CalendarKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Inputs[Lookup Input]"
+                      name="Lookup Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Inputs[Lookup Input].Columns[CalendarKey]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="CalendarKey"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[CalendarKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">CalendarDate</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Outputs[Lookup Match Output]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Lookup Match Output"
+                      synchronousInputId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Inputs[Lookup Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Outputs[Lookup Match Output].Columns[CalendarID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Copy Column"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Outputs[Lookup Match Output].Columns[CalendarID]"
+                          name="CalendarID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">CalendarID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Outputs[Lookup No Match Output]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="Lookup No Match Output"
+                      synchronousInputId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Inputs[Lookup Input]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Outputs[Lookup Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Lookup Error Output"
+                      synchronousInputId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Inputs[Lookup Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+                  description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+                  name="Lookup Company"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+	 [CompanyID]
+	,UPPER([CompanyKey]) AS [CompanyKey]
+FROM
+	[EETDW].[dim].[Company]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT
+	 [CompanyID]
+	,UPPER([CompanyKey]) AS [CompanyKey]
+FROM
+	[EETDW].[dim].[Company]) [refTable]
+where [refTable].[CompanyKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="CompanyID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CompanyKey" dataType="DT_WSTR" length="10" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[CompanyKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Inputs[Lookup Input]"
+                      name="Lookup Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Inputs[Lookup Input].Columns[CompanyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CompanyKey"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[CompanyKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">CompanyKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Outputs[Lookup Match Output]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Lookup Match Output"
+                      synchronousInputId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Inputs[Lookup Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Outputs[Lookup Match Output].Columns[CompanyID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Copy Column"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Outputs[Lookup Match Output].Columns[CompanyID]"
+                          name="CompanyID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">CompanyID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Outputs[Lookup No Match Output]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="Lookup No Match Output"
+                      synchronousInputId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Inputs[Lookup Input]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Outputs[Lookup Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Lookup Error Output"
+                      synchronousInputId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Inputs[Lookup Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+                  description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+                  name="Lookup NavisionDimension"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+	[NavisionDimensionID]
+	,UPPER([NavisionDimensionKey]) AS [NavisionDimensionKey]
+FROM
+	[EETDW].[dim].[NavisionDimension]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT
+	[NavisionDimensionID]
+	,UPPER([NavisionDimensionKey]) AS [NavisionDimensionKey]
+FROM
+	[EETDW].[dim].[NavisionDimension]) [refTable]
+where [refTable].[NavisionDimensionKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="NavisionDimensionID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="NavisionDimensionKey" dataType="DT_WSTR" length="40" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[NavisionDimensionKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Inputs[Lookup Input]"
+                      name="Lookup Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Inputs[Lookup Input].Columns[NavisionDimensionKey]"
+                          cachedDataType="wstr"
+                          cachedLength="40"
+                          cachedName="NavisionDimensionKey"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[NavisionDimensionKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">NavisionDimensionKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Outputs[Lookup Match Output]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Lookup Match Output"
+                      synchronousInputId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Inputs[Lookup Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Outputs[Lookup Match Output].Columns[NavisionDimensionID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Copy Column"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Outputs[Lookup Match Output].Columns[NavisionDimensionID]"
+                          name="NavisionDimensionID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">NavisionDimensionID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Outputs[Lookup No Match Output]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="Lookup No Match Output"
+                      synchronousInputId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Inputs[Lookup Input]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Outputs[Lookup Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Lookup Error Output"
+                      synchronousInputId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Inputs[Lookup Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="OLE DB Destination GLEntryBudget"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[MainIndexNo.]"
+                          cachedDataType="i4"
+                          cachedName="MainIndexNo."
+                          externalMetadataColumnId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[MainIndexNo.]"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[MainIndexNo.]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[SubIndexNo.]"
+                          cachedDataType="i4"
+                          cachedName="SubIndexNo."
+                          externalMetadataColumnId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[SubIndexNo.]"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[SubIndexNo.]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[GLBudgetLCY]"
+                          cachedDataType="numeric"
+                          cachedName="GLBudgetLCY"
+                          cachedPrecision="30"
+                          cachedScale="10"
+                          externalMetadataColumnId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[GLBudgetLCY]"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[GLBudgetLCY]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[GLBudgetDKK]"
+                          cachedDataType="numeric"
+                          cachedName="GLBudgetDKK"
+                          cachedPrecision="30"
+                          cachedScale="10"
+                          externalMetadataColumnId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[GLBudgetDKK]"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[GLBudgetDKK]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[CalendarID]"
+                          cachedDataType="i4"
+                          cachedName="CalendarID"
+                          externalMetadataColumnId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[CalendarID]"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Outputs[Lookup Match Output].Columns[CalendarID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[CompanyID]"
+                          cachedDataType="i4"
+                          cachedName="CompanyID"
+                          externalMetadataColumnId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[CompanyID]"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Outputs[Lookup Match Output].Columns[CompanyID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[BudgetTypeID]"
+                          cachedDataType="i4"
+                          cachedName="BudgetTypeID"
+                          externalMetadataColumnId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[BudgetTypeID]"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Outputs[Lookup Match Output].Columns[BudgetTypeID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[NavisionDimensionID]"
+                          cachedDataType="i4"
+                          cachedName="NavisionDimensionID"
+                          externalMetadataColumnId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[NavisionDimensionID]"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Outputs[Lookup Match Output].Columns[NavisionDimensionID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit.Outputs[Derived Column Output].Columns[DWCreatedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[DWModifiedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWModifiedDate"
+                          externalMetadataColumnId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[DWModifiedDate]"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit.Outputs[Derived Column Output].Columns[DWModifiedDate]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[MainIndexNo.]"
+                          dataType="i4"
+                          name="MainIndexNo." />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[SubIndexNo.]"
+                          dataType="i4"
+                          name="SubIndexNo." />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[CalendarID]"
+                          dataType="i4"
+                          name="CalendarID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[CompanyID]"
+                          dataType="i4"
+                          name="CompanyID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[BudgetTypeID]"
+                          dataType="i4"
+                          name="BudgetTypeID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[NavisionDimensionID]"
+                          dataType="i4"
+                          name="NavisionDimensionID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[GLBudgetLCY]"
+                          dataType="numeric"
+                          name="GLBudgetLCY"
+                          precision="30"
+                          scale="10" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[GLBudgetDKK]"
+                          dataType="numeric"
+                          name="GLBudgetDKK"
+                          precision="30"
+                          scale="10" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[DWModifiedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWModifiedDate" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="OLE DB Source GLEntryBudget"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+	 UPPER([CompanyKey]) AS [CompanyKey]
+	,[CalendarKey]
+	,[MainIndexNo.]
+	,[SubIndexNo.]
+	,UPPER([BudgetTypeKey]) AS [BudgetTypeKey]
+	,UPPER([NavisionDimensionKey]) AS [NavisionDimensionKey]
+	,[GLBudgetLCY]
+	,[GLBudgetDKK]
+FROM
+	[EETDW_Stage].[dbo].[GLEntryBudget]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[CompanyKey]"
+                          length="10"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[CompanyKey]"
+                          name="CompanyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[CalendarKey]"
+                          name="CalendarKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[MainIndexNo.]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[MainIndexNo.]"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[MainIndexNo.]"
+                          name="MainIndexNo."
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[SubIndexNo.]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[SubIndexNo.]"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[SubIndexNo.]"
+                          name="SubIndexNo."
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[BudgetTypeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[BudgetTypeKey]"
+                          length="100"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[BudgetTypeKey]"
+                          name="BudgetTypeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[NavisionDimensionKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[NavisionDimensionKey]"
+                          length="40"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[NavisionDimensionKey]"
+                          name="NavisionDimensionKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[GLBudgetLCY]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[GLBudgetLCY]"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[GLBudgetLCY]"
+                          name="GLBudgetLCY"
+                          precision="30"
+                          scale="10"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[GLBudgetDKK]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[GLBudgetDKK]"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[GLBudgetDKK]"
+                          name="GLBudgetDKK"
+                          precision="30"
+                          scale="10"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[MainIndexNo.]"
+                          dataType="i4"
+                          name="MainIndexNo." />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[SubIndexNo.]"
+                          dataType="i4"
+                          name="SubIndexNo." />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[BudgetTypeKey]"
+                          dataType="wstr"
+                          length="100"
+                          name="BudgetTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[NavisionDimensionKey]"
+                          dataType="wstr"
+                          length="40"
+                          name="NavisionDimensionKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[GLBudgetLCY]"
+                          dataType="numeric"
+                          name="GLBudgetLCY"
+                          precision="30"
+                          scale="10" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[GLBudgetDKK]"
+                          dataType="numeric"
+                          name="GLBudgetDKK"
+                          precision="30"
+                          scale="10" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[CompanyKey]"
+                          name="CompanyKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[CalendarKey]"
+                          name="CalendarKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[MainIndexNo.]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[MainIndexNo.]"
+                          name="MainIndexNo." />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[SubIndexNo.]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[SubIndexNo.]"
+                          name="SubIndexNo." />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[BudgetTypeKey]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[BudgetTypeKey]"
+                          name="BudgetTypeKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[NavisionDimensionKey]"
+                          dataType="wstr"
+                          length="40"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[NavisionDimensionKey]"
+                          name="NavisionDimensionKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[GLBudgetLCY]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[GLBudgetLCY]"
+                          name="GLBudgetLCY"
+                          precision="30"
+                          scale="10" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[GLBudgetDKK]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[GLBudgetDKK]"
+                          name="GLBudgetDKK"
+                          precision="30"
+                          scale="10" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget.Paths[Derived Column Output]"
+                  endId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit.Inputs[Derived Column Input]"
+                  name="Derived Column Output"
+                  startId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Error Handling.Outputs[Derived Column Output]" />
+                <path
+                  refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget.Paths[Derived Column Output1]"
+                  endId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input]"
+                  name="Derived Column Output"
+                  startId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit.Outputs[Derived Column Output]" />
+                <path
+                  refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget.Paths[Lookup Match Output]"
+                  endId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Inputs[Lookup Input]"
+                  name="Lookup Match Output"
+                  startId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Outputs[Lookup Match Output]" />
+                <path
+                  refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget.Paths[Lookup Match Output1]"
+                  endId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Inputs[Lookup Input]"
+                  name="Lookup Match Output"
+                  startId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company.Outputs[Lookup Match Output]" />
+                <path
+                  refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget.Paths[Lookup Match Output2]"
+                  endId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Inputs[Lookup Input]"
+                  name="Lookup Match Output"
+                  startId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType.Outputs[Lookup Match Output]" />
+                <path
+                  refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget.Paths[Lookup Match Output3]"
+                  endId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Error Handling.Inputs[Derived Column Input]"
+                  name="Lookup Match Output"
+                  startId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension.Outputs[Lookup Match Output]" />
+                <path
+                  refId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget.Paths[OLE DB Source Output]"
+                  endId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar.Inputs[Lookup Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget.Outputs[OLE DB Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC FullLoad GLEntryBudget\SQL Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{6BBE2658-7ABD-4BEE-AB2B-15BD113A1957}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{60DC8383-ECB2-4176-9781-10A883B655B8}"
+              SQLTask:SqlStatementSource="&#xA;         EXEC('TRUNCATE TABLE ' + ?)&#xA;        " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC FullLoad GLEntryBudget.PrecedenceConstraints[Constraint_SQL Truncate Table_To_DFT LoadFactSalesOrder]"
+          DTS:CreationName=""
+          DTS:DTSID="{CC7F2874-4EF3-46E3-8EF6-96897A3DA152}"
+          DTS:From="Package\SEQC FullLoad GLEntryBudget\SQL Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_SQL Truncate Table_To_DFT LoadFactSalesOrder"
+          DTS:To="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="172,42"
+          Id="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget"
+          TopLeft="4.50000000000001,107.5" />
+        <NodeLayout
+          Size="172,42"
+          Id="Package\SEQC FullLoad GLEntryBudget\SQL Truncate Table"
+          TopLeft="17,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC FullLoad GLEntryBudget.PrecedenceConstraints[Constraint_SQL Truncate Table_To_DFT LoadFactSalesOrder]"
+          TopLeft="103,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-12.5,60"
+              Start="0,0"
+              End="-12.5,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="-4,30" />
+                  <mssgle:LineSegment
+                    End="-8.49999999999999,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-8.49999999999999,30"
+                    Point2="-12.5,30"
+                    Point3="-12.5,34" />
+                  <mssgle:LineSegment
+                    End="-12.5,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="206,205"
+          Size="206,248"
+          Id="Package\SEQC FullLoad GLEntryBudget"
+          TopLeft="5.50000000000004,5.5" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="224,42"
+          Id="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget"
+          TopLeft="16,5.5" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar"
+          TopLeft="49,107.5" />
+        <EdgeLayout
+          Id="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget.Paths[OLE DB Source Output]"
+          TopLeft="128,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="160,42"
+          Id="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company"
+          TopLeft="48,209.5" />
+        <EdgeLayout
+          Id="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget.Paths[Lookup Match Output]"
+          TopLeft="128,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,20.4453125,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="173,42"
+          Id="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType"
+          TopLeft="41.5,311.5" />
+        <EdgeLayout
+          Id="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget.Paths[Lookup Match Output1]"
+          TopLeft="128,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,20.4453125,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="205,42"
+          Id="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension"
+          TopLeft="25.5,413.5" />
+        <EdgeLayout
+          Id="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget.Paths[Lookup Match Output2]"
+          TopLeft="128,353.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,20.4453125,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="147,42"
+          Id="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Error Handling"
+          TopLeft="54.5000000000001,515.5" />
+        <EdgeLayout
+          Id="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget.Paths[Lookup Match Output3]"
+          TopLeft="128,455.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,20.4453125,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="103,42"
+          Id="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Audit"
+          TopLeft="76.5000000000001,617.5" />
+        <EdgeLayout
+          Id="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget.Paths[Derived Column Output]"
+          TopLeft="128,557.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="245,42"
+          Id="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget"
+          TopLeft="5.50000000000009,719.5" />
+        <EdgeLayout
+          Id="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget.Paths[Derived Column Output1]"
+          TopLeft="128,659.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Source GLEntryBudget">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Calendar">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup Company">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup BudgetType">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\Lookup NavisionDimension">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad GLEntryBudget\DFT GLEntryBudget\OLE DB Destination GLEntryBudget">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

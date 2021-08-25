@@ -1,0 +1,136 @@
+<#@ include file="_IncludeFrameworkGlobals.biml" #>
+<#@ property name="Table" type="AstTableNode" #>
+<#@ property name="Meta" type="DataRow" #>
+
+<Package Name="<#=Meta["ExtractPackageName"]#>" ConstraintMode="Linear" ProtectionLevel="DontSaveSensitive">
+	
+	<Connections>
+		<Connection ConnectionName="Extract">
+			<Expressions>
+				<Expression PropertyName="Extract.ConnectionString" >@[$Project::ConnectionStringDW_Extract]</Expression>
+			</Expressions>
+		</Connection> 
+		<Connection ConnectionName="<#=Meta["ConnectionName"]#>">
+			<Expressions>
+				<Expression PropertyName="<#=Meta["ConnectionName"]#>.ConnectionString" >@[$Project::ConnectionString<#=Meta["ConnectionName"]#>]</Expression>
+			</Expressions>
+		</Connection>
+	</Connections>
+
+	<Variables>
+		<!-- Standard setup -->
+		<Variable Name="ExtractTable" DataType="String"><#= "[" + Meta["ExtractTableName"] + "]" #></Variable>
+
+		<!-- Incremental specific variables -->
+		<# if (Meta["IncrementalFlag"].ToString() == "1") { #>
+			<Variable Name="LastIncrementalValueSQL" DataType="String" EvaluateAsExpression="true">
+				"select 
+					case when '" +  (DT_WSTR, 20) @[$Project::JobIsIncremental] 	+ "' = 'False'  then case when isnumeric([LastValueLoaded]) = 1 then '0' else '' end else	[LastValueLoaded]	end as LastValueLoaded
+				from 
+					etl.SourceObjectIncrementalSetup as incremental_setup join
+					etl.SourceObjects as source_objects on 
+						incremental_setup.SourceObjectID = source_objects.ID join
+					etl.SourceConnections as source_connections on 
+						source_objects.SourceConnectionID = source_connections.ID
+				where
+					source_connections.ExtractSchemaName + '.' + substring(source_objects.ObjectName, charindex('$', source_objects.ObjectName)+1, 200) = '" + @[User::ExtractTable] + "'"
+			</Variable>
+			<Variable Name="LastIncrementalValue" DataType="String">0</Variable>
+			<Variable Name="LatestIncrementalValueSQL" DataType="String" EvaluateAsExpression="true">
+				"update
+					incremental_setup
+				set
+					[LastValueLoaded] = isnull((select max(<#=Meta["IncrementalValueColumnDefinition"]#>) from <#=DataWarehouseName#>_Extract." + @[User::ExtractTable] + "), [LastValueLoaded])
+				from 
+					etl.SourceObjectIncrementalSetup as incremental_setup join
+					etl.SourceObjects as source_objects on 
+						incremental_setup.SourceObjectID = source_objects.ID join
+					etl.SourceConnections as source_connections on 
+						source_objects.SourceConnectionID = source_connections.ID
+				where
+					source_connections.ExtractSchemaName + '.' + substring(source_objects.ObjectName, charindex('$', source_objects.ObjectName)+1, 200) = '" + @[User::ExtractTable] + "'"
+			</Variable>
+		<# } #>
+
+		<!-- History specific variables -->
+		<# if (Meta["PreserveHistoryFlag"].ToString() == "1") { #>
+			<Variable Name="LoadHistorySQL" DataType="String" EvaluateAsExpression="true">
+				 (DT_WSTR, 20) @[$Project::JobIsIncremental] =="True"?"exec etl.LoadSourceObjectHistory '" + @[User::ExtractTable] + "','1',NULL":"exec etl.LoadSourceObjectHistory '" + @[User::ExtractTable] + "','0',NULL"
+			</Variable>
+		<# } #>
+	</Variables>
+
+	<Tasks>
+
+		<!-- Incremental specific -->
+		<# if (Meta["IncrementalFlag"].ToString() == "1") { #>
+			<ExecuteSQL Name="EST Get last used incremental value" ResultSet="SingleRow" ConnectionName="Meta">
+				<VariableInput VariableName="User.LastIncrementalValueSQL" />
+				<Results>
+					<Result Name="0" VariableName="User.LastIncrementalValue" />
+				</Results>
+			</ExecuteSQL> 
+		<# } #>
+
+		<ExecuteSQL Name="EST Truncate Extract Table" ConnectionName="Extract">
+			<DirectInput>truncate table <#=Meta["ExtractSchemaName"] + "." + Meta["ObjectName"]#></DirectInput>
+		</ExecuteSQL> 
+
+		<Dataflow Name="Extract Data">
+			<Transformations>
+
+				<OleDbSource Name="ODS Source" ConnectionName="<#=Meta["ConnectionName"]#>">
+					<DirectInput>
+						<![CDATA[
+						select 
+							<#=Table.GetColumnList(c => !c.Name.StartsWith("DW"))#>
+						from 
+							<#=Meta["SchemaName"] + ".[" + Meta["ObjectName"] + "]"#>
+
+						<# if(!String.IsNullOrEmpty(Meta["ExtractSQLFilter"].ToString().Trim())) {#>
+						where
+							<#=Meta["ExtractSQLFilter"]#>	
+						<#}#>
+						]]>
+					</DirectInput>
+				</OleDbSource>
+
+				<# if (Table.Columns.Any(c => c.GetTag("ConvertToUnicode") == "yes")) { #>
+				<DataConversion Name="Convert datatypes">
+					<Columns>
+						<# foreach (var column in Table.Columns.Where(c => c.GetTag("ConvertToUnicode") == "yes")) { #>
+						<Column SourceColumn="<#=column.Name#>" TargetColumn="<#=column.Name#>" DataType="String" Length="<#=column.Length#>" />
+						<# } #>
+					</Columns>
+				</DataConversion>
+				<# } #>
+
+				<DerivedColumns Name="DER System Columns">
+					<Columns>
+						<Column Name="DWCreatedDate" DataType="DateTime">getdate()</Column> 
+					</Columns>
+				</DerivedColumns>
+
+				<OleDbDestination Name="ODD Destination" ConnectionName="Extract">				
+					<TableFromVariableOutput VariableName="User.ExtractTable" />
+				</OleDbDestination>
+
+			</Transformations>
+		</Dataflow>
+
+		<!-- Incremental specific -->
+		<# if (Meta["IncrementalFlag"].ToString() == "1") { #>
+			<ExecuteSQL Name="EST Get latest incremental value" ConnectionName="Meta">
+				<VariableInput VariableName="User.LatestIncrementalValueSQL" />
+			</ExecuteSQL> 
+		<# } #>
+
+		<!-- History specific -->
+		<# if (Meta["PreserveHistoryFlag"].ToString() == "1") { #>
+			<ExecuteSQL Name="EST Load to history archive" ConnectionName="Meta">
+				<VariableInput VariableName="User.LoadHistorySQL" />
+			</ExecuteSQL> 
+		<# } #>
+
+	</Tasks>
+</Package>

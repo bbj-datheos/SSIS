@@ -1,0 +1,112 @@
+	<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+	<#@ template language="C#" tier="4" #>
+	<#@ include file="biml/_IncludeFrameworkGlobals.biml" #>
+
+	<!--Create Dummy stage tables and Get Meta Data-->
+	<# 
+	ExternalDataAccess.GetDataTable(conMeta, @"EXEC [utility].[CreateStageTablesFromBusinessMatrix]");
+	DataTable TableMeta = ExternalDataAccess.GetDataTable(conMeta, @"SELECT [TableName],[DestinationSchema],[EnabledFlag] FROM [etl].[BusinessMatrix] WHERE [EnabledFlag] = 1 AND [TableName] NOT IN (SELECT DISTINCT TableName FROM [etl].[TransformNavisionDefinitions])");
+	#>
+
+		<Connections>
+			<# foreach(DataRow row in ApplicationConnections.Rows) {#>
+			<OleDbConnection Name="<#=row["Name"]#>" ConnectionString="<#=row["ConnectionString"]#>"></OleDbConnection>
+			<#}#>
+		</Connections>
+
+		<Projects>
+			<PackageProject Name="SSIS" ProtectionLevel="DontSaveSensitive">
+				<Parameters>
+					<Parameter Name="EnvironmentSQLServer" DataType="String" IsRequired="false" IsSensitive="false"></Parameter>
+					<Parameter Name="ConnectionStringDW_Stage" DataType="String" IsRequired="false" IsSensitive="false"></Parameter>
+					<Parameter Name="ConnectionStringDW_Extract" DataType="String" IsRequired="false" IsSensitive="false"></Parameter>
+					<Parameter Name="ConnectionStringDW_Meta" DataType="String" IsRequired="false" IsSensitive="false"></Parameter>
+				</Parameters>
+				<Packages>
+					<# foreach(DataRow RowMeta in TableMeta.AsEnumerable().Where( RowMeta => RowMeta.Field<bool>("EnabledFlag") == true &&
+																							 RowMeta.Field<string>("TableName") != "Calendar" &&
+																							 RowMeta.Field<string>("TableName") != "Time"))  {#>
+					<Package IsEntryPoint="true" PackageName="Transform_<#=RowMeta["TableName"]#>"></Package>
+					<#}#>
+				</Packages>
+			</PackageProject>
+		</Projects>
+			
+			
+	<Packages>
+		<# foreach(DataRow RowMeta in TableMeta.AsEnumerable().Where( RowMeta => RowMeta.Field<bool>("EnabledFlag") == true &&
+																				 RowMeta.Field<string>("TableName") != "Calendar" &&
+																				 RowMeta.Field<string>("TableName") != "Time"))	{#>
+		 <Package ConstraintMode="Linear" Name="Transform_<#=RowMeta["TableName"]#>">
+			<Connections>
+				<Connection ConnectionName="Stage">
+					<Expressions>
+						<Expression PropertyName="Stage.ConnectionString" >@[$Project::ConnectionStringDW_Stage]</Expression>
+					</Expressions>
+				</Connection>
+				<Connection ConnectionName="Extract">
+					<Expressions>
+						<Expression PropertyName="Extract.ConnectionString" >@[$Project::ConnectionStringDW_Extract]</Expression>
+					</Expressions>
+				</Connection>
+				<Connection ConnectionName="Meta">
+					<Expressions>
+						<Expression PropertyName="Meta.ConnectionString" >@[$Project::ConnectionStringDW_Meta]</Expression>
+					</Expressions>
+				</Connection>
+			</Connections>
+			<Variables>
+				<Variable DataType="String" Name="Table"><#=RowMeta["TableName"]#></Variable>
+				<Variable DataType="String" Name="DestinationTable" EvaluateAsExpression="true">"dbo." + @[User::Table]</Variable>
+				<Variable DataType="String" Name="DestinationSchema"><#=RowMeta["DestinationSchema"]#></Variable>
+			</Variables>
+			<Tasks>
+				<Container ConstraintMode="Linear" Name="SEQC Transform	<#=RowMeta["TableName"]#>">
+					<Tasks>
+						<ExecuteSQL ConnectionName="Stage" Name="Truncate Table">
+							<Parameters>
+								<Parameter Name="0" DataType="String" VariableName="User.DestinationTable"></Parameter>
+							</Parameters>
+							<DirectInput>EXEC('TRUNCATE TABLE ' + ?)</DirectInput>
+						</ExecuteSQL>
+						<Dataflow Name="DFT Transform <#=RowMeta["TableName"]#>">
+							<Transformations>
+								<OleDbSource ConnectionName="Extract" Name="OLE SRC Extract">
+									<DirectInput>SELECT 1 AS ID</DirectInput>
+								</OleDbSource>
+								<DerivedColumns Name="DER Audit">
+									<Columns>
+										<Column DataType="DateTime" Name="DWCreatedDate">GETDATE()</Column>
+									</Columns>
+								</DerivedColumns>
+								<OleDbDestination ConnectionName="Stage" Name="OLE DES <#=RowMeta["TableName"]#>">
+									<TableFromVariableOutput VariableName="User.DestinationTable"></TableFromVariableOutput>
+								</OleDbDestination>
+							</Transformations>
+						</Dataflow>
+					
+					</Tasks>
+				</Container>
+				<Container ConstraintMode="Linear" Name="SEQC MaintainDW">
+					<Tasks>
+						<ExecuteSQL Name="SQL Maintain DW" ConnectionName="Meta">
+							<Parameters>
+								<Parameter DataType="String" Name="0" VariableName="User.Table"></Parameter>
+								<Parameter DataType="String" Name="1" VariableName="User.DestinationSchema"></Parameter>
+							</Parameters>
+							<DirectInput>EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  </DirectInput>
+						</ExecuteSQL>
+					</Tasks>
+				</Container>
+			</Tasks>
+		</Package>
+	
+		<#}#>
+		
+	</Packages>
+
+
+	
+</Biml>
+
+	

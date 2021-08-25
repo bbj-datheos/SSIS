@@ -1,0 +1,1042 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/13/2017 12:31:51 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="taa-ext"
+  DTS:DTSID="{12C20957-F0A7-4E73-9948-BA0D6D113729}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_CommunicationType"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="1"
+  DTS:VersionGUID="{D1CA15DE-2F35-4B50-B347-06F7B2C03CA6}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{EFB4341A-B365-4999-852F-5E63D9B1133D}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{7C028594-76AE-4539-B497-7B62CBC2B004}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02\BI;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{0A014945-6A05-4C63-B7C7-79F6E12A2E3E}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02\BI;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{DDBA8AD0-4105-44C8-B3B5-C3727FC8D485}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">dim</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{16AE43C0-BC96-4D57-83C5-E491E05A0032}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.CommunicationType</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{EAED9157-2EAE-4437-8EA0-A2CE689056BF}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">CommunicationType</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{A02FF490-16AF-4BF4-9AAA-6657FACB2002}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{B12DC11F-3D6E-4D01-A412-FC49192A3197}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{7C028594-76AE-4539-B497-7B62CBC2B004}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform CommunicationType"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{8DD6E28D-0740-4CFC-B177-ED50882FD36B}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform CommunicationType">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{721912B3-1830-4FB6-9ED1-766D7DA49A87}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform CommunicationType"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES CommunicationType"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES CommunicationType">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].Columns[CommunicationTypeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="CommunicationTypeKey"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[CommunicationTypeKey]"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].Columns[CommunicationTypeName]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="7"
+                          cachedName="CommunicationTypeName"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[CommunicationTypeName]"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeName]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].Columns[CommunicationTypeDirection]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="CommunicationTypeDirection"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[CommunicationTypeDirection]"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeDirection]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].Columns[CommunicationTypeCaller]"
+                          cachedDataType="wstr"
+                          cachedLength="25"
+                          cachedName="CommunicationTypeCaller"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[CommunicationTypeCaller]"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeCaller]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].Columns[CommunicationTypeRecipient]"
+                          cachedDataType="wstr"
+                          cachedLength="25"
+                          cachedName="CommunicationTypeRecipient"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[CommunicationTypeRecipient]"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeRecipient]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].Columns[CommunicationTypeCategory]"
+                          cachedDataType="wstr"
+                          cachedLength="200"
+                          cachedName="CommunicationTypeCategory"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[CommunicationTypeCategory]"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeCategory]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].Columns[CommunicationTypeMultipleParticipant]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="3"
+                          cachedName="CommunicationTypeMultipleParticipant"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[CommunicationTypeMultipleParticipant]"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeMultipleParticipant]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].Columns[CommunicationTypeCancelled]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="3"
+                          cachedName="CommunicationTypeCancelled"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[CommunicationTypeCancelled]"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeCancelled]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].Columns[CommunicationTypePlannedActivity]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="3"
+                          cachedName="CommunicationTypePlannedActivity"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[CommunicationTypePlannedActivity]"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypePlannedActivity]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[CommunicationTypeKey]"
+                          dataType="wstr"
+                          length="30"
+                          name="CommunicationTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[CommunicationTypeName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="7"
+                          name="CommunicationTypeName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[CommunicationTypeDirection]"
+                          dataType="wstr"
+                          length="30"
+                          name="CommunicationTypeDirection" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[CommunicationTypeCaller]"
+                          dataType="wstr"
+                          length="25"
+                          name="CommunicationTypeCaller" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[CommunicationTypeRecipient]"
+                          dataType="wstr"
+                          length="25"
+                          name="CommunicationTypeRecipient" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[CommunicationTypeCategory]"
+                          dataType="wstr"
+                          length="200"
+                          name="CommunicationTypeCategory" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[CommunicationTypeMultipleParticipant]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="CommunicationTypeMultipleParticipant" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[CommunicationTypeCancelled]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="CommunicationTypeCancelled" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[CommunicationTypePlannedActivity]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="CommunicationTypePlannedActivity" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">with CommunicationType as (
+select distinct
+	'Call' as UnitType
+	,case
+		when Direction in ('In','Internal') then 'Inbound'
+		when Direction = 'Out' then 'Outbound'
+	 else Direction
+	 end as
+	 Direction
+	,[A Type] as Caller
+	,[B Type] as Recipient 
+	,'' as Categories
+	,case 
+		when GroupCall = 'Y' then 'Yes'
+		else 'No'
+	end as 
+	MultipleParticipant
+	,case
+		when CallType like '%Err%' then 'Yes'
+		else 'No'
+	end as 
+	IsCancelled
+	,'No' as PlannedActivity
+from [EETDW_Extract].[exch].[UC_Analytics]
+  union all
+select distinct
+    'Email' as UnitType
+	,Direction
+	,SenderType as Caller
+	,RecipientType as Recipient
+	,'' as Categories
+	,case
+		when charindex(';', recipients) &gt; 1 then 'Yes'
+		else 'No'
+	  end as 
+	  MultipleParticipant
+	,'No' as IsCancelled
+	,'No' as PlannedActivity
+from [EETDW_Extract].exch.Emails
+  union all
+select distinct
+	 'Meeting' as UnitType
+	 ,'' as Direction
+     ,'' as Caller
+	 ,'' as Recipient
+	 ,isnull(Categories, '') as Categories
+	 ,case
+		when charindex(';', RequiredAttendees) &gt; 1 then 'Yes'
+		else 'No'
+	  end as 
+	  MultipleParticipant
+	 ,case 
+		when IsCancelled = 'False' then 'No'
+		else 'Yes'
+	  end IsCancelled
+	  ,iif(StartTime &gt; getdate(), 'Yes', 'No') as PlannedActivity
+from [EETDW_Extract].[exch].[Calendar]
+  )
+
+  select
+	 convert(nvarchar(30),
+		left(UnitType, 1) + '-' + 
+		iif(Direction != '', left(Direction,1) + '-', Direction) +
+		iif(Caller != '', left(Caller,1) + '-', Caller) +
+		iif(Recipient != '', left(Recipient,1) + '-', Recipient) + 
+		iif(Categories != '', left(Categories,1) + '-', Categories) +  
+		left(MultipleParticipant,1) + '-' + 
+		left(IsCancelled,1) + '-' + left(PlannedActivity, 1)
+	 ) as CommunicationTypeKey
+	,UnitType as CommunicationTypeName
+	,Direction as CommunicationTypeDirection
+	,Caller as CommunicationTypeCaller
+	,Recipient as CommunicationTypeRecipient
+	,convert(nvarchar(200), Categories) as CommunicationTypeCategory
+	,MultipleParticipant as CommunicationTypeMultipleParticipant
+	,IsCancelled as CommunicationTypeCancelled 
+	,PlannedActivity as CommunicationTypePlannedActivity
+  --into EETDW_Stage.dbo.CommunicationType
+  from CommunicationType
+  --where Categories is null</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].ExternalColumns[CommunicationTypeKey]"
+                          length="30"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeKey]"
+                          name="CommunicationTypeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeName]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].ExternalColumns[CommunicationTypeName]"
+                          length="7"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeName]"
+                          name="CommunicationTypeName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeDirection]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].ExternalColumns[CommunicationTypeDirection]"
+                          length="30"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeDirection]"
+                          name="CommunicationTypeDirection"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeCaller]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].ExternalColumns[CommunicationTypeCaller]"
+                          length="25"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeCaller]"
+                          name="CommunicationTypeCaller"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeRecipient]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].ExternalColumns[CommunicationTypeRecipient]"
+                          length="25"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeRecipient]"
+                          name="CommunicationTypeRecipient"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeCategory]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].ExternalColumns[CommunicationTypeCategory]"
+                          length="200"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeCategory]"
+                          name="CommunicationTypeCategory"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeMultipleParticipant]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].ExternalColumns[CommunicationTypeMultipleParticipant]"
+                          length="3"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeMultipleParticipant]"
+                          name="CommunicationTypeMultipleParticipant"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeCancelled]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].ExternalColumns[CommunicationTypeCancelled]"
+                          length="3"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypeCancelled]"
+                          name="CommunicationTypeCancelled"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypePlannedActivity]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].ExternalColumns[CommunicationTypePlannedActivity]"
+                          length="3"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].Columns[CommunicationTypePlannedActivity]"
+                          name="CommunicationTypePlannedActivity"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].ExternalColumns[CommunicationTypeKey]"
+                          dataType="wstr"
+                          length="30"
+                          name="CommunicationTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].ExternalColumns[CommunicationTypeName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="7"
+                          name="CommunicationTypeName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].ExternalColumns[CommunicationTypeDirection]"
+                          dataType="wstr"
+                          length="30"
+                          name="CommunicationTypeDirection" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].ExternalColumns[CommunicationTypeCaller]"
+                          dataType="wstr"
+                          length="25"
+                          name="CommunicationTypeCaller" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].ExternalColumns[CommunicationTypeRecipient]"
+                          dataType="wstr"
+                          length="25"
+                          name="CommunicationTypeRecipient" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].ExternalColumns[CommunicationTypeCategory]"
+                          dataType="wstr"
+                          length="200"
+                          name="CommunicationTypeCategory" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].ExternalColumns[CommunicationTypeMultipleParticipant]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="CommunicationTypeMultipleParticipant" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].ExternalColumns[CommunicationTypeCancelled]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="CommunicationTypeCancelled" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output].ExternalColumns[CommunicationTypePlannedActivity]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="CommunicationTypePlannedActivity" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[CommunicationTypeKey]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[CommunicationTypeKey]"
+                          name="CommunicationTypeKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[CommunicationTypeName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="7"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[CommunicationTypeName]"
+                          name="CommunicationTypeName" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[CommunicationTypeDirection]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[CommunicationTypeDirection]"
+                          name="CommunicationTypeDirection" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[CommunicationTypeCaller]"
+                          dataType="wstr"
+                          length="25"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[CommunicationTypeCaller]"
+                          name="CommunicationTypeCaller" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[CommunicationTypeRecipient]"
+                          dataType="wstr"
+                          length="25"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[CommunicationTypeRecipient]"
+                          name="CommunicationTypeRecipient" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[CommunicationTypeCategory]"
+                          dataType="wstr"
+                          length="200"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[CommunicationTypeCategory]"
+                          name="CommunicationTypeCategory" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[CommunicationTypeMultipleParticipant]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[CommunicationTypeMultipleParticipant]"
+                          name="CommunicationTypeMultipleParticipant" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[CommunicationTypeCancelled]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[CommunicationTypeCancelled]"
+                          name="CommunicationTypeCancelled" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[CommunicationTypePlannedActivity]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[CommunicationTypePlannedActivity]"
+                          name="CommunicationTypePlannedActivity" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType.Paths[DER Audit_Output_OLE DES CommunicationType]"
+                  endId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType.Inputs[DER Audit_Output_OLE DES CommunicationType]"
+                  name="DER Audit_Output_OLE DES CommunicationType"
+                  startId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType.Paths[OLE SRC Extract_Output_DER Audit]"
+                  endId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="OLE SRC Extract_Output_DER Audit"
+                  startId="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform CommunicationType\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{4FEE10A0-AFCB-4F67-9895-A528479FE301}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{0A014945-6A05-4C63-B7C7-79F6E12A2E3E}"
+              SQLTask:SqlStatementSource="EXEC('TRUNCATE TABLE ' + ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform CommunicationType.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform CommunicationType]"
+          DTS:CreationName=""
+          DTS:DTSID="{CB15E1ED-3B32-4482-9B02-831A322A50D0}"
+          DTS:From="Package\SEQC Transform CommunicationType\Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_Truncate Table_To_DFT Transform CommunicationType"
+          DTS:To="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SEQC Transform CommunicationType_To_SEQC MaintainDW]"
+      DTS:CreationName=""
+      DTS:DTSID="{E1F087C6-F929-4B31-8A00-980C5E7FD975}"
+      DTS:From="Package\SEQC Transform CommunicationType"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SEQC Transform CommunicationType_To_SEQC MaintainDW"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,102"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="49.5000000000001,313.5" />
+        <NodeLayout
+          Size="249,42"
+          Id="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType"
+          TopLeft="5.50000000000003,107.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform CommunicationType\Truncate Table"
+          TopLeft="55,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform CommunicationType.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform CommunicationType]"
+          TopLeft="130,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="260,204"
+          Size="260,248"
+          Id="Package\SEQC Transform CommunicationType"
+          TopLeft="5.50000000000003,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_SEQC Transform CommunicationType_To_SEQC MaintainDW]"
+          TopLeft="135.5,253.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\DER Audit"
+          TopLeft="52,107.5" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract"
+          TopLeft="37,5.5" />
+        <NodeLayout
+          Size="219,42"
+          Id="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType"
+          TopLeft="5.50000000000003,209.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType.Paths[DER Audit_Output_OLE DES CommunicationType]"
+          TopLeft="115,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType.Paths[OLE SRC Extract_Output_DER Audit]"
+          TopLeft="115,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform CommunicationType\DFT Transform CommunicationType\OLE DES CommunicationType">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

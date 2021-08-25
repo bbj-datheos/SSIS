@@ -1,0 +1,118 @@
+	<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+	<#@ template language="C#" tier="4" #>
+	<#@ include file="biml/_IncludeFrameworkGlobals.biml" #>
+
+
+	<!--Get Meta data-->
+	<# 
+	DataTable DimensionMeta = ExternalDataAccess.GetDataTable(conMeta, "SELECT REPLACE(DB_NAME(),'DW_Meta','') AS DatabasePrefix,[DestinationSchema],[TableName],[EnabledFlag] FROM [etl].[BusinessMatrix] WHERE [DestinationSchema] = 'dim'");
+	#>
+
+	<Connections>
+			<# foreach(DataRow row in ApplicationConnections.Rows) {#>
+			<OleDbConnection Name="<#=row["Name"]#>" ConnectionString="<#=row["ConnectionString"]#>"></OleDbConnection>
+			<#}#>
+	</Connections>
+
+	<Projects>
+		<PackageProject Name="SSIS" ProtectionLevel="DontSaveSensitive">
+					<Parameters>
+						<Parameter Name="EnvironmentSQLServer" DataType="String" IsRequired="false" IsSensitive="false"></Parameter>
+						<Parameter Name="ConnectionStringDW_DW" DataType="String" IsRequired="false" IsSensitive="false"></Parameter>
+						<Parameter Name="ConnectionStringDW_Meta" DataType="String" IsRequired="false" IsSensitive="false"></Parameter>
+						</Parameters>
+					<Packages>
+						<# foreach(DataRow RowMeta in DimensionMeta.AsEnumerable().Where( RowMeta => (RowMeta.Field<bool>("EnabledFlag") == true &&
+																									 RowMeta.Field<string>("TableName") != "Time") ||
+																									 RowMeta.Field<string>("TableName") == "Calendar"))  {#>
+						<Package IsEntryPoint="true" PackageName="LoadDimension_<#=RowMeta["TableName"]#>"></Package>
+						<#}#>
+					</Packages>
+		</PackageProject>
+	</Projects>
+			
+			
+	<Packages>
+		<# foreach(DataRow RowMeta in DimensionMeta.AsEnumerable().Where( RowMeta => RowMeta.Field<string>("TableName") != "Calendar" &&
+																			         RowMeta.Field<string>("TableName") != "Time" &&
+																					 RowMeta.Field<bool>("EnabledFlag") == true))  {#>
+
+		<Package ConstraintMode="Linear" Name="LoadDimension_<#=RowMeta["TableName"]#>">
+			<Connections>
+				<Connection ConnectionName="Meta">
+					<Expressions>
+						<Expression PropertyName="Meta.ConnectionString" >@[$Project::ConnectionStringDW_Meta]</Expression>
+					</Expressions>
+				</Connection>
+			</Connections>
+			<Variables>
+				<Variable DataType="String" Name="Table"><#=RowMeta["TableName"]#></Variable>
+			</Variables>
+			<Tasks>
+				<ExecuteSQL ConnectionName="Meta" Name="SQL Load <#=RowMeta["TableName"]#>">
+					<Parameters>
+						<Parameter Name="0" DataType="String" VariableName="User.Table"></Parameter>
+					</Parameters>
+					<DirectInput>EXEC etl.LoadDimension @Table = ?, @PrintSQL = NULL</DirectInput>
+				</ExecuteSQL>
+			</Tasks>
+		</Package>
+	
+		<#}#>
+
+		<Package ConstraintMode="Linear" Name="LoadDimension_Calendar">
+			<Connections>
+				<Connection ConnectionName="DW">
+					<Expressions>
+						<Expression PropertyName="DW.ConnectionString" >@[$Project::ConnectionStringDW_DW]</Expression>
+					</Expressions>
+				</Connection>
+			</Connections>
+			<Tasks>
+				<ExecuteSQL ConnectionName="DW" Name="SQL LoadDimension_Calendar">
+					<DirectInput>EXEC dbo.CreateCalendarDimension</DirectInput>
+				</ExecuteSQL>
+			</Tasks>
+		</Package>
+		
+		<Package Name="Controller_LoadDimensions">
+			<Tasks>
+				
+		<# foreach(DataRow RowMeta in DimensionMeta.Rows)	{#>
+				
+			<# if(RowMeta.Field<string>("TableName") == "Time")  {#>
+			
+				<# } else { #>
+
+				<Container ConstraintMode="Linear" Name="<#=RowMeta["TableName"]#>">
+					<Tasks>
+						
+						<# if(RowMeta.Field<string>("TableName") == "Calendar") {#>
+						
+							<# } else { #>
+						
+						<ExecutePackage Name="Transform_<#=RowMeta["TableName"]#>">
+							<Expressions>
+								<Expression ExternalProperty="PackageName">@[System::TaskName] + ".dtsx"</Expression>
+							</Expressions>
+							<ExternalProjectPackage Package="Transform_<#=RowMeta["TableName"]#>.dtsx"></ExternalProjectPackage>
+						</ExecutePackage>
+						<# } #>
+						<ExecutePackage Name="LoadDimension_<#=RowMeta["TableName"]#>">
+							<Expressions>
+								<Expression ExternalProperty="PackageName">@[System::TaskName] + ".dtsx"</Expression>
+							</Expressions>
+							<ExternalProjectPackage Package="LoadDimension_<#=RowMeta["TableName"]#>.dtsx"></ExternalProjectPackage>
+						</ExecutePackage>
+					</Tasks>
+				</Container>
+				
+				<# } #>
+				
+				<#}#>
+			
+			</Tasks>
+		</Package>
+	</Packages>
+
+</Biml>

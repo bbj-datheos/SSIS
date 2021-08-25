@@ -1,0 +1,1934 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="1/9/2017 5:31:48 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="mim-ext"
+  DTS:DTSID="{C0B26009-B679-4685-A21F-38C367ACD6FF}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Extractnav_Sales Credit Limit Control"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="10"
+  DTS:VersionGUID="{2DE6763A-12F3-4929-A6EC-DD9181A96B5C}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{250ABB60-5A9D-4FC6-989C-76E058356CC7}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{745C82D2-D56C-4FB0-8D8F-C16CF0B6A5C3}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Navision]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{9D327C99-1DA0-4E8F-B603-E324AD6382B2}"
+      DTS:ObjectName="Navision">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringNavision]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=financialsdk;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=True;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{6F9A3D47-DBDC-4BC7-99A0-DB42228CA553}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&quot;select &quot; + &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;@[User::NavisionColumnList] + &#xA;&#x9;&#x9;&#x9;&#x9;&quot; from &quot; +  &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;@[User::NavisionSchema] + &quot;.[&quot; +  @[User::NavisionCompany] + &quot;$&quot; + @[User::NavisionTable] + &quot;]&quot; +&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&quot; &quot;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ExtractSQL">
+      <DTS:VariableValue
+        DTS:DataType="8">select [Order No.],[Customer No.],[Sell-To Customer No.],[In Picking Amount (LCY)],[Balance (LCY)],[Shipped not Invoiced (LCY)],[Balance Due (LCY)],[Credit Limit (LCY)],[Sell-to Customer Blocked],[Bill-to Customer Blocked],[Credit Limit /Inv. &amp; Shipped],[Credit Limit /Picking],[Prepayment not fulfilled],[Web payment policy],[Due Balance],[Current Value],[Blocked by Outsourcing],[Manual marking],[Payment Terms Code],[Last check performed on],[Order Blocked],[Salesperson Code],[Order Date],[Our Contact],[Last check performed at],[Order type],[Prod.Order in picking],[Last attempt at],[Drop shipment] from dbo.[EET Group$Sales Credit Limit Control] </DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A6C3AB9D-5D9C-437A-8BA6-E19773603BA7}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ExtractTable">
+      <DTS:VariableValue
+        DTS:DataType="8">nav.[Sales Credit Limit Control]</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{9B89BFAD-585B-47F8-ACD1-266BFC0CE8AB}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="NavisionColumnList">
+      <DTS:VariableValue
+        DTS:DataType="8">[Order No.],[Customer No.],[Sell-To Customer No.],[In Picking Amount (LCY)],[Balance (LCY)],[Shipped not Invoiced (LCY)],[Balance Due (LCY)],[Credit Limit (LCY)],[Sell-to Customer Blocked],[Bill-to Customer Blocked],[Credit Limit /Inv. &amp; Shipped],[Credit Limit /Picking],[Prepayment not fulfilled],[Web payment policy],[Due Balance],[Current Value],[Blocked by Outsourcing],[Manual marking],[Payment Terms Code],[Last check performed on],[Order Blocked],[Salesperson Code],[Order Date],[Our Contact],[Last check performed at],[Order type],[Prod.Order in picking],[Last attempt at],[Drop shipment]</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{84D6AFA1-BF5B-4762-8875-E9A5F3E657BE}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="NavisionCompanies">
+      <DTS:VariableValue
+        DTS:DataSubType="ManagedSerializable"
+        DTS:DataType="13">
+        <SOAP-ENV:Envelope xmlns:clr="http://schemas.microsoft.com/soap/encoding/clr/1.0" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+          <SOAP-ENV:Body>
+            <xsd:anyType
+              id="ref-1"></xsd:anyType>
+          </SOAP-ENV:Body>
+        </SOAP-ENV:Envelope>
+      </DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{E0368B1C-56D5-4080-9C58-0B29A19038B1}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="NavisionCompany">
+      <DTS:VariableValue
+        DTS:DataType="8">EET Group</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{B5A88791-8371-4C4F-9A51-429417B58088}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="NavisionConnectionName">
+      <DTS:VariableValue
+        DTS:DataType="8">Navision</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{DE113B7C-EBC9-4A14-A7C9-71B98D10025A}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="NavisionSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{0D9F841B-7972-4726-AB57-E81F670C289A}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="NavisionTable">
+      <DTS:VariableValue
+        DTS:DataType="8">Sales Credit Limit Control</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\EST Gather Navision Companies"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{735CE75B-4E20-45F4-982F-C3468B0EA2CC}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST Gather Navision Companies"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{745C82D2-D56C-4FB0-8D8F-C16CF0B6A5C3}"
+          SQLTask:SqlStatementSource="select CompanyName from etl.SourceConnectionNavisionSetup scn inner join etl.SourceConnections sc on scn.SourceConnectionID = sc.ID where ExtractFlag = 1 and sc.Name = ?"
+          SQLTask:ResultType="ResultSetType_Rowset" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::NavisionCompanies" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::NavisionConnectionName"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="130"
+            SQLTask:ParameterSize="0" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EST Truncate Extract Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{7E68C6FB-EDC2-4CE2-8CD3-FCF2ECB504FA}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST Truncate Extract Table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{250ABB60-5A9D-4FC6-989C-76E058356CC7}"
+          SQLTask:SqlStatementSource="EXEC('truncate table ' + ? )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::ExtractTable"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="130"
+            SQLTask:ParameterSize="0" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\FELC Iterate Navision Companies"
+      DTS:CreationName="STOCK:FOREACHLOOP"
+      DTS:DTSID="{3CB16104-5C3A-4599-B110-E092361ADB0A}"
+      DTS:ExecutableType="STOCK:FOREACHLOOP"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="FELC Iterate Navision Companies">
+      <DTS:ForEachEnumerator
+        DTS:CreationName="Microsoft.ForEachADOEnumerator"
+        DTS:DTSID="{B5FD505E-0452-4E52-B0D7-9FE20853FCC1}"
+        DTS:ObjectName="{B5FD505E-0452-4E52-B0D7-9FE20853FCC1}">
+        <DTS:ObjectData>
+          <FEEADO
+            EnumType="EnumerateRowsInFirstTable"
+            VarName="User::NavisionCompanies" />
+        </DTS:ObjectData>
+      </DTS:ForEachEnumerator>
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\FELC Iterate Navision Companies\Extract Data"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{B68CEBAB-E7C3-46E6-B7BE-4B4464D2EFE6}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Extract Data"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes"
+                  componentClassID="Microsoft.DataConvert"
+                  contactInfo="Data Conversion;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="Convert datatypes"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes]"
+                      name="ODS Source_Output_Convert datatypes">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Sell-To Customer No.]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="Sell-To Customer No."
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Sell-To Customer No.]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Order No.]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="Order No."
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Order No.]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Customer No.]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="Customer No."
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Customer No.]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Salesperson Code]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="Salesperson Code"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Salesperson Code]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Our Contact]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="Our Contact"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Our Contact]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Payment Terms Code]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="Payment Terms Code"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Payment Terms Code]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Manual marking]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="Manual marking"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Manual marking]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Sell-to Customer No.]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Sell-to Customer No.]"
+                          name="Sell-to Customer No."
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Sell-To Customer No.]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Order No.]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Order No.]"
+                          name="Order No."
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Order No.]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Customer No.]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Customer No.]"
+                          name="Customer No."
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Customer No.]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Salesperson Code]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="10"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Salesperson Code]"
+                          name="Salesperson Code"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Salesperson Code]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Our Contact]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Our Contact]"
+                          name="Our Contact"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Our Contact]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Payment Terms Code]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="10"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Payment Terms Code]"
+                          name="Payment Terms Code"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Payment Terms Code]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Manual marking]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Manual marking]"
+                          name="Manual marking"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Manual marking]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER System Columns"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Inputs[Convert datatypes_Output_DER System Columns]"
+                      name="Convert datatypes_Output_DER System Columns">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Inputs[Convert datatypes_Output_DER System Columns]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">getdate()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">getdate()</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Output].Columns[DWNavisionCompany]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          length="200"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Output].Columns[DWNavisionCompany]"
+                          name="DWNavisionCompany"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">@[User::NavisionCompany]</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">@[User::NavisionCompany]</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Inputs[Convert datatypes_Output_DER System Columns]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="ODD Destination"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::ExtractTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER System Columns_Output_ODD Destination">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Output].Columns[DWCreatedDate]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[DWNavisionCompany]"
+                          cachedDataType="wstr"
+                          cachedLength="9"
+                          cachedName="DWNavisionCompany"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[DWNavisionCompany]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Output].Columns[DWNavisionCompany]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Order Date]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="Order Date"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Order Date]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Order Date]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[In Picking Amount (LCY)]"
+                          cachedDataType="numeric"
+                          cachedName="In Picking Amount (LCY)"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[In Picking Amount (LCY)]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[In Picking Amount (LCY)]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Balance (LCY)]"
+                          cachedDataType="numeric"
+                          cachedName="Balance (LCY)"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Balance (LCY)]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Balance (LCY)]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Shipped not Invoiced (LCY)]"
+                          cachedDataType="numeric"
+                          cachedName="Shipped not Invoiced (LCY)"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Shipped not Invoiced (LCY)]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Shipped not Invoiced (LCY)]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Balance Due (LCY)]"
+                          cachedDataType="numeric"
+                          cachedName="Balance Due (LCY)"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Balance Due (LCY)]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Balance Due (LCY)]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Credit Limit (LCY)]"
+                          cachedDataType="numeric"
+                          cachedName="Credit Limit (LCY)"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Credit Limit (LCY)]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Credit Limit (LCY)]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Sell-to Customer Blocked]"
+                          cachedDataType="ui1"
+                          cachedName="Sell-to Customer Blocked"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Sell-to Customer Blocked]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Sell-to Customer Blocked]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Bill-to Customer Blocked]"
+                          cachedDataType="ui1"
+                          cachedName="Bill-to Customer Blocked"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Bill-to Customer Blocked]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Bill-to Customer Blocked]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Credit Limit /Inv. &amp; Shipped]"
+                          cachedDataType="ui1"
+                          cachedName="Credit Limit /Inv. &amp; Shipped"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Credit Limit /Inv. &amp; Shipped]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Credit Limit /Inv. &amp; Shipped]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Credit Limit /Picking]"
+                          cachedDataType="ui1"
+                          cachedName="Credit Limit /Picking"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Credit Limit /Picking]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Credit Limit /Picking]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Prepayment not fulfilled]"
+                          cachedDataType="ui1"
+                          cachedName="Prepayment not fulfilled"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Prepayment not fulfilled]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Prepayment not fulfilled]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Web payment policy]"
+                          cachedDataType="ui1"
+                          cachedName="Web payment policy"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Web payment policy]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Web payment policy]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Due Balance]"
+                          cachedDataType="ui1"
+                          cachedName="Due Balance"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Due Balance]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Due Balance]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Current Value]"
+                          cachedDataType="numeric"
+                          cachedName="Current Value"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Current Value]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Current Value]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Blocked by Outsourcing]"
+                          cachedDataType="ui1"
+                          cachedName="Blocked by Outsourcing"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Blocked by Outsourcing]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Blocked by Outsourcing]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Last check performed on]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="Last check performed on"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Last check performed on]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Last check performed on]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Order Blocked]"
+                          cachedDataType="ui1"
+                          cachedName="Order Blocked"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Order Blocked]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Order Blocked]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Last check performed at]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="Last check performed at"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Last check performed at]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Last check performed at]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Order type]"
+                          cachedDataType="i4"
+                          cachedName="Order type"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Order type]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Order type]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Prod.Order in picking]"
+                          cachedDataType="ui1"
+                          cachedName="Prod.Order in picking"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Prod.Order in picking]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Prod.Order in picking]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Last attempt at]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="Last attempt at"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Last attempt at]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Last attempt at]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Drop shipment]"
+                          cachedDataType="ui1"
+                          cachedName="Drop shipment"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Drop shipment]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Drop shipment]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Order No.]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="Order No."
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Order No.]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Order No.]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Customer No.]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="Customer No."
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Customer No.]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Customer No.]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Salesperson Code]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="Salesperson Code"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Salesperson Code]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Salesperson Code]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Our Contact]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="Our Contact"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Our Contact]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Our Contact]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Payment Terms Code]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="Payment Terms Code"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Payment Terms Code]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Payment Terms Code]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Manual marking]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="Manual marking"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Manual marking]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Manual marking]" />
+                        <inputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Sell-to Customer No.]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="Sell-to Customer No."
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Sell-To Customer No.]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output].Columns[Sell-to Customer No.]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Order Date]"
+                          dataType="dbTimeStamp"
+                          name="Order Date" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[DWNavisionCompany]"
+                          dataType="wstr"
+                          length="200"
+                          name="DWNavisionCompany" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Order No.]"
+                          dataType="wstr"
+                          length="30"
+                          name="Order No." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Customer No.]"
+                          dataType="wstr"
+                          length="30"
+                          name="Customer No." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[In Picking Amount (LCY)]"
+                          dataType="numeric"
+                          name="In Picking Amount (LCY)"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Balance (LCY)]"
+                          dataType="numeric"
+                          name="Balance (LCY)"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Shipped not Invoiced (LCY)]"
+                          dataType="numeric"
+                          name="Shipped not Invoiced (LCY)"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Balance Due (LCY)]"
+                          dataType="numeric"
+                          name="Balance Due (LCY)"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Credit Limit (LCY)]"
+                          dataType="numeric"
+                          name="Credit Limit (LCY)"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Sell-to Customer Blocked]"
+                          dataType="i4"
+                          name="Sell-to Customer Blocked" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Bill-to Customer Blocked]"
+                          dataType="i4"
+                          name="Bill-to Customer Blocked" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Credit Limit /Inv. &amp; Shipped]"
+                          dataType="i4"
+                          name="Credit Limit /Inv. &amp; Shipped" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Credit Limit /Picking]"
+                          dataType="i4"
+                          name="Credit Limit /Picking" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Due Balance]"
+                          dataType="i4"
+                          name="Due Balance" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Current Value]"
+                          dataType="numeric"
+                          name="Current Value"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Last check performed on]"
+                          dataType="dbTimeStamp"
+                          name="Last check performed on" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Order Blocked]"
+                          dataType="i4"
+                          name="Order Blocked" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Salesperson Code]"
+                          dataType="wstr"
+                          length="10"
+                          name="Salesperson Code" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Our Contact]"
+                          dataType="wstr"
+                          length="30"
+                          name="Our Contact" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Blocked by Outsourcing]"
+                          dataType="i4"
+                          name="Blocked by Outsourcing" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Last check performed at]"
+                          dataType="dbTimeStamp"
+                          name="Last check performed at" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Order type]"
+                          dataType="i4"
+                          name="Order type" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Prod.Order in picking]"
+                          dataType="i4"
+                          name="Prod.Order in picking" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Web payment policy]"
+                          dataType="i4"
+                          name="Web payment policy" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Payment Terms Code]"
+                          dataType="wstr"
+                          length="10"
+                          name="Payment Terms Code" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Manual marking]"
+                          dataType="wstr"
+                          length="30"
+                          name="Manual marking" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Sell-To Customer No.]"
+                          dataType="wstr"
+                          length="30"
+                          name="Sell-To Customer No." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Prepayment not fulfilled]"
+                          dataType="i4"
+                          name="Prepayment not fulfilled" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Last attempt at]"
+                          dataType="dbTimeStamp"
+                          name="Last attempt at" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Drop shipment]"
+                          dataType="i4"
+                          name="Drop shipment" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="ODS Source"
+                  usesDispositions="true"
+                  validateExternalMetadata="False"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable">User::ExtractSQL</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Navision]"
+                      connectionManagerRefId="Package.ConnectionManagers[Navision]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Order Date]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Order Date]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Order Date]"
+                          name="Order Date"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Order No.]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Order No.]"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Order No.]"
+                          name="Order No."
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Customer No.]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Customer No.]"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Customer No.]"
+                          name="Customer No."
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Sell-To Customer No.]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Sell-To Customer No.]"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Sell-To Customer No.]"
+                          name="Sell-To Customer No."
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[In Picking Amount (LCY)]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[In Picking Amount (LCY)]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[In Picking Amount (LCY)]"
+                          name="In Picking Amount (LCY)"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Balance (LCY)]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Balance (LCY)]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Balance (LCY)]"
+                          name="Balance (LCY)"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Shipped not Invoiced (LCY)]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Shipped not Invoiced (LCY)]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Shipped not Invoiced (LCY)]"
+                          name="Shipped not Invoiced (LCY)"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Balance Due (LCY)]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Balance Due (LCY)]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Balance Due (LCY)]"
+                          name="Balance Due (LCY)"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Credit Limit (LCY)]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Credit Limit (LCY)]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Credit Limit (LCY)]"
+                          name="Credit Limit (LCY)"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Sell-to Customer Blocked]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Sell-to Customer Blocked]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Sell-to Customer Blocked]"
+                          name="Sell-to Customer Blocked"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Bill-to Customer Blocked]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Bill-to Customer Blocked]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Bill-to Customer Blocked]"
+                          name="Bill-to Customer Blocked"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Credit Limit /Inv. &amp; Shipped]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Credit Limit /Inv. &amp; Shipped]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Credit Limit /Inv. &amp; Shipped]"
+                          name="Credit Limit /Inv. &amp; Shipped"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Credit Limit /Picking]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Credit Limit /Picking]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Credit Limit /Picking]"
+                          name="Credit Limit /Picking"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Prepayment not fulfilled]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Prepayment not fulfilled]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Prepayment not fulfilled]"
+                          name="Prepayment not fulfilled"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Web payment policy]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Web payment policy]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Web payment policy]"
+                          name="Web payment policy"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Due Balance]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Due Balance]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Due Balance]"
+                          name="Due Balance"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Current Value]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Current Value]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Current Value]"
+                          name="Current Value"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Blocked by Outsourcing]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Blocked by Outsourcing]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Blocked by Outsourcing]"
+                          name="Blocked by Outsourcing"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Manual marking]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Manual marking]"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Manual marking]"
+                          name="Manual marking"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Payment Terms Code]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Payment Terms Code]"
+                          length="10"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Payment Terms Code]"
+                          name="Payment Terms Code"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Last check performed on]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Last check performed on]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Last check performed on]"
+                          name="Last check performed on"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Order Blocked]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Order Blocked]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Order Blocked]"
+                          name="Order Blocked"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Salesperson Code]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Salesperson Code]"
+                          length="10"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Salesperson Code]"
+                          name="Salesperson Code"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Our Contact]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Our Contact]"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Our Contact]"
+                          name="Our Contact"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Last check performed at]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Last check performed at]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Last check performed at]"
+                          name="Last check performed at"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Order type]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Order type]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Order type]"
+                          name="Order type"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Prod.Order in picking]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Prod.Order in picking]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Prod.Order in picking]"
+                          name="Prod.Order in picking"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Last attempt at]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Last attempt at]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Last attempt at]"
+                          name="Last attempt at"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Drop shipment]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Drop shipment]"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].Columns[Drop shipment]"
+                          name="Drop shipment"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Order Date]"
+                          dataType="dbTimeStamp"
+                          name="Order Date" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Order No.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="Order No." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Customer No.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="Customer No." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Sell-To Customer No.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="Sell-To Customer No." />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[In Picking Amount (LCY)]"
+                          dataType="numeric"
+                          name="In Picking Amount (LCY)"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Balance (LCY)]"
+                          dataType="numeric"
+                          name="Balance (LCY)"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Shipped not Invoiced (LCY)]"
+                          dataType="numeric"
+                          name="Shipped not Invoiced (LCY)"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Balance Due (LCY)]"
+                          dataType="numeric"
+                          name="Balance Due (LCY)"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Credit Limit (LCY)]"
+                          dataType="numeric"
+                          name="Credit Limit (LCY)"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Sell-to Customer Blocked]"
+                          dataType="ui1"
+                          name="Sell-to Customer Blocked" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Bill-to Customer Blocked]"
+                          dataType="ui1"
+                          name="Bill-to Customer Blocked" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Credit Limit /Inv. &amp; Shipped]"
+                          dataType="ui1"
+                          name="Credit Limit /Inv. &amp; Shipped" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Credit Limit /Picking]"
+                          dataType="ui1"
+                          name="Credit Limit /Picking" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Prepayment not fulfilled]"
+                          dataType="ui1"
+                          name="Prepayment not fulfilled" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Web payment policy]"
+                          dataType="ui1"
+                          name="Web payment policy" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Due Balance]"
+                          dataType="ui1"
+                          name="Due Balance" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Current Value]"
+                          dataType="numeric"
+                          name="Current Value"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Blocked by Outsourcing]"
+                          dataType="ui1"
+                          name="Blocked by Outsourcing" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Manual marking]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="Manual marking" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Payment Terms Code]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="Payment Terms Code" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Last check performed on]"
+                          dataType="dbTimeStamp"
+                          name="Last check performed on" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Order Blocked]"
+                          dataType="ui1"
+                          name="Order Blocked" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Salesperson Code]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="Salesperson Code" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Our Contact]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="Our Contact" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Last check performed at]"
+                          dataType="dbTimeStamp"
+                          name="Last check performed at" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Order type]"
+                          dataType="i4"
+                          name="Order type" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Prod.Order in picking]"
+                          dataType="ui1"
+                          name="Prod.Order in picking" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Last attempt at]"
+                          dataType="dbTimeStamp"
+                          name="Last attempt at" />
+                        <externalMetadataColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Drop shipment]"
+                          dataType="ui1"
+                          name="Drop shipment" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Order No.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Order No.]"
+                          name="Order No." />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Customer No.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Customer No.]"
+                          name="Customer No." />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Sell-To Customer No.]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Sell-To Customer No.]"
+                          name="Sell-To Customer No." />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[In Picking Amount (LCY)]"
+                          dataType="numeric"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[In Picking Amount (LCY)]"
+                          name="In Picking Amount (LCY)"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Balance (LCY)]"
+                          dataType="numeric"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Balance (LCY)]"
+                          name="Balance (LCY)"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Shipped not Invoiced (LCY)]"
+                          dataType="numeric"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Shipped not Invoiced (LCY)]"
+                          name="Shipped not Invoiced (LCY)"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Balance Due (LCY)]"
+                          dataType="numeric"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Balance Due (LCY)]"
+                          name="Balance Due (LCY)"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Credit Limit (LCY)]"
+                          dataType="numeric"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Credit Limit (LCY)]"
+                          name="Credit Limit (LCY)"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Sell-to Customer Blocked]"
+                          dataType="ui1"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Sell-to Customer Blocked]"
+                          name="Sell-to Customer Blocked" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Bill-to Customer Blocked]"
+                          dataType="ui1"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Bill-to Customer Blocked]"
+                          name="Bill-to Customer Blocked" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Credit Limit /Inv. &amp; Shipped]"
+                          dataType="ui1"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Credit Limit /Inv. &amp; Shipped]"
+                          name="Credit Limit /Inv. &amp; Shipped" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Credit Limit /Picking]"
+                          dataType="ui1"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Credit Limit /Picking]"
+                          name="Credit Limit /Picking" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Prepayment not fulfilled]"
+                          dataType="ui1"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Prepayment not fulfilled]"
+                          name="Prepayment not fulfilled" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Web payment policy]"
+                          dataType="ui1"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Web payment policy]"
+                          name="Web payment policy" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Due Balance]"
+                          dataType="ui1"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Due Balance]"
+                          name="Due Balance" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Current Value]"
+                          dataType="numeric"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Current Value]"
+                          name="Current Value"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Blocked by Outsourcing]"
+                          dataType="ui1"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Blocked by Outsourcing]"
+                          name="Blocked by Outsourcing" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Manual marking]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Manual marking]"
+                          name="Manual marking" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Payment Terms Code]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Payment Terms Code]"
+                          name="Payment Terms Code" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Last check performed on]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Last check performed on]"
+                          name="Last check performed on" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Order Blocked]"
+                          dataType="ui1"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Order Blocked]"
+                          name="Order Blocked" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Salesperson Code]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Salesperson Code]"
+                          name="Salesperson Code" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Order Date]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Order Date]"
+                          name="Order Date" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Our Contact]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Our Contact]"
+                          name="Our Contact" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Last check performed at]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Last check performed at]"
+                          name="Last check performed at" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Order type]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Order type]"
+                          name="Order type" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Prod.Order in picking]"
+                          dataType="ui1"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Prod.Order in picking]"
+                          name="Prod.Order in picking" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Last attempt at]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Last attempt at]"
+                          name="Last attempt at" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Drop shipment]"
+                          dataType="ui1"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[Drop shipment]"
+                          name="Drop shipment" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\FELC Iterate Navision Companies\Extract Data.Paths[Convert datatypes_Output_DER System Columns]"
+                  endId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Inputs[Convert datatypes_Output_DER System Columns]"
+                  name="Convert datatypes_Output_DER System Columns"
+                  startId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Outputs[Output]" />
+                <path
+                  refId="Package\FELC Iterate Navision Companies\Extract Data.Paths[DER System Columns_Output_ODD Destination]"
+                  endId="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination]"
+                  name="DER System Columns_Output_ODD Destination"
+                  startId="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns.Outputs[Output]" />
+                <path
+                  refId="Package\FELC Iterate Navision Companies\Extract Data.Paths[ODS Source_Output_Convert datatypes]"
+                  endId="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes]"
+                  name="ODS Source_Output_Convert datatypes"
+                  startId="Package\FELC Iterate Navision Companies\Extract Data\ODS Source.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:ForEachVariableMappings>
+        <DTS:ForEachVariableMapping
+          DTS:CreationName=""
+          DTS:DTSID="{2B25D883-A78F-49A8-9B91-44C7F831AAE4}"
+          DTS:ObjectName="{2B25D883-A78F-49A8-9B91-44C7F831AAE4}"
+          DTS:ValueIndex="0"
+          DTS:VariableName="User::NavisionCompany" />
+      </DTS:ForEachVariableMappings>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_EST Gather Navision Companies_To_FELC Iterate Navision Companies]"
+      DTS:CreationName=""
+      DTS:DTSID="{16505D07-F6B2-41C8-8FAC-23CC86F6B740}"
+      DTS:From="Package\EST Gather Navision Companies"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_EST Gather Navision Companies_To_FELC Iterate Navision Companies"
+      DTS:To="Package\FELC Iterate Navision Companies" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_EST Truncate Extract Table_To_EST Gather Navision Companies]"
+      DTS:CreationName=""
+      DTS:DTSID="{57B444B2-5828-4CDD-818C-6C343CD56E05}"
+      DTS:From="Package\EST Truncate Extract Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_EST Truncate Extract Table_To_EST Gather Navision Companies"
+      DTS:To="Package\EST Gather Navision Companies" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="230,42"
+          Id="Package\EST Gather Navision Companies"
+          TopLeft="5.50000000000001,107.5" />
+        <NodeLayout
+          Size="207,42"
+          Id="Package\EST Truncate Extract Table"
+          TopLeft="22,6.5" />
+        <NodeLayout
+          Size="137,42"
+          Id="Package\FELC Iterate Navision Companies\Extract Data"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="150,103"
+          Size="148,146"
+          Id="Package\FELC Iterate Navision Companies"
+          TopLeft="46.5,209.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_EST Gather Navision Companies_To_FELC Iterate Navision Companies]"
+          TopLeft="120.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_EST Truncate Extract Table_To_EST Gather Navision Companies]"
+          TopLeft="123,48.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,59"
+              Start="0,0"
+              End="0,51.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,51.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\FELC Iterate Navision Companies\Extract Data">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="157,42"
+          Id="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination"
+          TopLeft="17,311.5" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\FELC Iterate Navision Companies\Extract Data\DER System Columns"
+          TopLeft="5.50000000000003,209.5" />
+        <NodeLayout
+          Size="165,42"
+          Id="Package\FELC Iterate Navision Companies\Extract Data\Convert datatypes"
+          TopLeft="13,107.5" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\FELC Iterate Navision Companies\Extract Data\ODS Source"
+          TopLeft="28,5.5" />
+        <EdgeLayout
+          Id="Package\FELC Iterate Navision Companies\Extract Data.Paths[ODS Source_Output_Convert datatypes]"
+          TopLeft="95.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\FELC Iterate Navision Companies\Extract Data.Paths[DER System Columns_Output_ODD Destination]"
+          TopLeft="95.5,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\FELC Iterate Navision Companies\Extract Data.Paths[Convert datatypes_Output_DER System Columns]"
+          TopLeft="95.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\FELC Iterate Navision Companies\Extract Data\ODD Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\FELC Iterate Navision Companies\Extract Data\ODS Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

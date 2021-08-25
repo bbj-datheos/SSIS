@@ -1,0 +1,1050 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/6/2017 2:38:35 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="mim-ext"
+  DTS:DTSID="{40F9B263-05A0-407A-96E8-D6C8644FDA42}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_PurchaseOrder"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="59"
+  DTS:VersionGUID="{0D806A89-0314-49C2-B223-7704919103DA}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{28F687CE-A0DF-431A-A0E5-D31CC554C971}"
+      DTS:ObjectName="DW">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_DW]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=TEST-BI-01;Initial Catalog=EETDW;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{B86EF1C1-FE5B-44FC-93A7-0D99050DEA27}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;SELECT * FROM &quot; + @[$Project::TransformFactViewSchema]+ &quot;.&quot;+@[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SelectAllFromTransform">
+      <DTS:VariableValue
+        DTS:DataType="8">SELECT * FROM TransformFactView.PurchaseOrder</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A76D2CAB-3141-4F07-8D80-B0233B905F54}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;TransformFact.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="StageTable">
+      <DTS:VariableValue
+        DTS:DataType="8">TransformFact.PurchaseOrder</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{1EDB92C8-368D-423C-B486-BD7ED484AF85}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">PurchaseOrder</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform PurchaseOrder"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{6CF69653-0956-4E55-A816-960FC367137B}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform PurchaseOrder">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{4ACDAB67-FB50-4F41-810B-0C67DC5CE131}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform PurchaseOrder"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES PurchaseOrder"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::StageTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES CustomerClassCount">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CompanyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CompanyKey"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CompanyKey]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CalendarKey]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="CalendarKey"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[PurchaseNo]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="PurchaseNo"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[PurchaseNo]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[PurchaseNo]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[PurchaselineNo]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="PurchaselineNo"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[PurchaselineNo]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[PurchaselineNo]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[VendorBuyFromKey]"
+                          cachedDataType="wstr"
+                          cachedLength="51"
+                          cachedName="VendorBuyFromKey"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[VendorBuyFromKey]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[VendorBuyFromKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[ItemKey]"
+                          cachedDataType="wstr"
+                          cachedLength="75"
+                          cachedName="ItemKey"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[ItemKey]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[ItemKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CalendarOrderKey]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="CalendarOrderKey"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CalendarOrderKey]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[CalendarOrderKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CurrencyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CurrencyKey"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CurrencyKey]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[CurrencyKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[PurchaseOrderStatusKey]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="PurchaseOrderStatusKey"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[PurchaseOrderStatusKey]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[PurchaseOrderStatusKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[OrderBeforeDeliveryAmount]"
+                          cachedDataType="numeric"
+                          cachedName="OrderBeforeDeliveryAmount"
+                          cachedPrecision="38"
+                          cachedScale="6"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[OrderBeforeDeliveryAmount]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[OrderBeforeDeliveryAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[OrderBeforeDeliveryQuantity]"
+                          cachedDataType="numeric"
+                          cachedName="OrderBeforeDeliveryQuantity"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[OrderBeforeDeliveryQuantity]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[OrderBeforeDeliveryQuantity]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[OutstandingAmount]"
+                          cachedDataType="numeric"
+                          cachedName="OutstandingAmount"
+                          cachedPrecision="38"
+                          cachedScale="6"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[OutstandingAmount]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[OutstandingAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[OutstandingQuantity]"
+                          cachedDataType="numeric"
+                          cachedName="OutstandingQuantity"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[OutstandingQuantity]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[OutstandingQuantity]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[PurchaseInvoiceOpenAmount]"
+                          cachedDataType="numeric"
+                          cachedName="PurchaseInvoiceOpenAmount"
+                          cachedPrecision="38"
+                          cachedScale="6"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[PurchaseInvoiceOpenAmount]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[PurchaseInvoiceOpenAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[PurchaseInvoiceOpenQuantity]"
+                          cachedDataType="numeric"
+                          cachedName="PurchaseInvoiceOpenQuantity"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[PurchaseInvoiceOpenQuantity]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[PurchaseInvoiceOpenQuantity]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[DocumentKey]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="DocumentKey"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[DocumentKey]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[DocumentKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[InventoryTypeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="222"
+                          cachedName="InventoryTypeKey"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[InventoryTypeKey]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[InventoryTypeKey]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[PurchaseNo]"
+                          dataType="wstr"
+                          length="20"
+                          name="PurchaseNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[PurchaselineNo]"
+                          dataType="wstr"
+                          length="30"
+                          name="PurchaselineNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[VendorBuyFromKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="VendorBuyFromKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[ItemKey]"
+                          dataType="wstr"
+                          length="75"
+                          name="ItemKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CalendarOrderKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarOrderKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CurrencyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CurrencyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[PurchaseOrderStatusKey]"
+                          dataType="wstr"
+                          length="20"
+                          name="PurchaseOrderStatusKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[ReceiptDateStatusKey]"
+                          dataType="wstr"
+                          length="20"
+                          name="ReceiptDateStatusKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[OrderBeforeDeliveryAmount]"
+                          dataType="numeric"
+                          name="OrderBeforeDeliveryAmount"
+                          precision="38"
+                          scale="6" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[OrderBeforeDeliveryQuantity]"
+                          dataType="numeric"
+                          name="OrderBeforeDeliveryQuantity"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[OutstandingAmount]"
+                          dataType="numeric"
+                          name="OutstandingAmount"
+                          precision="38"
+                          scale="6" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[OutstandingQuantity]"
+                          dataType="numeric"
+                          name="OutstandingQuantity"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[PurchaseInvoiceOpenAmount]"
+                          dataType="numeric"
+                          name="PurchaseInvoiceOpenAmount"
+                          precision="38"
+                          scale="6" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[PurchaseInvoiceOpenQuantity]"
+                          dataType="numeric"
+                          name="PurchaseInvoiceOpenQuantity"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[DocumentKey]"
+                          dataType="wstr"
+                          length="100"
+                          name="DocumentKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[InventoryTypeKey]"
+                          dataType="wstr"
+                          length="100"
+                          name="InventoryTypeKey" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+*
+FROM
+	[TransformFactView].[CustomerClassCount]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable">User::SelectAllFromTransform</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]"
+                          name="CompanyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]"
+                          name="CalendarKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[PurchaseNo]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[PurchaseNo]"
+                          length="20"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[PurchaseNo]"
+                          name="PurchaseNo"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[PurchaselineNo]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[PurchaselineNo]"
+                          length="30"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[PurchaselineNo]"
+                          name="PurchaselineNo"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[VendorBuyFromKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorBuyFromKey]"
+                          length="51"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[VendorBuyFromKey]"
+                          name="VendorBuyFromKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[ItemKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemKey]"
+                          length="75"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[ItemKey]"
+                          name="ItemKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[CalendarOrderKey]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarOrderKey]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[CalendarOrderKey]"
+                          name="CalendarOrderKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[CurrencyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[CurrencyKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[CurrencyKey]"
+                          name="CurrencyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[PurchaseOrderStatusKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[PurchaseOrderStatusKey]"
+                          length="20"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[PurchaseOrderStatusKey]"
+                          name="PurchaseOrderStatusKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[OrderBeforeDeliveryAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderBeforeDeliveryAmount]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[OrderBeforeDeliveryAmount]"
+                          name="OrderBeforeDeliveryAmount"
+                          precision="38"
+                          scale="6"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[OrderBeforeDeliveryQuantity]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderBeforeDeliveryQuantity]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[OrderBeforeDeliveryQuantity]"
+                          name="OrderBeforeDeliveryQuantity"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[OutstandingAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[OutstandingAmount]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[OutstandingAmount]"
+                          name="OutstandingAmount"
+                          precision="38"
+                          scale="6"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[OutstandingQuantity]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[OutstandingQuantity]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[OutstandingQuantity]"
+                          name="OutstandingQuantity"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[PurchaseInvoiceOpenAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[PurchaseInvoiceOpenAmount]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[PurchaseInvoiceOpenAmount]"
+                          name="PurchaseInvoiceOpenAmount"
+                          precision="38"
+                          scale="6"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[PurchaseInvoiceOpenQuantity]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[PurchaseInvoiceOpenQuantity]"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[PurchaseInvoiceOpenQuantity]"
+                          name="PurchaseInvoiceOpenQuantity"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[DocumentKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[DocumentKey]"
+                          length="100"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[DocumentKey]"
+                          name="DocumentKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[InventoryTypeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[InventoryTypeKey]"
+                          length="222"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].Columns[InventoryTypeKey]"
+                          name="InventoryTypeKey"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[PurchaseNo]"
+                          dataType="wstr"
+                          length="20"
+                          name="PurchaseNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[PurchaselineNo]"
+                          dataType="wstr"
+                          length="30"
+                          name="PurchaselineNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[VendorBuyFromKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="VendorBuyFromKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemKey]"
+                          dataType="wstr"
+                          length="75"
+                          name="ItemKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarOrderKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarOrderKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[CurrencyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CurrencyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[PurchaseOrderStatusKey]"
+                          dataType="wstr"
+                          length="20"
+                          name="PurchaseOrderStatusKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderBeforeDeliveryAmount]"
+                          dataType="numeric"
+                          name="OrderBeforeDeliveryAmount"
+                          precision="38"
+                          scale="6" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderBeforeDeliveryQuantity]"
+                          dataType="numeric"
+                          name="OrderBeforeDeliveryQuantity"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[OutstandingAmount]"
+                          dataType="numeric"
+                          name="OutstandingAmount"
+                          precision="38"
+                          scale="6" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[OutstandingQuantity]"
+                          dataType="numeric"
+                          name="OutstandingQuantity"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[PurchaseInvoiceOpenAmount]"
+                          dataType="numeric"
+                          name="PurchaseInvoiceOpenAmount"
+                          precision="38"
+                          scale="6" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[PurchaseInvoiceOpenQuantity]"
+                          dataType="numeric"
+                          name="PurchaseInvoiceOpenQuantity"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[DocumentKey]"
+                          dataType="wstr"
+                          length="100"
+                          name="DocumentKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[InventoryTypeKey]"
+                          dataType="wstr"
+                          length="222"
+                          name="InventoryTypeKey" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[CalendarKey]"
+                          name="CalendarKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[PurchaseNo]"
+                          dataType="wstr"
+                          length="20"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[PurchaseNo]"
+                          name="PurchaseNo" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[PurchaselineNo]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[PurchaselineNo]"
+                          name="PurchaselineNo" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[VendorBuyFromKey]"
+                          dataType="wstr"
+                          length="51"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[VendorBuyFromKey]"
+                          name="VendorBuyFromKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[ItemKey]"
+                          dataType="wstr"
+                          length="75"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[ItemKey]"
+                          name="ItemKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[CompanyKey]"
+                          name="CompanyKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[CalendarOrderKey]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[CalendarOrderKey]"
+                          name="CalendarOrderKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[CurrencyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[CurrencyKey]"
+                          name="CurrencyKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[PurchaseOrderStatusKey]"
+                          dataType="wstr"
+                          length="20"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[PurchaseOrderStatusKey]"
+                          name="PurchaseOrderStatusKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[OrderBeforeDeliveryAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[OrderBeforeDeliveryAmount]"
+                          name="OrderBeforeDeliveryAmount"
+                          precision="38"
+                          scale="6" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[OrderBeforeDeliveryQuantity]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[OrderBeforeDeliveryQuantity]"
+                          name="OrderBeforeDeliveryQuantity"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[OutstandingAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[OutstandingAmount]"
+                          name="OutstandingAmount"
+                          precision="38"
+                          scale="6" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[OutstandingQuantity]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[OutstandingQuantity]"
+                          name="OutstandingQuantity"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[PurchaseInvoiceOpenAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[PurchaseInvoiceOpenAmount]"
+                          name="PurchaseInvoiceOpenAmount"
+                          precision="38"
+                          scale="6" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[PurchaseInvoiceOpenQuantity]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[PurchaseInvoiceOpenQuantity]"
+                          name="PurchaseInvoiceOpenQuantity"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[DocumentKey]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[DocumentKey]"
+                          name="DocumentKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[InventoryTypeKey]"
+                          dataType="wstr"
+                          length="222"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[InventoryTypeKey]"
+                          name="InventoryTypeKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder.Paths[Output]"
+                  endId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder.Inputs[DER Audit_Output_OLE DES CustomerClassCount]"
+                  name="Output"
+                  startId="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform PurchaseOrder\SQL Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{EF259895-2CEA-4534-8BC3-0686184F87C0}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{28F687CE-A0DF-431A-A0E5-D31CC554C971}"
+              SQLTask:SqlStatementSource="&#xA;         EXEC('TRUNCATE TABLE ' + ?)&#xA;        " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::StageTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform PurchaseOrder.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{AA713251-9A4B-465E-A3FB-BF6D143FF91A}"
+          DTS:From="Package\SEQC Transform PurchaseOrder\SQL Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="222,42"
+          Id="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder"
+          TopLeft="5.50000000000003,107.5" />
+        <NodeLayout
+          Size="172,42"
+          Id="Package\SEQC Transform PurchaseOrder\SQL Truncate Table"
+          TopLeft="44.5,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform PurchaseOrder.PrecedenceConstraints[Constraint]"
+          TopLeft="130.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-14,60"
+              Start="0,0"
+              End="-14,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="-4,30" />
+                  <mssgle:LineSegment
+                    End="-9.99999999999997,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-9.99999999999997,30"
+                    Point2="-14,30"
+                    Point3="-14,34" />
+                  <mssgle:LineSegment
+                    End="-14,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="286,205"
+          Size="286,248"
+          Id="Package\SEQC Transform PurchaseOrder"
+          TopLeft="59.5,132.5" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="193,42"
+          Id="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder"
+          TopLeft="5.50000000000001,107.5" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract"
+          TopLeft="37.5,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder.Paths[Output]"
+          TopLeft="115.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-13.5,60"
+              Start="0,0"
+              End="-13.5,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="-4,30" />
+                  <mssgle:LineSegment
+                    End="-9.49999999999999,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-9.49999999999999,30"
+                    Point2="-13.5,30"
+                    Point3="-13.5,34" />
+                  <mssgle:LineSegment
+                    End="-13.5,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE DES PurchaseOrder">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform PurchaseOrder\DFT Transform PurchaseOrder\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

@@ -1,0 +1,783 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/1/2017 10:31:52 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="nna-ext"
+  DTS:DTSID="{ACCDC468-9FB8-4A18-BE24-D80223DF0751}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_OriginOfOrder"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="2"
+  DTS:VersionGUID="{54F52C5C-A3EE-43B1-959C-AA17ACF0F206}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{B3D67407-FD6A-43FE-AFF2-9E0E95A49A68}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{0DB16DA7-4349-47D8-AD8E-5FF5BF91D541}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{47B150EC-C15E-4F41-BD82-D8001A004930}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{14A1A880-6CC7-49E7-A8D4-CD47860A019A}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">dim</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{031DA7D0-7CFF-423C-AFCE-FE713D21C6CA}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.OriginOfOrder</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{41D261AE-0B52-4F10-93FF-95774BF1A519}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">OriginOfOrder</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{62399321-E772-4C39-981B-71D2A32CF7EC}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{44B36D23-FE18-42E8-912B-6734D3EBE0AD}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{0DB16DA7-4349-47D8-AD8E-5FF5BF91D541}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform OriginOfOrder"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{DD65CC9F-66A7-4353-B1C1-5B54DBAAD0C6}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform OriginOfOrder">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{023614D4-C9B6-48EF-9637-02677CFD0EA2}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform OriginOfOrder"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES OriginOfOrder"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Inputs[DER Audit_Output_OLE DES OriginOfOrder]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES OriginOfOrder">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Inputs[DER Audit_Output_OLE DES OriginOfOrder].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Inputs[DER Audit_Output_OLE DES OriginOfOrder].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Inputs[DER Audit_Output_OLE DES OriginOfOrder].Columns[OriginOfOrderKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="OriginOfOrderKey"
+                          externalMetadataColumnId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Inputs[DER Audit_Output_OLE DES OriginOfOrder].ExternalColumns[OriginOfOrderKey]"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].Columns[OriginOfOrderKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Inputs[DER Audit_Output_OLE DES OriginOfOrder].Columns[OriginOfOrderSourceCode]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="OriginOfOrderSourceCode"
+                          externalMetadataColumnId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Inputs[DER Audit_Output_OLE DES OriginOfOrder].ExternalColumns[OriginOfOrderSourceCode]"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].Columns[OriginOfOrderSourceCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Inputs[DER Audit_Output_OLE DES OriginOfOrder].Columns[OriginOfOrderTypeCode]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="OriginOfOrderTypeCode"
+                          externalMetadataColumnId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Inputs[DER Audit_Output_OLE DES OriginOfOrder].ExternalColumns[OriginOfOrderTypeCode]"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].Columns[OriginOfOrderTypeCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Inputs[DER Audit_Output_OLE DES OriginOfOrder].Columns[OriginOfOrderName]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="OriginOfOrderName"
+                          externalMetadataColumnId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Inputs[DER Audit_Output_OLE DES OriginOfOrder].ExternalColumns[OriginOfOrderName]"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].Columns[OriginOfOrderName]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Inputs[DER Audit_Output_OLE DES OriginOfOrder].ExternalColumns[OriginOfOrderKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="OriginOfOrderKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Inputs[DER Audit_Output_OLE DES OriginOfOrder].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Inputs[DER Audit_Output_OLE DES OriginOfOrder].ExternalColumns[OriginOfOrderSourceCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="OriginOfOrderSourceCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Inputs[DER Audit_Output_OLE DES OriginOfOrder].ExternalColumns[OriginOfOrderTypeCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="OriginOfOrderTypeCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Inputs[DER Audit_Output_OLE DES OriginOfOrder].ExternalColumns[OriginOfOrderName]"
+                          dataType="wstr"
+                          length="10"
+                          name="OriginOfOrderName" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Inputs[DER Audit_Output_OLE DES OriginOfOrder]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+ CONVERT(NVARCHAR(10),Code) AS OriginOfOrderKey
+,CONVERT(NVARCHAR(10),'') AS OriginOfOrderName
+,CONVERT(NVARCHAR(10),Code) AS OriginOfOrderSourceCode
+,CONVERT(NVARCHAR(10),Code) AS OriginOfOrderTypeCode
+FROM control.[EET Origin of Order]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].Columns[OriginOfOrderKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[OriginOfOrderKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].Columns[OriginOfOrderKey]"
+                          name="OriginOfOrderKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].Columns[OriginOfOrderSourceCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[OriginOfOrderSourceCode]"
+                          length="10"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].Columns[OriginOfOrderSourceCode]"
+                          name="OriginOfOrderSourceCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].Columns[OriginOfOrderTypeCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[OriginOfOrderTypeCode]"
+                          length="10"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].Columns[OriginOfOrderTypeCode]"
+                          name="OriginOfOrderTypeCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].Columns[OriginOfOrderName]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[OriginOfOrderName]"
+                          length="10"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].Columns[OriginOfOrderName]"
+                          name="OriginOfOrderName"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[OriginOfOrderKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="OriginOfOrderKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[OriginOfOrderSourceCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="OriginOfOrderSourceCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[OriginOfOrderTypeCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="OriginOfOrderTypeCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output].ExternalColumns[OriginOfOrderName]"
+                          dataType="wstr"
+                          length="10"
+                          name="OriginOfOrderName" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Error].Columns[OriginOfOrderKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Error].Columns[OriginOfOrderKey]"
+                          name="OriginOfOrderKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Error].Columns[OriginOfOrderName]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Error].Columns[OriginOfOrderName]"
+                          name="OriginOfOrderName" />
+                        <outputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Error].Columns[OriginOfOrderSourceCode]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Error].Columns[OriginOfOrderSourceCode]"
+                          name="OriginOfOrderSourceCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Error].Columns[OriginOfOrderTypeCode]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Error].Columns[OriginOfOrderTypeCode]"
+                          name="OriginOfOrderTypeCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder.Paths[DER Audit_Output_OLE DES OriginOfOrder]"
+                  endId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder.Inputs[DER Audit_Output_OLE DES OriginOfOrder]"
+                  name="DER Audit_Output_OLE DES OriginOfOrder"
+                  startId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder.Paths[OLE SRC Extract_Output_DER Audit]"
+                  endId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="OLE SRC Extract_Output_DER Audit"
+                  startId="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform OriginOfOrder\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{5999DF62-8C44-48B3-890A-662AD77BD968}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{47B150EC-C15E-4F41-BD82-D8001A004930}"
+              SQLTask:SqlStatementSource="EXEC('TRUNCATE TABLE ' + ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform OriginOfOrder.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform OriginOfOrder]"
+          DTS:CreationName=""
+          DTS:DTSID="{B813458E-72CD-4EC2-97C1-39E874D97F89}"
+          DTS:From="Package\SEQC Transform OriginOfOrder\Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_Truncate Table_To_DFT Transform OriginOfOrder"
+          DTS:To="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SEQC Transform OriginOfOrder_To_SEQC MaintainDW]"
+      DTS:CreationName=""
+      DTS:DTSID="{90EC00A9-6CC0-4C93-9870-8FC4AD824B78}"
+      DTS:From="Package\SEQC Transform OriginOfOrder"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SEQC Transform OriginOfOrder_To_SEQC MaintainDW"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,103"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="34.5000000000001,313.5" />
+        <NodeLayout
+          Size="219,42"
+          Id="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder"
+          TopLeft="5.50000000000001,107.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform OriginOfOrder\Truncate Table"
+          TopLeft="40,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform OriginOfOrder.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform OriginOfOrder]"
+          TopLeft="115,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="230,205"
+          Size="230,248"
+          Id="Package\SEQC Transform OriginOfOrder"
+          TopLeft="5.50000000000003,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_SEQC Transform OriginOfOrder_To_SEQC MaintainDW]"
+          TopLeft="120.5,253.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="189,42"
+          Id="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder"
+          TopLeft="5.50000000000003,209.5" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract"
+          TopLeft="22,5.5" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\DER Audit"
+          TopLeft="37,107.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder.Paths[OLE SRC Extract_Output_DER Audit]"
+          TopLeft="100,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder.Paths[DER Audit_Output_OLE DES OriginOfOrder]"
+          TopLeft="100,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE DES OriginOfOrder">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform OriginOfOrder\DFT Transform OriginOfOrder\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

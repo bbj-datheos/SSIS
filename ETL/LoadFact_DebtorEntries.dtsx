@@ -1,0 +1,1756 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/28/2017 2:24:00 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="nna-ext"
+  DTS:DTSID="{DF9BBD8E-E6A8-48D6-80E6-0E96EC48E252}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="LoadFact_DebtorEntries"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="31"
+  DTS:VersionGUID="{48400E47-CE93-40C1-97EE-3DFF2A6948A3}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{FC8D429E-FE9F-404D-B062-5EA3BC60CC66}"
+      DTS:ObjectName="DW">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_DW]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{277660B4-1B10-4E85-A2F7-4119E9CE697D}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{5FD7E90F-8F7A-4B6B-BF5E-560E01BF6FA1}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{DF7F9C28-3F73-4F65-B0F0-EE8FD20AACC1}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;fact.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">fact.DebtorEntries</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{595DD1B2-7BD0-4CAB-95AC-2CD4BD8E8B02}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">DebtorEntries</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC FullLoad FactDebitorEntries"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{EBF80611-EFDB-4302-9F9A-94F70F98F0FD}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC FullLoad FactDebitorEntries">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{61EC10D9-303D-4E83-80E0-A1368CD512D6}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT LoadFactDebitorEntries"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit.Inputs[DER Error Handling_Output_DER Audit]"
+                      name="DER Error Handling_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit.Inputs[DER Error Handling_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit.Outputs[Output].Columns[DWModifiedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit.Outputs[Output].Columns[DWModifiedDate]"
+                          name="DWModifiedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit.Inputs[DER Error Handling_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Error Handling"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Error Handling"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Error Handling.Inputs[LKP Person_Match_DER Error Handling]"
+                      name="LKP Person_Match_DER Error Handling">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Error Handling.Inputs[LKP Person_Match_DER Error Handling].Columns[CalendarID]"
+                          cachedDataType="i4"
+                          cachedName="CalendarID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Outputs[Match].Columns[CalendarID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[REPLACENULL](#{Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Outputs[Match].Columns[CalendarID]},19000101)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(CalendarID,19000101)</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Error Handling.Inputs[LKP Person_Match_DER Error Handling].Columns[CompanyID]"
+                          cachedDataType="i4"
+                          cachedName="CompanyID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Outputs[Match].Columns[CompanyID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[REPLACENULL](#{Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Outputs[Match].Columns[CompanyID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(CompanyID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Error Handling.Inputs[LKP Person_Match_DER Error Handling].Columns[EmployeeID]"
+                          cachedDataType="i4"
+                          cachedName="EmployeeID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Outputs[Match].Columns[EmployeeID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[REPLACENULL](#{Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Outputs[Match].Columns[EmployeeID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(EmployeeID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Error Handling.Inputs[LKP Person_Match_DER Error Handling].Columns[DocumentTypeID]"
+                          cachedDataType="i4"
+                          cachedName="DocumentTypeID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Outputs[Match].Columns[DocumentTypeID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[REPLACENULL](#{Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Outputs[Match].Columns[DocumentTypeID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(DocumentTypeID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Error Handling.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Error Handling.Inputs[LKP Person_Match_DER Error Handling]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Error Handling.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Error Handling.Inputs[LKP Person_Match_DER Error Handling]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Error Handling.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Error Handling.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Error Handling.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Error Handling.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;5"
+                  name="LKP Calendar"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT CalendarID,CalendarDate FROM dim.Calendar</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT CalendarID,CalendarDate FROM dim.Calendar) [refTable]
+where [refTable].[CalendarDate] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="CalendarID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CalendarDate" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].Columns[CalendarKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Inputs[OLE SRC SalesOrder_Output_LKP Calendar]"
+                      name="OLE SRC SalesOrder_Output_LKP Calendar">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Inputs[OLE SRC SalesOrder_Output_LKP Calendar].Columns[CalendarKey]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="CalendarKey"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].Columns[CalendarKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">CalendarDate</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Outputs[Match]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Match"
+                      synchronousInputId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Inputs[OLE SRC SalesOrder_Output_LKP Calendar]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Outputs[Match].Columns[CalendarID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="CopyColumn"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Outputs[Match].Columns[CalendarID]"
+                          name="CalendarID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">CalendarID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Outputs[NoMatch]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="NoMatch"
+                      synchronousInputId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Inputs[OLE SRC SalesOrder_Output_LKP Calendar]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Inputs[OLE SRC SalesOrder_Output_LKP Calendar]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;5"
+                  name="LKP Company"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT CompanyID, UPPER(CompanyKey) AS [CompanyKey] FROM dim.Company</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT CompanyID, UPPER(CompanyKey) AS [CompanyKey] FROM dim.Company) [refTable] where [refTable].[CompanyKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;
+  &lt;referenceColumns&gt;
+    &lt;referenceColumn name="CompanyID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0" /&gt;
+    &lt;referenceColumn name="CompanyKey" dataType="DT_WSTR" length="10" precision="0" scale="0" codePage="0" /&gt;
+  &lt;/referenceColumns&gt;
+&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\819:invalid};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Inputs[LKP Calendar_Match_LKP Company]"
+                      name="LKP Calendar_Match_LKP Company">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Inputs[LKP Calendar_Match_LKP Company].Columns[CompanyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CompanyKey"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].Columns[CompanyKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">CompanyKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Outputs[Match]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Match"
+                      synchronousInputId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Inputs[LKP Calendar_Match_LKP Company]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Outputs[Match].Columns[CompanyID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="CopyColumn"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Outputs[Match].Columns[CompanyID]"
+                          name="CompanyID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">CompanyID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Outputs[NoMatch]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="NoMatch"
+                      synchronousInputId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Inputs[LKP Calendar_Match_LKP Company]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Inputs[LKP Calendar_Match_LKP Company]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;5"
+                  name="LKP DocumentType"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+	[DocumentTypeID]
+	,[DocumentTypeKey]
+FROM
+	[EETDW].[dim].[DocumentType]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT
+	[DocumentTypeID]
+	,[DocumentTypeKey]
+FROM
+	[EETDW].[dim].[DocumentType]) [refTable]
+where [refTable].[DocumentTypeKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="DocumentTypeID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="DocumentTypeKey" dataType="DT_WSTR" length="10" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].Columns[DocumentTypeKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Inputs[LKP CustomerSellTo_Match_LKP Employee]"
+                      name="LKP CustomerSellTo_Match_LKP Employee">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Inputs[LKP CustomerSellTo_Match_LKP Employee].Columns[DocumentTypeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="DocumentTypeKey"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].Columns[DocumentTypeKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">DocumentTypeKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Outputs[Match]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Match"
+                      synchronousInputId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Inputs[LKP CustomerSellTo_Match_LKP Employee]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Outputs[Match].Columns[DocumentTypeID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Copy Column"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Outputs[Match].Columns[DocumentTypeID]"
+                          name="DocumentTypeID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">DocumentTypeID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Outputs[NoMatch]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="NoMatch"
+                      synchronousInputId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Inputs[LKP CustomerSellTo_Match_LKP Employee]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Inputs[LKP CustomerSellTo_Match_LKP Employee]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;5"
+                  name="LKP Employee"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT EmployeeID, UPPER(EmployeeKey) AS [EmployeeKey] FROM dim.Employee</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT EmployeeID, UPPER(EmployeeKey) AS [EmployeeKey] FROM dim.Employee) [refTable]
+where [refTable].[EmployeeKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="EmployeeID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="EmployeeKey" dataType="DT_WSTR" length="31" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].Columns[EmployeeKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Inputs[LKP CustomerSellTo_Match_LKP Employee]"
+                      name="LKP CustomerSellTo_Match_LKP Employee">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Inputs[LKP CustomerSellTo_Match_LKP Employee].Columns[EmployeeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="EmployeeKey"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].Columns[EmployeeKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">EmployeeKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Outputs[Match]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Match"
+                      synchronousInputId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Inputs[LKP CustomerSellTo_Match_LKP Employee]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Outputs[Match].Columns[EmployeeID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="CopyColumn"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Outputs[Match].Columns[EmployeeID]"
+                          name="EmployeeID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">EmployeeID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Outputs[NoMatch]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="NoMatch"
+                      synchronousInputId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Inputs[LKP CustomerSellTo_Match_LKP Employee]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Inputs[LKP CustomerSellTo_Match_LKP Employee]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="OLE DB Source"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+	UPPER([EmployeeKey]) AS [EmployeeKey]
+      ,[CompanyKey]
+      ,[DocumentTypeKey]
+      ,CONVERT(datetime,[CalendarKey]) AS [CalendarKey]
+      ,[DebtorEntryCount]
+FROM
+	[EETDW_Stage].[dbo].[DebtorEntries]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].Columns[EmployeeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EmployeeKey]"
+                          length="50"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].Columns[EmployeeKey]"
+                          name="EmployeeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CompanyKey]"
+                          length="10"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].Columns[CompanyKey]"
+                          name="CompanyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].Columns[DocumentTypeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DocumentTypeKey]"
+                          length="10"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].Columns[DocumentTypeKey]"
+                          name="DocumentTypeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].Columns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].Columns[CalendarKey]"
+                          name="CalendarKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].Columns[DebtorEntryCount]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DebtorEntryCount]"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].Columns[DebtorEntryCount]"
+                          name="DebtorEntryCount"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EmployeeKey]"
+                          dataType="wstr"
+                          length="50"
+                          name="EmployeeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DocumentTypeKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="DocumentTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DebtorEntryCount]"
+                          dataType="i4"
+                          name="DebtorEntryCount" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EmployeeKey]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EmployeeKey]"
+                          name="EmployeeKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CompanyKey]"
+                          name="CompanyKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DocumentTypeKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DocumentTypeKey]"
+                          name="DocumentTypeKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CalendarKey]"
+                          name="CalendarKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DebtorEntryCount]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DebtorEntryCount]"
+                          name="DebtorEntryCount" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES FactDebtorEntries"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES FactSalesOrder">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].Columns[DWModifiedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWModifiedDate"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[DWModifiedDate]"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit.Outputs[Output].Columns[DWModifiedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].Columns[EmployeeID]"
+                          cachedDataType="i4"
+                          cachedName="EmployeeID"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[EmployeeID]"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Outputs[Match].Columns[EmployeeID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].Columns[CompanyID]"
+                          cachedDataType="i4"
+                          cachedName="CompanyID"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[CompanyID]"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Outputs[Match].Columns[CompanyID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].Columns[CalendarID]"
+                          cachedDataType="i4"
+                          cachedName="CalendarID"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[CalendarID]"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Outputs[Match].Columns[CalendarID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].Columns[DocumentTypeID]"
+                          cachedDataType="i4"
+                          cachedName="DocumentTypeID"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[DocumentTypeID]"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Outputs[Match].Columns[DocumentTypeID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].Columns[DebtorEntryCount]"
+                          cachedDataType="i4"
+                          cachedName="DebtorEntryCount"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[DebtorEntryCount]"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output].Columns[DebtorEntryCount]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[CompanyID]"
+                          dataType="i4"
+                          name="CompanyID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[CalendarID]"
+                          dataType="i4"
+                          name="CalendarID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[EmployeeID]"
+                          dataType="i4"
+                          name="EmployeeID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[DWModifiedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWModifiedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[DocumentTypeID]"
+                          dataType="i4"
+                          name="DocumentTypeID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[DebtorEntryCount]"
+                          dataType="i4"
+                          name="DebtorEntryCount" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries.Paths[DER Audit_Output_OLE DES FactSalesOrder]"
+                  endId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries.Inputs[DER Audit_Output_OLE DES FactSalesOrder]"
+                  name="DER Audit_Output_OLE DES FactSalesOrder"
+                  startId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries.Paths[DER Error Handling_Output_DER Audit]"
+                  endId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit.Inputs[DER Error Handling_Output_DER Audit]"
+                  name="DER Error Handling_Output_DER Audit"
+                  startId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Error Handling.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries.Paths[Match]"
+                  endId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Inputs[LKP Calendar_Match_LKP Company]"
+                  name="Match"
+                  startId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Outputs[Match]" />
+                <path
+                  refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries.Paths[Match1]"
+                  endId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Inputs[LKP CustomerSellTo_Match_LKP Employee]"
+                  name="Match"
+                  startId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company.Outputs[Match]" />
+                <path
+                  refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries.Paths[Match2]"
+                  endId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Inputs[LKP CustomerSellTo_Match_LKP Employee]"
+                  name="Match"
+                  startId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee.Outputs[Match]" />
+                <path
+                  refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries.Paths[Match3]"
+                  endId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Error Handling.Inputs[LKP Person_Match_DER Error Handling]"
+                  name="Match"
+                  startId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType.Outputs[Match]" />
+                <path
+                  refId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries.Paths[OLE DB Source Output]"
+                  endId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar.Inputs[OLE SRC SalesOrder_Output_LKP Calendar]"
+                  name="OLE DB Source Output"
+                  startId="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source.Outputs[OLE DB Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC FullLoad FactDebitorEntries\SQL Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{59C892D3-E332-43BA-A515-0D5DCAF0FF30}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{FC8D429E-FE9F-404D-B062-5EA3BC60CC66}"
+              SQLTask:SqlStatementSource="&#xA;         EXEC('TRUNCATE TABLE ' + ?)&#xA;        " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC FullLoad FactDebitorEntries.PrecedenceConstraints[Constraint_SQL Truncate Table_To_DFT LoadFactSalesOrder]"
+          DTS:CreationName=""
+          DTS:DTSID="{E6CDF9B2-C1A0-4F32-922A-789F257400AA}"
+          DTS:From="Package\SEQC FullLoad FactDebitorEntries\SQL Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_SQL Truncate Table_To_DFT LoadFactSalesOrder"
+          DTS:To="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="210,42"
+          Id="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries"
+          TopLeft="4.50000000000001,107.5" />
+        <NodeLayout
+          Size="172,42"
+          Id="Package\SEQC FullLoad FactDebitorEntries\SQL Truncate Table"
+          TopLeft="17,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactDebitorEntries.PrecedenceConstraints[Constraint_SQL Truncate Table_To_DFT LoadFactSalesOrder]"
+          TopLeft="106.25,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="260,205"
+          Size="260,248"
+          Id="Package\SEQC FullLoad FactDebitorEntries"
+          TopLeft="5.50000000000006,5.5" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="141,42"
+          Id="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar"
+          TopLeft="42,107.5" />
+        <NodeLayout
+          Size="170,42"
+          Id="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Error Handling"
+          TopLeft="27.5000000000001,515.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source"
+          TopLeft="37.5,5.5" />
+        <NodeLayout
+          Size="207,42"
+          Id="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries"
+          TopLeft="5.50000000000009,719.5" />
+        <NodeLayout
+          Size="171,42"
+          Id="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType"
+          TopLeft="27.0000000000001,413.5" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Company"
+          TopLeft="40.5,209.5" />
+        <NodeLayout
+          Size="145,42"
+          Id="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee"
+          TopLeft="40,311.5" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\DER Audit"
+          TopLeft="49.5000000000001,617.5" />
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries.Paths[OLE DB Source Output]"
+          TopLeft="112.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries.Paths[Match3]"
+          TopLeft="112.5,455.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-13.56193359375,21.37548828125,27.1238671875,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries.Paths[Match2]"
+          TopLeft="112.5,353.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-13.56193359375,21.37548828125,27.1238671875,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries.Paths[Match1]"
+          TopLeft="112.5,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-13.56193359375,21.37548828125,27.1238671875,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries.Paths[Match]"
+          TopLeft="112.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-13.56193359375,21.37548828125,27.1238671875,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries.Paths[DER Error Handling_Output_DER Audit]"
+          TopLeft="112.5,557.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries.Paths[DER Audit_Output_OLE DES FactSalesOrder]"
+          TopLeft="110.75,659.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Calendar">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\OLE DES FactDebtorEntries">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP DocumentType">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad FactDebitorEntries\DFT LoadFactDebitorEntries\LKP Employee">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

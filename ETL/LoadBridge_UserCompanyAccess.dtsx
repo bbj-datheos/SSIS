@@ -1,0 +1,949 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/8/2017 1:28:06 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="nna-ext"
+  DTS:DTSID="{38D99B24-829D-4C35-A212-24F1A705065F}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="LoadBridge_UserCompanyAccess"
+  DTS:ProtectionLevel="0"
+  DTS:VersionGUID="{73874CED-77F8-43F8-A0FA-C4AE2145BE72}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{69FE39AD-80EF-463E-8594-AAADE65FD9BA}"
+      DTS:ObjectName="DW">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_DW]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{72D655B3-BFCE-465A-B74C-75B13B5330EE}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{3C01620E-8807-4A91-8D8C-D6DDB6CA7F6A}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{FA3EDA45-7BCB-404E-9DC2-D8EC1372D86F}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;bridge.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">bridge.UserCompanyAccess</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{2037722F-91E0-471E-8ADE-2B502E05540D}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">UserCompanyAccess</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC FullLoad BridgeUserCompanyAccess"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{0F0AE8B3-3E4D-4BEA-A0AA-DA51F041DAFA}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC FullLoad BridgeUserCompanyAccess">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{94164674-3B22-44CD-B52F-2F86F1FB0580}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT LoadBridgeUserCompanyAccess"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Audit.Inputs[DER Error Handling_Output_DER Audit]"
+                      name="DER Error Handling_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Audit.Inputs[DER Error Handling_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Audit.Outputs[Output].Columns[DWModifiedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Audit.Outputs[Output].Columns[DWModifiedDate]"
+                          name="DWModifiedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Audit.Inputs[DER Error Handling_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Error Handling"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Error Handling"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Error Handling.Inputs[LKP SystemUser_Match_DER Error Handling]"
+                      name="LKP SystemUser_Match_DER Error Handling">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Error Handling.Inputs[LKP SystemUser_Match_DER Error Handling].Columns[CompanyID]"
+                          cachedDataType="i4"
+                          cachedName="CompanyID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Outputs[Match].Columns[CompanyID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">REPLACENULL(#{Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Outputs[Match].Columns[CompanyID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(CompanyID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Error Handling.Inputs[LKP SystemUser_Match_DER Error Handling].Columns[SystemUserID]"
+                          cachedDataType="i4"
+                          cachedName="SystemUserID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Outputs[Match].Columns[SystemUserID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">REPLACENULL(#{Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Outputs[Match].Columns[SystemUserID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(SystemUserID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Error Handling.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Error Handling.Inputs[LKP SystemUser_Match_DER Error Handling]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Error Handling.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Error Handling.Inputs[LKP SystemUser_Match_DER Error Handling]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Error Handling.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Error Handling.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Error Handling.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Error Handling.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;5"
+                  name="LKP Company"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT CompanyID, UPPER(CompanyKey) AS [CompanyKey] FROM dim.Company</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT CompanyID, UPPER(CompanyKey) AS [CompanyKey] FROM dim.Company) [refTable] where [refTable].[CompanyKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;
+  &lt;referenceColumns&gt;
+    &lt;referenceColumn name="CompanyID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0" /&gt;
+    &lt;referenceColumn name="CompanyKey" dataType="DT_WSTR" length="10" precision="0" scale="0" codePage="0" /&gt;
+  &lt;/referenceColumns&gt;
+&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Output].Columns[CompanyKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Inputs[OLE SRC UserCompanyAccess_Output_LKP Company]"
+                      name="OLE SRC UserCompanyAccess_Output_LKP Company">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Inputs[OLE SRC UserCompanyAccess_Output_LKP Company].Columns[CompanyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CompanyKey"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Output].Columns[CompanyKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">CompanyKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Outputs[Match]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Match"
+                      synchronousInputId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Inputs[OLE SRC UserCompanyAccess_Output_LKP Company]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Outputs[Match].Columns[CompanyID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="CopyColumn"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Outputs[Match].Columns[CompanyID]"
+                          name="CompanyID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">CompanyID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Outputs[NoMatch]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="NoMatch"
+                      synchronousInputId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Inputs[OLE SRC UserCompanyAccess_Output_LKP Company]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Inputs[OLE SRC UserCompanyAccess_Output_LKP Company]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;5"
+                  name="LKP SystemUser"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT SystemUserID, UPPER(SystemUserKey) AS [SystemUserKey] FROM dim.SystemUser</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT SystemUserID, UPPER(SystemUserKey) AS [SystemUserKey] FROM dim.SystemUser) [refTable] where [refTable].[SystemUserKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;
+  &lt;referenceColumns&gt;
+    &lt;referenceColumn name="SystemUserID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0" /&gt;
+    &lt;referenceColumn name="SystemUserKey" dataType="DT_WSTR" length="30" precision="0" scale="0" codePage="0" /&gt;
+  &lt;/referenceColumns&gt;
+&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Output].Columns[SystemUserKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Inputs[LKP Company_Match_LKP SystemUser]"
+                      name="LKP Company_Match_LKP SystemUser">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Inputs[LKP Company_Match_LKP SystemUser].Columns[SystemUserKey]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="SystemUserKey"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Output].Columns[SystemUserKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">SystemUserKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Outputs[Match]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Match"
+                      synchronousInputId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Inputs[LKP Company_Match_LKP SystemUser]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Outputs[Match].Columns[SystemUserID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="CopyColumn"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Outputs[Match].Columns[SystemUserID]"
+                          name="SystemUserID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">SystemUserID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Outputs[NoMatch]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="NoMatch"
+                      synchronousInputId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Inputs[LKP Company_Match_LKP SystemUser]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Inputs[LKP Company_Match_LKP SystemUser]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES BridgeUserCompanyAccess"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Inputs[DER Audit_Output_OLE DES BridgeUserCompanyAccess]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES BridgeUserCompanyAccess">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Inputs[DER Audit_Output_OLE DES BridgeUserCompanyAccess].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Inputs[DER Audit_Output_OLE DES BridgeUserCompanyAccess].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Inputs[DER Audit_Output_OLE DES BridgeUserCompanyAccess].Columns[DWModifiedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWModifiedDate"
+                          externalMetadataColumnId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Inputs[DER Audit_Output_OLE DES BridgeUserCompanyAccess].ExternalColumns[DWModifiedDate]"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Audit.Outputs[Output].Columns[DWModifiedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Inputs[DER Audit_Output_OLE DES BridgeUserCompanyAccess].Columns[SystemUserID]"
+                          cachedDataType="i4"
+                          cachedName="SystemUserID"
+                          externalMetadataColumnId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Inputs[DER Audit_Output_OLE DES BridgeUserCompanyAccess].ExternalColumns[SystemUserID]"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Outputs[Match].Columns[SystemUserID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Inputs[DER Audit_Output_OLE DES BridgeUserCompanyAccess].Columns[CompanyID]"
+                          cachedDataType="i4"
+                          cachedName="CompanyID"
+                          externalMetadataColumnId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Inputs[DER Audit_Output_OLE DES BridgeUserCompanyAccess].ExternalColumns[CompanyID]"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Outputs[Match].Columns[CompanyID]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Inputs[DER Audit_Output_OLE DES BridgeUserCompanyAccess].ExternalColumns[SystemUserID]"
+                          dataType="i4"
+                          name="SystemUserID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Inputs[DER Audit_Output_OLE DES BridgeUserCompanyAccess].ExternalColumns[CompanyID]"
+                          dataType="i4"
+                          name="CompanyID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Inputs[DER Audit_Output_OLE DES BridgeUserCompanyAccess].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Inputs[DER Audit_Output_OLE DES BridgeUserCompanyAccess].ExternalColumns[DWModifiedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWModifiedDate" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Inputs[DER Audit_Output_OLE DES BridgeUserCompanyAccess]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC UserCompanyAccess"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
+ UPPER([SystemUserKey]) AS [SystemUserKey]
+,UPPER([CompanyKey]) AS [CompanyKey]
+FROM [dbo].[UserCompanyAccess]
+</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Output].Columns[SystemUserKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Output].ExternalColumns[SystemUserKey]"
+                          length="30"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Output].Columns[SystemUserKey]"
+                          name="SystemUserKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Output].ExternalColumns[CompanyKey]"
+                          length="10"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Output].Columns[CompanyKey]"
+                          name="CompanyKey"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Output].ExternalColumns[SystemUserKey]"
+                          dataType="wstr"
+                          length="30"
+                          name="SystemUserKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Output].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Error].Columns[SystemUserKey]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Error].Columns[SystemUserKey]"
+                          name="SystemUserKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Error].Columns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Error].Columns[CompanyKey]"
+                          name="CompanyKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess.Paths[DER Audit_Output_OLE DES BridgeUserCompanyAccess]"
+                  endId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE DES BridgeUserCompanyAccess.Inputs[DER Audit_Output_OLE DES BridgeUserCompanyAccess]"
+                  name="DER Audit_Output_OLE DES BridgeUserCompanyAccess"
+                  startId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess.Paths[DER Error Handling_Output_DER Audit]"
+                  endId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Audit.Inputs[DER Error Handling_Output_DER Audit]"
+                  name="DER Error Handling_Output_DER Audit"
+                  startId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Error Handling.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess.Paths[LKP Company_Match_LKP SystemUser]"
+                  endId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Inputs[LKP Company_Match_LKP SystemUser]"
+                  name="LKP Company_Match_LKP SystemUser"
+                  startId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Outputs[Match]" />
+                <path
+                  refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess.Paths[LKP SystemUser_Match_DER Error Handling]"
+                  endId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\DER Error Handling.Inputs[LKP SystemUser_Match_DER Error Handling]"
+                  name="LKP SystemUser_Match_DER Error Handling"
+                  startId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP SystemUser.Outputs[Match]" />
+                <path
+                  refId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess.Paths[OLE SRC UserCompanyAccess_Output_LKP Company]"
+                  endId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\LKP Company.Inputs[OLE SRC UserCompanyAccess_Output_LKP Company]"
+                  name="OLE SRC UserCompanyAccess_Output_LKP Company"
+                  startId="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess\OLE SRC UserCompanyAccess.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC FullLoad BridgeUserCompanyAccess\SQL Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{38B73C9B-5BCC-4A7B-ABE1-309B0C3E0CD7}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{69FE39AD-80EF-463E-8594-AAADE65FD9BA}"
+              SQLTask:SqlStatementSource="&#xA;         EXEC('TRUNCATE TABLE ' + ?)&#xA;        " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC FullLoad BridgeUserCompanyAccess.PrecedenceConstraints[Constraint_SQL Truncate Table_To_DFT LoadBridgeUserCompanyAccess]"
+          DTS:CreationName=""
+          DTS:DTSID="{2D370CCD-32E1-4272-88D8-92022B655A2F}"
+          DTS:From="Package\SEQC FullLoad BridgeUserCompanyAccess\SQL Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_SQL Truncate Table_To_DFT LoadBridgeUserCompanyAccess"
+          DTS:To="Package\SEQC FullLoad BridgeUserCompanyAccess\DFT LoadBridgeUserCompanyAccess" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+</DTS:Executable>

@@ -1,0 +1,1146 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="1/2/2017 11:54:24 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="bbj-ext"
+  DTS:DTSID="{2CB1E729-9D78-4A8C-95D5-C65F819B24B2}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Extractnavcom_Company"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="7"
+  DTS:VersionGUID="{D6728956-1C91-435D-BE2E-9F0298BB99CB}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{11A51C1A-6070-4578-8191-C17282614B25}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[NavisionCommon]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{45BCAFF7-89E4-46BF-9568-CFC8842D6A69}"
+      DTS:ObjectName="NavisionCommon">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringNavisionCommon]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=financialsdk;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=True;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{62099EC7-0DC3-4C84-993E-1C3E899C6EBE}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ExtractTable">
+      <DTS:VariableValue
+        DTS:DataType="8">navcom.[Company]</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\EST Truncate Extract Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{75FD38DE-8A52-4B0B-83E7-346EDA284115}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST Truncate Extract Table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{11A51C1A-6070-4578-8191-C17282614B25}"
+          SQLTask:SqlStatementSource="truncate table navcom.[Company]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Extract Data"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:DTSID="{C7430DB4-1E0A-499F-9FCF-29E6D5F10AB7}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Extract Data"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          BLOBTempStoragePath=""
+          bufferTempStoragePath=""
+          version="1">
+          <components>
+            <component
+              refId="Package\Extract Data\Convert datatypes"
+              componentClassID="Microsoft.DataConvert"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              name="Convert datatypes"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes]"
+                  name="ODS Source_Output_Convert datatypes">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="30"
+                      cachedName="Name"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Name]" />
+                    <inputColumn
+                      refId="Package\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Company Country Code]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="Company Country Code"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Company Country Code]" />
+                    <inputColumn
+                      refId="Package\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Replication ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="5"
+                      cachedName="Replication ID"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Replication ID]" />
+                    <inputColumn
+                      refId="Package\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Server]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="13"
+                      cachedName="Server"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Server]" />
+                    <inputColumn
+                      refId="Package\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[SQL database]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="SQL database"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[SQL database]" />
+                    <inputColumn
+                      refId="Package\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes].Columns[Web Service Name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="80"
+                      cachedName="Web Service Name"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Web Service Name]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Extract Data\Convert datatypes.Outputs[Output]"
+                  exclusionGroup="1"
+                  name="Output"
+                  synchronousInputId="Package\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract Data\Convert datatypes.Outputs[Output].Columns[Name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="30"
+                      lineageId="Package\Extract Data\Convert datatypes.Outputs[Output].Columns[Name]"
+                      name="Name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Extract Data\ODS Source.Outputs[Output].Columns[Name]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Extract Data\Convert datatypes.Outputs[Output].Columns[Company Country Code]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="10"
+                      lineageId="Package\Extract Data\Convert datatypes.Outputs[Output].Columns[Company Country Code]"
+                      name="Company Country Code"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Extract Data\ODS Source.Outputs[Output].Columns[Company Country Code]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Extract Data\Convert datatypes.Outputs[Output].Columns[Replication ID]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="5"
+                      lineageId="Package\Extract Data\Convert datatypes.Outputs[Output].Columns[Replication ID]"
+                      name="Replication ID"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Extract Data\ODS Source.Outputs[Output].Columns[Replication ID]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Extract Data\Convert datatypes.Outputs[Output].Columns[Server]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="13"
+                      lineageId="Package\Extract Data\Convert datatypes.Outputs[Output].Columns[Server]"
+                      name="Server"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Extract Data\ODS Source.Outputs[Output].Columns[Server]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Extract Data\Convert datatypes.Outputs[Output].Columns[SQL database]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="10"
+                      lineageId="Package\Extract Data\Convert datatypes.Outputs[Output].Columns[SQL database]"
+                      name="SQL database"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Extract Data\ODS Source.Outputs[Output].Columns[SQL database]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Extract Data\Convert datatypes.Outputs[Output].Columns[Web Service Name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="80"
+                      lineageId="Package\Extract Data\Convert datatypes.Outputs[Output].Columns[Web Service Name]"
+                      name="Web Service Name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Extract Data\ODS Source.Outputs[Output].Columns[Web Service Name]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Extract Data\Convert datatypes.Outputs[Error]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Error"
+                  synchronousInputId="Package\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract Data\Convert datatypes.Outputs[Error].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Extract Data\Convert datatypes.Outputs[Error].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Extract Data\Convert datatypes.Outputs[Error].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Extract Data\Convert datatypes.Outputs[Error].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Extract Data\DER System Columns"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              name="DER System Columns"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Extract Data\DER System Columns.Inputs[Convert datatypes_Output_DER System Columns]"
+                  name="Convert datatypes_Output_DER System Columns">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Extract Data\DER System Columns.Outputs[Output]"
+                  exclusionGroup="1"
+                  name="Output"
+                  synchronousInputId="Package\Extract Data\DER System Columns.Inputs[Convert datatypes_Output_DER System Columns]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract Data\DER System Columns.Outputs[Output].Columns[DWCreatedDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Extract Data\DER System Columns.Outputs[Output].Columns[DWCreatedDate]"
+                      name="DWCreatedDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">getdate()</property>
+                        <property
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">getdate()</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Extract Data\DER System Columns.Outputs[Error]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Error"
+                  synchronousInputId="Package\Extract Data\DER System Columns.Inputs[Convert datatypes_Output_DER System Columns]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract Data\DER System Columns.Outputs[Error].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Extract Data\DER System Columns.Outputs[Error].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Extract Data\DER System Columns.Outputs[Error].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Extract Data\DER System Columns.Outputs[Error].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Extract Data\ODD Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              name="ODD Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable">User::ExtractTable</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode">4</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Extract Data\ODD Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Extract]"
+                  connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="DER System Columns_Output_ODD Destination">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[DWCreatedDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="DWCreatedDate"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[DWCreatedDate]"
+                      lineageId="Package\Extract Data\DER System Columns.Outputs[Output].Columns[DWCreatedDate]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Name]"
+                      cachedDataType="wstr"
+                      cachedLength="30"
+                      cachedName="Name"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Name]"
+                      lineageId="Package\Extract Data\Convert datatypes.Outputs[Output].Columns[Name]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Company Country Code]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="Company Country Code"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Company Country Code]"
+                      lineageId="Package\Extract Data\Convert datatypes.Outputs[Output].Columns[Company Country Code]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Replication ID]"
+                      cachedDataType="wstr"
+                      cachedLength="5"
+                      cachedName="Replication ID"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Replication ID]"
+                      lineageId="Package\Extract Data\Convert datatypes.Outputs[Output].Columns[Replication ID]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Server]"
+                      cachedDataType="wstr"
+                      cachedLength="13"
+                      cachedName="Server"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Server]"
+                      lineageId="Package\Extract Data\Convert datatypes.Outputs[Output].Columns[Server]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[SQL database]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="SQL database"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[SQL database]"
+                      lineageId="Package\Extract Data\Convert datatypes.Outputs[Output].Columns[SQL database]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Web Service Name]"
+                      cachedDataType="wstr"
+                      cachedLength="80"
+                      cachedName="Web Service Name"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Web Service Name]"
+                      lineageId="Package\Extract Data\Convert datatypes.Outputs[Output].Columns[Web Service Name]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[timestamp]"
+                      cachedDataType="bytes"
+                      cachedLength="8"
+                      cachedName="timestamp"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[timestamp]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[timestamp]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Email Enabled]"
+                      cachedDataType="ui1"
+                      cachedName="Email Enabled"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Email Enabled]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Email Enabled]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Company ID]"
+                      cachedDataType="i4"
+                      cachedName="Company ID"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Company ID]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Company ID]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Web Enabled]"
+                      cachedDataType="i4"
+                      cachedName="Web Enabled"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Web Enabled]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Web Enabled]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Default Server No]"
+                      cachedDataType="i4"
+                      cachedName="Default Server No"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Default Server No]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Default Server No]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[BI Enabled]"
+                      cachedDataType="ui1"
+                      cachedName="BI Enabled"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[BI Enabled]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[BI Enabled]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[timestamp]"
+                      dataType="bytes"
+                      length="8"
+                      name="timestamp" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Name]"
+                      dataType="wstr"
+                      length="30"
+                      name="Name" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Email Enabled]"
+                      dataType="ui1"
+                      name="Email Enabled" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Company ID]"
+                      dataType="i4"
+                      name="Company ID" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Company Country Code]"
+                      dataType="wstr"
+                      length="10"
+                      name="Company Country Code" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Replication ID]"
+                      dataType="wstr"
+                      length="5"
+                      name="Replication ID" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[BI Enabled]"
+                      dataType="ui1"
+                      name="BI Enabled" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Server]"
+                      dataType="wstr"
+                      length="13"
+                      name="Server" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[SQL database]"
+                      dataType="wstr"
+                      length="10"
+                      name="SQL database" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Web Enabled]"
+                      dataType="i4"
+                      name="Web Enabled" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Web Service Name]"
+                      dataType="wstr"
+                      length="80"
+                      name="Web Service Name" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Default Server No]"
+                      dataType="i4"
+                      name="Default Server No" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[DWCreatedDate]"
+                      dataType="dbTimeStamp"
+                      name="DWCreatedDate" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Extract Data\ODD Destination.Outputs[Error]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Error"
+                  synchronousInputId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract Data\ODD Destination.Outputs[Error].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Extract Data\ODD Destination.Outputs[Error].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODD Destination.Outputs[Error].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Extract Data\ODD Destination.Outputs[Error].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Extract Data\ODS Source"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              name="ODS Source"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select 
+							[timestamp], [Name], [Email Enabled], [Company ID], [Company Country Code], [Replication ID], [Server],[BI Enabled], [SQL database], [Web Enabled], [Web Service Name], [Default Server No]
+						from 
+							dbo.[Company]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Extract Data\ODS Source.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[NavisionCommon]"
+                  connectionManagerRefId="Package.ConnectionManagers[NavisionCommon]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Extract Data\ODS Source.Outputs[Output]"
+                  name="Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[timestamp]"
+                      dataType="bytes"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[timestamp]"
+                      length="8"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[timestamp]"
+                      name="timestamp"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Name]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Name]"
+                      length="30"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Name]"
+                      name="Name"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Email Enabled]"
+                      dataType="ui1"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Email Enabled]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Email Enabled]"
+                      name="Email Enabled"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Company ID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Company ID]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Company ID]"
+                      name="Company ID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Company Country Code]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Company Country Code]"
+                      length="10"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Company Country Code]"
+                      name="Company Country Code"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Replication ID]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Replication ID]"
+                      length="5"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Replication ID]"
+                      name="Replication ID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Server]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Server]"
+                      length="13"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Server]"
+                      name="Server"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[SQL database]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[SQL database]"
+                      length="10"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[SQL database]"
+                      name="SQL database"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Web Enabled]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Web Enabled]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Web Enabled]"
+                      name="Web Enabled"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Web Service Name]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Web Service Name]"
+                      length="80"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Web Service Name]"
+                      name="Web Service Name"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Default Server No]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Default Server No]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Default Server No]"
+                      name="Default Server No"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[BI Enabled]"
+                      dataType="ui1"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[BI Enabled]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[BI Enabled]"
+                      name="BI Enabled"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[timestamp]"
+                      dataType="bytes"
+                      length="8"
+                      name="timestamp" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="Name" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Email Enabled]"
+                      dataType="ui1"
+                      name="Email Enabled" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Company ID]"
+                      dataType="i4"
+                      name="Company ID" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Company Country Code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="Company Country Code" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Replication ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="5"
+                      name="Replication ID" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Server]"
+                      codePage="1252"
+                      dataType="str"
+                      length="13"
+                      name="Server" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[SQL database]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="SQL database" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Web Enabled]"
+                      dataType="i4"
+                      name="Web Enabled" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Web Service Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="80"
+                      name="Web Service Name" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Default Server No]"
+                      dataType="i4"
+                      name="Default Server No" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[BI Enabled]"
+                      dataType="ui1"
+                      name="BI Enabled" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Extract Data\ODS Source.Outputs[Error]"
+                  isErrorOut="true"
+                  name="Error">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[timestamp]"
+                      dataType="bytes"
+                      length="8"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[timestamp]"
+                      name="timestamp" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Name]"
+                      name="Name" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Email Enabled]"
+                      dataType="ui1"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Email Enabled]"
+                      name="Email Enabled" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Company ID]"
+                      dataType="i4"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Company ID]"
+                      name="Company ID" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Company Country Code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Company Country Code]"
+                      name="Company Country Code" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Replication ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="5"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Replication ID]"
+                      name="Replication ID" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Server]"
+                      codePage="1252"
+                      dataType="str"
+                      length="13"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Server]"
+                      name="Server" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[BI Enabled]"
+                      dataType="ui1"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[BI Enabled]"
+                      name="BI Enabled" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[SQL database]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[SQL database]"
+                      name="SQL database" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Web Enabled]"
+                      dataType="i4"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Web Enabled]"
+                      name="Web Enabled" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Web Service Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="80"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Web Service Name]"
+                      name="Web Service Name" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Default Server No]"
+                      dataType="i4"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Default Server No]"
+                      name="Default Server No" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Extract Data.Paths[Convert datatypes_Output_DER System Columns]"
+              endId="Package\Extract Data\DER System Columns.Inputs[Convert datatypes_Output_DER System Columns]"
+              name="Convert datatypes_Output_DER System Columns"
+              startId="Package\Extract Data\Convert datatypes.Outputs[Output]" />
+            <path
+              refId="Package\Extract Data.Paths[DER System Columns_Output_ODD Destination]"
+              endId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination]"
+              name="DER System Columns_Output_ODD Destination"
+              startId="Package\Extract Data\DER System Columns.Outputs[Output]" />
+            <path
+              refId="Package\Extract Data.Paths[ODS Source_Output_Convert datatypes]"
+              endId="Package\Extract Data\Convert datatypes.Inputs[ODS Source_Output_Convert datatypes]"
+              name="ODS Source_Output_Convert datatypes"
+              startId="Package\Extract Data\ODS Source.Outputs[Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_EST Truncate Extract Table_To_Extract Data]"
+      DTS:CreationName=""
+      DTS:DTSID="{55B5BC4C-C6AE-416D-A3E4-B3BF28ED8965}"
+      DTS:From="Package\EST Truncate Extract Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_EST Truncate Extract Table_To_Extract Data"
+      DTS:To="Package\Extract Data" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="207,42"
+          Id="Package\EST Truncate Extract Table"
+          TopLeft="5.50000000000001,5.5" />
+        <NodeLayout
+          Size="137,42"
+          Id="Package\Extract Data"
+          TopLeft="46.5,110.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_EST Truncate Extract Table_To_Extract Data]"
+          TopLeft="112,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,63"
+              Start="0,0"
+              End="0,55.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,55.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Extract Data">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="157,42"
+          Id="Package\Extract Data\ODD Destination"
+          TopLeft="17,311.5" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\Extract Data\DER System Columns"
+          TopLeft="5.50000000000003,209.5" />
+        <NodeLayout
+          Size="165,42"
+          Id="Package\Extract Data\Convert datatypes"
+          TopLeft="13,107.5" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\Extract Data\ODS Source"
+          TopLeft="28,5.5" />
+        <EdgeLayout
+          Id="Package\Extract Data.Paths[ODS Source_Output_Convert datatypes]"
+          TopLeft="95.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Extract Data.Paths[DER System Columns_Output_ODD Destination]"
+          TopLeft="95.5,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Extract Data.Paths[Convert datatypes_Output_DER System Columns]"
+          TopLeft="95.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Extract Data\ODD Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Extract Data\ODS Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

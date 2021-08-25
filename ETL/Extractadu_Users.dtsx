@@ -1,0 +1,1310 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="5/17/2017 3:14:36 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="taa-ext"
+  DTS:DTSID="{F064116B-1E34-40E7-AAB0-7B41BB66229C}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Extractadu_Users"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="7"
+  DTS:VersionGUID="{0420A275-AF1C-490B-B0CA-82E2E87281AB}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[ADUsers]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{92CB23E5-AC5F-446E-8B32-21DCACBAB1A7}"
+      DTS:ObjectName="ADUsers">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringADUsers]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=SQL;Initial Catalog=AD_Users;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=True;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{97ECF4D9-6411-46D7-BA30-D2F31A9E580E}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{5CB0024B-72EC-4A15-8D78-169EC685532E}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ExtractTable">
+      <DTS:VariableValue
+        DTS:DataType="8">adu.[Users]</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\EST Truncate Extract Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{053CE904-3DC8-4EC0-B7F0-FD26600D6AAC}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST Truncate Extract Table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{97ECF4D9-6411-46D7-BA30-D2F31A9E580E}"
+          SQLTask:SqlStatementSource="truncate table adu.[Users]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Extract Data"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:DTSID="{371BBBE9-7589-4CC2-9692-F09D6439D84E}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Extract Data"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          BLOBTempStoragePath=""
+          bufferTempStoragePath=""
+          version="1">
+          <components>
+            <component
+              refId="Package\Extract Data\DER System Columns"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              name="DER System Columns"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Extract Data\DER System Columns.Inputs[ODS Source_Output_DER System Columns]"
+                  name="ODS Source_Output_DER System Columns">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Extract Data\DER System Columns.Outputs[Output]"
+                  exclusionGroup="1"
+                  name="Output"
+                  synchronousInputId="Package\Extract Data\DER System Columns.Inputs[ODS Source_Output_DER System Columns]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract Data\DER System Columns.Outputs[Output].Columns[DWCreatedDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Extract Data\DER System Columns.Outputs[Output].Columns[DWCreatedDate]"
+                      name="DWCreatedDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">getdate()</property>
+                        <property
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">getdate()</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Extract Data\DER System Columns.Outputs[Error]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Error"
+                  synchronousInputId="Package\Extract Data\DER System Columns.Inputs[ODS Source_Output_DER System Columns]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract Data\DER System Columns.Outputs[Error].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Extract Data\DER System Columns.Outputs[Error].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Extract Data\DER System Columns.Outputs[Error].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Extract Data\DER System Columns.Outputs[Error].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Extract Data\ODD Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              name="ODD Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable">User::ExtractTable</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode">4</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Extract Data\ODD Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Extract]"
+                  connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="DER System Columns_Output_ODD Destination">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[DWCreatedDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="DWCreatedDate"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[DWCreatedDate]"
+                      lineageId="Package\Extract Data\DER System Columns.Outputs[Output].Columns[DWCreatedDate]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[SID]"
+                      cachedDataType="nText"
+                      cachedName="SID"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[SID]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[SID]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Name]"
+                      cachedDataType="nText"
+                      cachedName="Name"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Name]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Name]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Initials]"
+                      cachedDataType="nText"
+                      cachedName="Initials"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Initials]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Initials]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Username]"
+                      cachedDataType="nText"
+                      cachedName="Username"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Username]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Username]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Enabled]"
+                      cachedDataType="nText"
+                      cachedName="Enabled"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Enabled]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Enabled]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[EmailAddress]"
+                      cachedDataType="nText"
+                      cachedName="EmailAddress"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[EmailAddress]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[EmailAddress]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Title]"
+                      cachedDataType="nText"
+                      cachedName="Title"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Title]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Title]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Department]"
+                      cachedDataType="nText"
+                      cachedName="Department"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Department]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Department]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Company]"
+                      cachedDataType="nText"
+                      cachedName="Company"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Company]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Company]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Manager]"
+                      cachedDataType="nText"
+                      cachedName="Manager"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Manager]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Manager]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Phone]"
+                      cachedDataType="nText"
+                      cachedName="Phone"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Phone]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Phone]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Mobile]"
+                      cachedDataType="nText"
+                      cachedName="Mobile"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Mobile]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Mobile]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[SkypeEnabled]"
+                      cachedDataType="nText"
+                      cachedName="SkypeEnabled"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[SkypeEnabled]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[SkypeEnabled]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[City]"
+                      cachedDataType="nText"
+                      cachedName="City"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[City]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[City]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[StreetAddress]"
+                      cachedDataType="nText"
+                      cachedName="StreetAddress"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[StreetAddress]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[StreetAddress]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[PostalCode]"
+                      cachedDataType="nText"
+                      cachedName="PostalCode"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[PostalCode]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[PostalCode]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[Country]"
+                      cachedDataType="nText"
+                      cachedName="Country"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Country]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Country]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[eetAccountType]"
+                      cachedDataType="nText"
+                      cachedName="eetAccountType"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[eetAccountType]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[eetAccountType]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[eetDepartment]"
+                      cachedDataType="nText"
+                      cachedName="eetDepartment"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[eetDepartment]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[eetDepartment]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[eetJobFunction]"
+                      cachedDataType="nText"
+                      cachedName="eetJobFunction"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[eetJobFunction]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[eetJobFunction]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[eetWorkArea]"
+                      cachedDataType="nText"
+                      cachedName="eetWorkArea"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[eetWorkArea]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[eetWorkArea]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[eetLocation]"
+                      cachedDataType="nText"
+                      cachedName="eetLocation"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[eetLocation]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[eetLocation]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[eetRID]"
+                      cachedDataType="nText"
+                      cachedName="eetRID"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[eetRID]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[eetRID]" />
+                    <inputColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].Columns[SecondaryEmailAddress]"
+                      cachedDataType="wstr"
+                      cachedLength="30"
+                      cachedName="SecondaryEmailAddress"
+                      externalMetadataColumnId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[SecondaryEmailAddresses]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[SecondaryEmailAddress]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[SID]"
+                      dataType="nText"
+                      name="SID" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Name]"
+                      dataType="nText"
+                      name="Name" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Initials]"
+                      dataType="nText"
+                      name="Initials" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Username]"
+                      dataType="nText"
+                      name="Username" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Enabled]"
+                      dataType="nText"
+                      name="Enabled" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[EmailAddress]"
+                      dataType="nText"
+                      name="EmailAddress" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[SecondaryEmailAddresses]"
+                      dataType="nText"
+                      name="SecondaryEmailAddresses" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Title]"
+                      dataType="nText"
+                      name="Title" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Department]"
+                      dataType="nText"
+                      name="Department" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Company]"
+                      dataType="nText"
+                      name="Company" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Manager]"
+                      dataType="nText"
+                      name="Manager" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Phone]"
+                      dataType="nText"
+                      name="Phone" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Mobile]"
+                      dataType="nText"
+                      name="Mobile" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[SkypeEnabled]"
+                      dataType="nText"
+                      name="SkypeEnabled" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[City]"
+                      dataType="nText"
+                      name="City" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[StreetAddress]"
+                      dataType="nText"
+                      name="StreetAddress" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[PostalCode]"
+                      dataType="nText"
+                      name="PostalCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[Country]"
+                      dataType="nText"
+                      name="Country" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[eetAccountType]"
+                      dataType="nText"
+                      name="eetAccountType" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[eetDepartment]"
+                      dataType="nText"
+                      name="eetDepartment" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[eetJobFunction]"
+                      dataType="nText"
+                      name="eetJobFunction" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[eetWorkArea]"
+                      dataType="nText"
+                      name="eetWorkArea" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[eetLocation]"
+                      dataType="nText"
+                      name="eetLocation" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[eetRID]"
+                      dataType="nText"
+                      name="eetRID" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination].ExternalColumns[DWCreatedDate]"
+                      dataType="dbTimeStamp"
+                      name="DWCreatedDate" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Extract Data\ODD Destination.Outputs[Error]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Error"
+                  synchronousInputId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract Data\ODD Destination.Outputs[Error].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Extract Data\ODD Destination.Outputs[Error].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODD Destination.Outputs[Error].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Extract Data\ODD Destination.Outputs[Error].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Extract Data\ODS Source"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              name="ODS Source"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">with extracted as (
+	select 
+	   [SID]
+      ,[Name]
+      ,[Initials]
+      ,[Username]
+      ,[Enabled]
+      ,[EmailAddress]
+	  ,replace(
+			[SecondaryEmailAddresses], 
+			'smtp:', 
+			'$') as [SecondaryEmailAddresses]
+	  ,[Title]
+      ,[Department]
+      ,[Company]
+      ,[Manager]
+      ,[Phone]
+      ,[Mobile]
+      ,[SkypeEnabled]
+      ,[City]
+      ,[StreetAddress]
+      ,[PostalCode]
+      ,[Country]
+      ,[eetAccountType]
+      ,[eetDepartment]
+      ,[eetJobFunction]
+      ,[eetWorkArea]
+      ,[eetLocation]
+      ,[eetRID]
+	from [AD_Users].[dw].[ALL_UserInformations]
+), split as (
+	select
+		[SID]
+      ,[Name]
+      ,[Initials]
+      ,[Username]
+      ,[Enabled]
+      ,[EmailAddress]
+	  ,LTRIM(RTRIM(m.n.value('.[1]','varchar(8000)'))) as SecondaryEmailAddresses
+	  ,[Title]
+      ,[Department]
+      ,[Company]
+      ,[Manager]
+      ,[Phone]
+      ,[Mobile]
+      ,[SkypeEnabled]
+      ,[City]
+      ,[StreetAddress]
+      ,[PostalCode]
+      ,[Country]
+      ,[eetAccountType]
+      ,[eetDepartment]
+      ,[eetJobFunction]
+      ,[eetWorkArea]
+      ,[eetLocation]
+      ,[eetRID]
+	from
+		(
+		select 
+			 [SID]
+			,[Name]
+			,[Initials]
+			,[Username]
+			,[Enabled]
+			,[EmailAddress]
+			,cast('&lt;XMLRoot&gt;&lt;RowData&gt;' + replace(SecondaryEmailAddresses,'$','&lt;/RowData&gt;&lt;RowData&gt;') + '&lt;/RowData&gt;&lt;/XMLRoot&gt;' as XML) as x
+			,[Title]
+			,[Department]
+			,[Company]
+			,[Manager]
+			,[Phone]
+			,[Mobile]
+			,[SkypeEnabled]
+			,[City]
+			,[StreetAddress]
+			,[PostalCode]
+			,[Country]
+			,[eetAccountType]
+			,[eetDepartment]
+			,[eetJobFunction]
+			,[eetWorkArea]
+			,[eetLocation]
+			,[eetRID]
+		from extracted
+		) t
+		CROSS APPLY x.nodes('/XMLRoot/RowData')m(n)
+	), mainCTE as (
+	select
+		left(SecondaryEmailAddresses, 
+			case 
+				when charindex(' ', SecondaryEmailAddresses) = 0 then len (SecondaryEmailAddresses) 
+				else charindex(' ', SecondaryEmailAddresses) - 1 
+			end
+			) as SecondaryEmailAddress
+		,*
+	from split
+	)
+
+	select distinct
+			 [SID]
+			,[Name]
+			,[Initials]
+			,[Username]
+			,[Enabled]
+			,[EmailAddress]
+			,convert(nvarchar,case 
+				when SecondaryEmailAddress like 'X400%' or SecondaryEmailAddress like 'Not%' then ''
+				when EmailAddress = SecondaryEmailAddress then ''
+				else SecondaryEmailAddress
+			 end) as SecondaryEmailAddress
+			,[Title]
+			,[Department]
+			,[Company]
+			,[Manager]
+			,[Phone]
+			,[Mobile]
+			,[SkypeEnabled]
+			,[City]
+			,[StreetAddress]
+			,[PostalCode]
+			,[Country]
+			,[eetAccountType]
+			,[eetDepartment]
+			,[eetJobFunction]
+			,[eetWorkArea]
+			,[eetLocation]
+			,[eetRID]
+	from mainCTE
+--	where EmailAddress != SecondaryEmailAddress</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Extract Data\ODS Source.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[ADUsers]"
+                  connectionManagerRefId="Package.ConnectionManagers[ADUsers]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Extract Data\ODS Source.Outputs[Output]"
+                  name="Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[SID]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[SID]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[SID]"
+                      name="SID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Name]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Name]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Name]"
+                      name="Name"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Initials]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Initials]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Initials]"
+                      name="Initials"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Username]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Username]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Username]"
+                      name="Username"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Enabled]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Enabled]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Enabled]"
+                      name="Enabled"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[EmailAddress]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[EmailAddress]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[EmailAddress]"
+                      name="EmailAddress"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Title]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Title]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Title]"
+                      name="Title"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Department]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Department]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Department]"
+                      name="Department"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Company]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Company]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Company]"
+                      name="Company"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Manager]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Manager]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Manager]"
+                      name="Manager"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Phone]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Phone]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Phone]"
+                      name="Phone"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Mobile]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Mobile]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Mobile]"
+                      name="Mobile"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[SkypeEnabled]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[SkypeEnabled]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[SkypeEnabled]"
+                      name="SkypeEnabled"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[City]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[City]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[City]"
+                      name="City"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[StreetAddress]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[StreetAddress]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[StreetAddress]"
+                      name="StreetAddress"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[PostalCode]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[PostalCode]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[PostalCode]"
+                      name="PostalCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Country]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Country]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[Country]"
+                      name="Country"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[eetAccountType]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[eetAccountType]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[eetAccountType]"
+                      name="eetAccountType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[eetDepartment]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[eetDepartment]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[eetDepartment]"
+                      name="eetDepartment"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[eetJobFunction]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[eetJobFunction]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[eetJobFunction]"
+                      name="eetJobFunction"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[eetWorkArea]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[eetWorkArea]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[eetWorkArea]"
+                      name="eetWorkArea"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[eetLocation]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[eetLocation]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[eetLocation]"
+                      name="eetLocation"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[eetRID]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[eetRID]"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[eetRID]"
+                      name="eetRID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].Columns[SecondaryEmailAddress]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[SecondaryEmailAddress]"
+                      length="30"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Output].Columns[SecondaryEmailAddress]"
+                      name="SecondaryEmailAddress"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[SID]"
+                      dataType="nText"
+                      name="SID" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Name]"
+                      dataType="nText"
+                      name="Name" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Initials]"
+                      dataType="nText"
+                      name="Initials" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Username]"
+                      dataType="nText"
+                      name="Username" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Enabled]"
+                      dataType="nText"
+                      name="Enabled" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[EmailAddress]"
+                      dataType="nText"
+                      name="EmailAddress" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Title]"
+                      dataType="nText"
+                      name="Title" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Department]"
+                      dataType="nText"
+                      name="Department" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Company]"
+                      dataType="nText"
+                      name="Company" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Manager]"
+                      dataType="nText"
+                      name="Manager" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Phone]"
+                      dataType="nText"
+                      name="Phone" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Mobile]"
+                      dataType="nText"
+                      name="Mobile" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[SkypeEnabled]"
+                      dataType="nText"
+                      name="SkypeEnabled" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[City]"
+                      dataType="nText"
+                      name="City" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[StreetAddress]"
+                      dataType="nText"
+                      name="StreetAddress" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[PostalCode]"
+                      dataType="nText"
+                      name="PostalCode" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[Country]"
+                      dataType="nText"
+                      name="Country" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[eetAccountType]"
+                      dataType="nText"
+                      name="eetAccountType" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[eetDepartment]"
+                      dataType="nText"
+                      name="eetDepartment" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[eetJobFunction]"
+                      dataType="nText"
+                      name="eetJobFunction" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[eetWorkArea]"
+                      dataType="nText"
+                      name="eetWorkArea" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[eetLocation]"
+                      dataType="nText"
+                      name="eetLocation" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[eetRID]"
+                      dataType="nText"
+                      name="eetRID" />
+                    <externalMetadataColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Output].ExternalColumns[SecondaryEmailAddress]"
+                      dataType="wstr"
+                      length="30"
+                      name="SecondaryEmailAddress" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Extract Data\ODS Source.Outputs[Error]"
+                  isErrorOut="true"
+                  name="Error">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[SID]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[SID]"
+                      name="SID" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Name]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Name]"
+                      name="Name" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Initials]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Initials]"
+                      name="Initials" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Username]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Username]"
+                      name="Username" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Enabled]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Enabled]"
+                      name="Enabled" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[EmailAddress]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[EmailAddress]"
+                      name="EmailAddress" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[SecondaryEmailAddress]"
+                      dataType="wstr"
+                      length="30"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[SecondaryEmailAddress]"
+                      name="SecondaryEmailAddress" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Title]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Title]"
+                      name="Title" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Department]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Department]"
+                      name="Department" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Company]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Company]"
+                      name="Company" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Manager]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Manager]"
+                      name="Manager" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Phone]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Phone]"
+                      name="Phone" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Mobile]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Mobile]"
+                      name="Mobile" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[SkypeEnabled]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[SkypeEnabled]"
+                      name="SkypeEnabled" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[City]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[City]"
+                      name="City" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[StreetAddress]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[StreetAddress]"
+                      name="StreetAddress" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[PostalCode]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[PostalCode]"
+                      name="PostalCode" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Country]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[Country]"
+                      name="Country" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[eetAccountType]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[eetAccountType]"
+                      name="eetAccountType" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[eetDepartment]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[eetDepartment]"
+                      name="eetDepartment" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[eetJobFunction]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[eetJobFunction]"
+                      name="eetJobFunction" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[eetWorkArea]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[eetWorkArea]"
+                      name="eetWorkArea" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[eetLocation]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[eetLocation]"
+                      name="eetLocation" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[eetRID]"
+                      dataType="nText"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[eetRID]"
+                      name="eetRID" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Extract Data\ODS Source.Outputs[Error].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Extract Data\ODS Source.Outputs[Error].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Extract Data.Paths[DER System Columns_Output_ODD Destination]"
+              endId="Package\Extract Data\ODD Destination.Inputs[DER System Columns_Output_ODD Destination]"
+              name="DER System Columns_Output_ODD Destination"
+              startId="Package\Extract Data\DER System Columns.Outputs[Output]" />
+            <path
+              refId="Package\Extract Data.Paths[ODS Source_Output_DER System Columns]"
+              endId="Package\Extract Data\DER System Columns.Inputs[ODS Source_Output_DER System Columns]"
+              name="ODS Source_Output_DER System Columns"
+              startId="Package\Extract Data\ODS Source.Outputs[Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_EST Truncate Extract Table_To_Extract Data]"
+      DTS:CreationName=""
+      DTS:DTSID="{6B287E40-41D5-476A-8A2D-FCA9A47A0023}"
+      DTS:From="Package\EST Truncate Extract Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_EST Truncate Extract Table_To_Extract Data"
+      DTS:To="Package\Extract Data" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="207,42"
+          Id="Package\EST Truncate Extract Table"
+          TopLeft="5.50000000000001,5.5" />
+        <NodeLayout
+          Size="137,42"
+          Id="Package\Extract Data"
+          TopLeft="40.5,107.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_EST Truncate Extract Table_To_Extract Data]"
+          TopLeft="109,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Extract Data">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="157,42"
+          Id="Package\Extract Data\ODD Destination"
+          TopLeft="17,209.5" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\Extract Data\DER System Columns"
+          TopLeft="5.50000000000003,107.5" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\Extract Data\ODS Source"
+          TopLeft="28,5.5" />
+        <EdgeLayout
+          Id="Package\Extract Data.Paths[ODS Source_Output_DER System Columns]"
+          TopLeft="95.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Extract Data.Paths[DER System Columns_Output_ODD Destination]"
+          TopLeft="95.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Extract Data\ODD Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Extract Data\ODS Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

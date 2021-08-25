@@ -1,0 +1,166 @@
+	<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+	<#@ template language="C#" tier="4" #>
+	<#@ include file="biml/_IncludeFrameworkGlobals.biml" #>
+
+	<!--Create Dummy stage tables and Get Meta Data-->
+	<# 
+	ExternalDataAccess.GetDataTable(conMeta, @"EXEC [utility].[CreateStageTablesFromBusinessMatrix]");
+	DataTable TableMeta = ExternalDataAccess.GetDataTable(conMeta, @"SELECT [TableName],[ExtractSchemaName],[DestinationSchema],[CompanyName], [ExcludeFlag] FROM [etl].[TransformNavisionDefinitions] WHERE RowNumber = 1");
+	DataTable TableID = ExternalDataAccess.GetDataTable(conMeta, @"SELECT [ID] FROM [etl].[BusinessMatrixTransformSetup] WHERE ExcludeFlag = 0");
+	#>
+
+		<Connections>
+			<# foreach(DataRow row in ApplicationConnections.Rows) {#>
+			<OleDbConnection Name="<#=row["Name"]#>" ConnectionString="<#=row["ConnectionString"]#>"></OleDbConnection>
+			<#}#>
+		</Connections>
+
+		<Projects>
+			<PackageProject Name="SSIS" ProtectionLevel="DontSaveSensitive">
+				<Parameters>
+					<Parameter Name="EnvironmentSQLServer" DataType="String" IsRequired="false" IsSensitive="false"></Parameter>
+					<Parameter Name="ConnectionStringDW_Stage" DataType="String" IsRequired="false" IsSensitive="false"></Parameter>
+					<Parameter Name="ConnectionStringDW_Extract" DataType="String" IsRequired="false" IsSensitive="false"></Parameter>
+					<Parameter Name="ConnectionStringDW_Meta" DataType="String" IsRequired="false" IsSensitive="false"></Parameter>
+				</Parameters>
+				<Packages>
+					<# foreach(DataRow RowMeta in TableMeta.Select("ExcludeFlag = 0"))  {#>
+						<Package IsEntryPoint="true" PackageName="Transform_<#=RowMeta["TableName"]#>"></Package>
+					<#}#>
+				</Packages>
+			</PackageProject>
+		</Projects>
+			
+			
+	<Packages>
+		<# foreach(DataRow RowMeta in TableMeta.Select("ExcludeFlag = 0"))	{#>
+
+		<Package ConstraintMode="Linear" Name="Transform_<#=RowMeta["TableName"]#>">
+			<Connections>
+				<Connection ConnectionName="Stage">
+					<Expressions>
+						<Expression PropertyName="Stage.ConnectionString" >@[$Project::ConnectionStringDW_Stage]</Expression>
+					</Expressions>
+				</Connection>
+				<Connection ConnectionName="Extract">
+					<Expressions>
+						<Expression PropertyName="Extract.ConnectionString" >@[$Project::ConnectionStringDW_Extract]</Expression>
+					</Expressions>
+				</Connection>
+				<Connection ConnectionName="Meta">
+					<Expressions>
+						<Expression PropertyName="Meta.ConnectionString" >@[$Project::ConnectionStringDW_Meta]</Expression>
+					</Expressions>
+				</Connection>
+			</Connections>
+			<Variables>
+				<Variable DataType="String" Name="Table"><#=RowMeta["TableName"]#></Variable>
+				<Variable DataType="String" Name="DestinationTable" EvaluateAsExpression="true">"dbo." + @[User::Table]</Variable>
+				<Variable DataType="String" Name="DestinationSchema"><#=RowMeta["DestinationSchema"]#></Variable>
+				<Variable DataType="String" Name="SQLScript">SELECT 1 AS ID</Variable>
+				<Variable DataType="Object" Name="SourceSchemas"></Variable>
+				<Variable DataType="String" Name="SourceSchema"><#=RowMeta["ExtractSchemaName"]#></Variable>
+				<Variable DataType="Object" Name="Companies"></Variable>
+				<Variable DataType="String" Name="Company"><#=RowMeta["CompanyName"]#></Variable>
+			</Variables>
+		
+			<Tasks>
+				<Container ConstraintMode="Linear" Name="SEQC Transform <#=RowMeta["TableName"]#>">
+					<Tasks>
+						
+						<ExecuteSQL ConnectionName="Stage" Name="Truncate Table">
+							<Parameters>
+								<Parameter Name="0" DataType="String" VariableName="User.DestinationTable"></Parameter>
+							</Parameters>
+							<DirectInput>EXEC('TRUNCATE TABLE ' + ?)</DirectInput>
+						</ExecuteSQL>
+
+						<ExecuteSQL ConnectionName="Meta" ResultSet="Full" Name="Get ExtractSchemas">
+							<Parameters>
+								<Parameter Name="0" DataType="String" VariableName="User.Table"></Parameter>
+							</Parameters>
+							<DirectInput>SELECT DISTINCT [ExtractSchemaName] FROM [etl].[TransformNavisionDefinitions] WHERE TableName = ?</DirectInput>
+							<Results>
+								<Result Name="0" VariableName="User.SourceSchemas" />
+							</Results>
+						</ExecuteSQL>
+												
+						<ForEachAdoLoop SourceVariableName="User.SourceSchemas" ConstraintMode="Linear" Name="FELC Iterate Extract Schemas">
+							<VariableMappings>
+								<VariableMapping VariableName="User.SourceSchema" Name="0" />
+							</VariableMappings>
+
+						<Tasks>
+
+						<ExecuteSQL ConnectionName="Meta" ResultSet="Full" Name="Get ExtractCompanies">
+								<Parameters>
+									<Parameter Name="0" DataType="String" VariableName="User.SourceSchema"></Parameter>
+									<Parameter Name="1" DataType="String" VariableName="User.Table"></Parameter>
+								</Parameters>
+								<DirectInput>SELECT [CompanyName] FROM [etl].[TransformNavisionDefinitions] WHERE ExtractSchemaName = ? AND TableName = ?</DirectInput>
+								<Results>
+									<Result Name="0" VariableName="User.Companies" />
+								</Results>
+						</ExecuteSQL>
+
+						<ForEachAdoLoop SourceVariableName="User.Companies" ConstraintMode="Linear" Name="FELC Iterate Companies">
+								<VariableMappings>
+									<VariableMapping VariableName="User.Company" Name="0" />
+								</VariableMappings>	
+							
+						<Tasks>
+							
+						<Dataflow Name="DFT Transform <#=RowMeta["TableName"]#>">
+							<Transformations>
+								<OleDbSource ConnectionName="Extract" Name="OLE SRC Extract">
+									<VariableInput VariableName="User.SQLScript"></VariableInput>
+								</OleDbSource>
+								<DerivedColumns Name="DER Audit">
+									<Columns>
+										<Column DataType="DateTime" Name="DWCreatedDate">GETDATE()</Column>
+									</Columns>
+								</DerivedColumns>
+								<OleDbDestination ConnectionName="Stage" Name="OLE DES <#=RowMeta["TableName"]#>">
+									<TableFromVariableOutput VariableName="User.DestinationTable"></TableFromVariableOutput>
+								</OleDbDestination>
+							</Transformations>
+						</Dataflow>
+						</Tasks>
+						</ForEachAdoLoop>
+						</Tasks>
+						</ForEachAdoLoop>
+						<ExecuteSQL Name="SQL Maintain DW" ConnectionName="Meta">
+							<Parameters>
+								<Parameter DataType="String" Name="0" VariableName="User.Table"></Parameter>
+								<Parameter DataType="String" Name="1" VariableName="User.DestinationSchema"></Parameter>
+							</Parameters>
+							<DirectInput>EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  </DirectInput>
+				  	   </ExecuteSQL>
+					</Tasks>
+				</Container>	
+			</Tasks>
+
+			<#
+			OleDbConnection metaconnection = new OleDbConnection(conMeta + ";");
+			metaconnection.Open();
+			foreach (DataRow Meta in TableID.Rows) {
+				// Update meta table BusinessMatrixTransformSetup, disable specific table
+				string sqlStatement = "UPDATE etl.BusinessMatrixTransformSetup SET ExcludeFlag = 1  WHERE ID = " + Meta["ID"];
+				OleDbCommand command = new OleDbCommand(sqlStatement, metaconnection);
+				command.ExecuteNonQuery();
+				}
+				
+				metaconnection.Close();
+				#>
+
+			</Package>
+	
+		<#}#>
+		
+	</Packages>
+
+
+	
+</Biml>
+
+	

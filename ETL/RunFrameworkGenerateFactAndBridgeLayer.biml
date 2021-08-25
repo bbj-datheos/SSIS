@@ -1,0 +1,207 @@
+	<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+	<#@ template language="C#" tier="4" #>
+	<#@ include file="biml/_IncludeFrameworkGlobals.biml" #>
+
+	<!--Update and Get Meta Data // MessageBox.Show("In Tables"); -->
+	<# 
+		
+	ExternalDataAccess.GetDataTable(conMeta, @"IF OBJECT_ID('etl.DWRelations', 'U') IS NULL CREATE TABLE etl.DWRelations ([TableName] NVARCHAR(128),[DimensionName] NVARCHAR(128),[TableColumnName] NVARCHAR(128),[DimensionColumnMappingName] NVARCHAR(128),[RolePlayingDimensionName] NVARCHAR(128),	[IsSCD2DimensionFlag] NVARCHAR(10),	[IsSCD2CompositeKeyDimensionFlag] NVARCHAR(10),[ColumnOrdinalPosition] INT, [IsNewDimensionFlag] NVARCHAR(128), DefaultErrorValue NVARCHAR(128)) ON [PRIMARY]");
+	
+		ExternalDataAccess.GetDataTable(conMeta, @"IF COL_LENGTH('etl.BusinessMatrix','SQLScript') IS NULL BEGIN ALTER TABLE [etl].[BusinessMatrix] ADD SQLScript VARCHAR(MAX) END");
+	
+		ExternalDataAccess.GetDataTable(conMeta, @"EXEC [etl].[UpdateBimlMetaData]");
+	
+		DataTable FactAndBridgeMeta = ExternalDataAccess.GetDataTable(conMeta, @"SELECT [DestinationSchema],UPPER(LEFT([DestinationSchema],1)) + SUBSTRING([DestinationSchema],2,LEN([DestinationSchema])-1) AS [CapitalisedDestinationSchema],[TableName],[FactLoadIsIncrementalLoadFlag],[SQLScript],[EnabledFlag] FROM [etl].[BusinessMatrix] WHERE [DestinationSchema] IN ('bridge','fact')");
+	DataTable SchemaMeta = ExternalDataAccess.GetDataTable(conMeta, @"SELECT DISTINCT [DestinationSchema],UPPER(LEFT([DestinationSchema],1)) + SUBSTRING([DestinationSchema],2,LEN([DestinationSchema])-1) AS [CapitalisedDestinationSchema] FROM [etl].[BusinessMatrix] WHERE [DestinationSchema] IN ('bridge','fact')");
+	
+		DataTable DimensionList = ExternalDataAccess.GetDataTable(conMeta, @"SELECT [DestinationSchema],[TableName],[FactLoadIsIncrementalLoadFlag],[SQLScript] FROM [etl].[BusinessMatrix] WHERE [DestinationSchema] = 'dim'");
+	DataTable DimensionMeta = ExternalDataAccess.GetDataTable(conMeta, @"SELECT DISTINCT [TableName],[DimensionName] AS BaseDimensionName,ISNULL([RolePlayingDimensionName],[DimensionName]) AS DimensionName,[IsSCD2DimensionFlag],CASE WHEN [DimensionName] = 'Calendar' THEN (SELECT CAST([VariableValue] AS INT) FROM [application].[Variables] WHERE [VariableName] = 'DefaultDate') ELSE (SELECT CAST([VariableValue] AS INT) FROM [application].[Variables] WHERE [VariableName] = 'DefaultDimensionMemberID') END AS DefaultUnknownMemberValue FROM etl.DWRelations");
+	DataTable DimensionKeysMeta = ExternalDataAccess.GetDataTable(conMeta, @"SELECT * FROM etl.DWRelations WHERE DimensionName NOT IN (SELECT  BusinessMatrix.TableName FROM etl.BusinessMatrixSCD2Setup INNER JOIN etl.BusinessMatrix	ON BusinessMatrix.BusinessMatrixID = BusinessMatrixSCD2Setup.BusinessMatrixID)");
+	ExternalDataAccess.GetDataTable(conMeta, @"IF COL_LENGTH('etl.BusinessMatrix','SQLScript') IS NOT NULL BEGIN ALTER TABLE [etl].[BusinessMatrix] DROP COLUMN SQLScript END");
+	
+	ExternalDataAccess.GetDataTable(conMeta, @"IF OBJECT_ID('etl.DWRelations', 'U') IS NOT NULL DROP TABLE etl.DWRelations");
+	#>
+		
+
+
+	<Connections>
+		<# foreach(DataRow row in ApplicationConnections.Rows) {#>
+		<OleDbConnection Name="<#=row["Name"]#>" ConnectionString="<#=row["ConnectionString"]#>"></OleDbConnection>
+		<#}#>
+	</Connections>
+		
+	<Projects>
+		<PackageProject Name="SSIS" ProtectionLevel="DontSaveSensitive">
+			<Parameters>
+				<Parameter Name="EnvironmentSQLServer" DataType="String" IsRequired="false" IsSensitive="false"></Parameter>
+				<Parameter Name="ConnectionStringDW_Stage" DataType="String" IsRequired="false" IsSensitive="false"></Parameter>
+				<Parameter Name="ConnectionStringDW_DW" DataType="String" IsRequired="false" IsSensitive="false"></Parameter>
+				<Parameter Name="ConnectionStringDW_Meta" DataType="String" IsRequired="false" IsSensitive="false"></Parameter>
+				<Parameter Name="JobIsIncremental" DataType="Boolean" IsRequired="false" IsSensitive="false">0</Parameter>
+			</Parameters>
+			<Packages>
+				<# foreach(DataRow RowMeta in FactAndBridgeMeta.AsEnumerable().Where( RowMeta => RowMeta.Field<bool>("EnabledFlag") == true))  {#>
+				<Package IsEntryPoint="true" PackageName="Load<#=RowMeta["CapitalisedDestinationSchema"]#>_<#=RowMeta["TableName"]#>"></Package>
+				<#}#>
+			</Packages>
+		</PackageProject>
+	</Projects>
+
+ 
+	<Packages>
+		<# foreach(DataRow RowMeta in FactAndBridgeMeta.AsEnumerable().Where( RowMeta => RowMeta.Field<bool>("EnabledFlag") == true))	{#>
+		<Package ConstraintMode="Linear" Name="Load<#=RowMeta["CapitalisedDestinationSchema"]#>_<#=RowMeta["TableName"]#>">
+			<Connections>
+				<Connection ConnectionName="Stage">
+					<Expressions>
+						<Expression PropertyName="Stage.ConnectionString" >@[$Project::ConnectionStringDW_Stage]</Expression>
+					</Expressions>
+				</Connection>
+				<Connection ConnectionName="DW">
+					<Expressions>
+						<Expression PropertyName="DW.ConnectionString" >@[$Project::ConnectionStringDW_DW]</Expression>
+					</Expressions>
+				</Connection>
+				<Connection ConnectionName="Meta">
+					<Expressions>
+						<Expression PropertyName="Meta.ConnectionString" >@[$Project::ConnectionStringDW_Meta]</Expression>
+					</Expressions>
+				</Connection>
+			</Connections>
+			<Variables>
+				<Variable DataType="String" Name="Table"><#=RowMeta["TableName"]#></Variable>
+				<Variable DataType="String" Name="DestinationTable" EvaluateAsExpression="true">"<#=RowMeta["DestinationSchema"]#>." + @[User::Table]</Variable>
+			</Variables>
+			
+			<Tasks>
+				<# if(RowMeta.Field<bool>("FactLoadIsIncrementalLoadFlag") == true) {#>
+				<Container ConstraintMode="Linear" DelayValidation="true" Name="SEQC Incremental <#=RowMeta["CapitalisedDestinationSchema"]#><#=RowMeta["TableName"]#>">
+					<Expressions>
+						<Expression ExternalProperty="Disable">@[$Project::JobIsIncremental]==(DT_BOOL)TRUE?(DT_BOOL)FALSE:(DT_BOOL)TRUE</Expression>
+					</Expressions>
+						<Tasks>
+							<ExecuteSQL ConnectionName="Meta" Name="SQL Load <#=RowMeta["CapitalisedDestinationSchema"]#><#=RowMeta["TableName"]#>">
+								<Parameters>
+									<Parameter Name="0" DataType="String" VariableName="User.Table"></Parameter>
+								</Parameters>
+								<DirectInput>
+									EXEC etl.LoadFact @Table = ?, @IncrementalLoad = 1, @PrintSQL = NULL
+								</DirectInput>
+							</ExecuteSQL>
+						</Tasks>
+				</Container>
+
+				<#}#>
+
+				<Container ConstraintMode="Linear" DelayValidation="true" Name="SEQC FullLoad <#=RowMeta["CapitalisedDestinationSchema"]#><#=RowMeta["TableName"]#>">
+					<# if(RowMeta.Field<bool>("FactLoadIsIncrementalLoadFlag") == true) {#>
+					<Expressions>
+						<Expression ExternalProperty="Disable">@[$Project::JobIsIncremental]==(DT_BOOL)TRUE?(DT_BOOL)TRUE:(DT_BOOL)FALSE</Expression>
+					</Expressions>
+					<#}#>
+						<Tasks>		
+							<ExecuteSQL ConnectionName="DW" Name="SQL Truncate Table">
+								<Parameters>
+									<Parameter Name="0" DataType="String" VariableName="User.DestinationTable"></Parameter>
+								</Parameters>
+								<DirectInput>
+									EXEC('TRUNCATE TABLE ' + ?)
+								</DirectInput>
+							</ExecuteSQL>
+							<Dataflow Name="DFT Load<#=RowMeta["CapitalisedDestinationSchema"]#><#=RowMeta["TableName"]#>">
+							<Transformations>
+								<OleDbSource ConnectionName="Stage" Name="OLE SRC <#=RowMeta["TableName"]#>">
+									<DirectInput><#=RowMeta["SQLScript"]#></DirectInput>
+								</OleDbSource>
+
+								<# foreach(DataRow RowDimensions in DimensionMeta.AsEnumerable().Where( RowDimensions => RowDimensions.Field<string>("TableName") == RowMeta.Field<string>("TableName") &&
+																														 RowDimensions.Field<string>("IsSCD2DimensionFlag") == "No")) {#>
+
+								<Lookup Name="LKP <#=RowDimensions["DimensionName"]#>" OleDbConnectionName="DW" NoMatchBehavior="IgnoreFailure" CacheMode="Full">
+									
+									<# foreach(DataRow RowDimensionSQL in DimensionList.AsEnumerable().Where( RowDimensionSQL => RowDimensionSQL.Field<string>("TableName") == RowDimensions.Field<string>("BaseDimensionName"))) {#>
+									
+									<DirectInput><#=RowDimensionSQL["SQLScript"]#></DirectInput>
+									
+									<#}#>
+									
+									<Inputs>
+										
+										<# foreach(DataRow RowDimensionKeys in DimensionKeysMeta.AsEnumerable().Where( RowDimensionKeys => RowDimensionKeys.Field<string>("TableName") == RowMeta.Field<string>("TableName") && 
+																																			 RowDimensionKeys.Field<string>("RolePlayingDimensionName") == RowDimensions.Field<string>("DimensionName") &&
+																																			 RowDimensions.Field<string>("IsSCD2DimensionFlag") == "No")) {#>
+										
+										<Column SourceColumn="<#=RowDimensionKeys["TableColumnName"]#>" TargetColumn="<#=RowDimensionKeys["DimensionColumnMappingName"]#>"  />
+										
+										<#}#>
+									
+									</Inputs>
+									<Outputs>
+										<Column SourceColumn="<#=RowDimensions["BaseDimensionName"]#>ID" TargetColumn="<#=RowDimensions["DimensionName"]#>ID"  />
+									</Outputs>
+								</Lookup>
+	  							
+								<#}#>
+										
+								<DerivedColumns Name="DER Error Handling">
+									<Columns>
+											
+										<# foreach(DataRow RowDimensionsError in DimensionMeta.AsEnumerable().Where( RowDimensionsError => RowDimensionsError.Field<string>("TableName") == RowMeta.Field<string>("TableName"))) {#>
+
+											<Column Name="<#=RowDimensionsError["DimensionName"]#>ID" DataType="Int32" ReplaceExisting="true">REPLACENULL(<#=RowDimensionsError["DimensionName"]#>ID,<#=RowDimensionsError["DefaultUnknownMemberValue"]#>)</Column>
+											
+										<#}#>
+									</Columns>
+								</DerivedColumns>
+								<DerivedColumns Name="DER Audit">
+									<Columns>
+										<Column DataType="DateTime" Name="DWCreatedDate">GETDATE()</Column>
+										<Column DataType="DateTime" Name="DWModifiedDate">GETDATE()</Column>
+									</Columns>
+								</DerivedColumns>
+								<OleDbDestination ConnectionName="DW" Name="OLE DES <#=RowMeta["CapitalisedDestinationSchema"]#><#=RowMeta["TableName"]#>">
+									<TableFromVariableOutput VariableName="User.DestinationTable"></TableFromVariableOutput>
+								</OleDbDestination>
+							</Transformations>
+						</Dataflow>
+						
+					</Tasks>
+					
+							
+				</Container>
+					
+			</Tasks>
+		</Package>
+			<#}#>
+	
+	<!--Create Controller package-->
+	<# foreach(DataRow RowSchema in SchemaMeta.Rows)	{#>		
+		<Package Name="Controller_Load<#=RowSchema["CapitalisedDestinationSchema"]#>s">
+			<Tasks>
+				<# foreach(DataRow RowMeta in FactAndBridgeMeta.AsEnumerable().Where( RowMeta => RowMeta.Field<string>("DestinationSchema") == RowSchema.Field<string>("DestinationSchema"))) {#>
+					<Container ConstraintMode="Linear" Name="<#=RowMeta["TableName"]#>">
+						<Tasks>
+							<ExecutePackage Name="Transform_<#=RowMeta["TableName"]#>">
+								<Expressions>
+									<Expression ExternalProperty="PackageName">@[System::TaskName] + ".dtsx"</Expression>
+								</Expressions>
+								<ExternalProjectPackage Package="Transform_<#=RowMeta["TableName"]#>.dtsx"></ExternalProjectPackage>
+							</ExecutePackage>
+							<ExecutePackage Name="Load<#=RowSchema["CapitalisedDestinationSchema"]#>_<#=RowMeta["TableName"]#>">
+								<Expressions>
+									<Expression ExternalProperty="PackageName">@[System::TaskName] + ".dtsx"</Expression>
+								</Expressions>
+								<ExternalProjectPackage Package="Load<#=RowSchema["CapitalisedDestinationSchema"]#>_<#=RowMeta["TableName"]#>.dtsx"></ExternalProjectPackage>
+							</ExecutePackage>
+						</Tasks>
+					</Container>
+				<#}#>
+			  </Tasks>
+		</Package>
+	<#}#>
+</Packages>
+
+
+
+
+</Biml>

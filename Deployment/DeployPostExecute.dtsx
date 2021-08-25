@@ -1,0 +1,454 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="3/10/2015 10:55:26 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="SDKCPHETL011"
+  DTS:CreatorName="BH-EMEA\kap-jl"
+  DTS:DelayValidation="True"
+  DTS:DTSID="{E9190469-E809-4CED-A85A-B2F63D3A710E}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="DeployPostExecute"
+  DTS:PackageType="5"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="64"
+  DTS:VersionGUID="{76878253-5320-4712-930E-EED8B4581702}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{72953190-AB34-460C-B611-E302E6F93CBC}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=SQLDEV\SQL2012;Initial Catalog=LevinDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Target]"
+      DTS:CreationName="OLEDB"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{F4F36F40-EA70-43DA-AEA4-948D124458BB}"
+      DTS:ObjectName="Target">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">"Data Source=" +  @[$Package::ServerInstanceTarget]   + " ;Initial Catalog=" +  @[$Package::DatabaseNameMeta]    + ";Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=SQLDEV ;Initial Catalog=Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:PackageParameters>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{3AE8C29A-AC9D-456B-97A1-F2946B05352F}"
+      DTS:ObjectName="DatabaseNameMeta"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">Meta</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{B0CA5A0E-45AC-46A7-BFA0-5F8B4EB591A6}"
+      DTS:ObjectName="Environment"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">Test</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{8E084277-8061-407E-9C51-697C267DF8A5}"
+      DTS:ObjectName="ServerInstanceTarget"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">SQLDEV</DTS:Property>
+    </DTS:PackageParameter>
+  </DTS:PackageParameters>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{AC7E8B2B-23F0-48A1-BF6D-BD0A55D1B52E}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DeploymentRepository">
+      <DTS:VariableValue
+        DTS:DataType="8">\\SDKCPHETL010\BI Deployment Repository\</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{D98E9216-25AE-443F-A210-7D8ED7156508}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Environment">
+      <DTS:VariableValue
+        DTS:DataType="8">test</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{B3B9AB33-6501-422D-9396-EF1E911A6323}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="@[User::DeploymentRepository] + &quot;\\Releases\\&quot; + (DT_WSTR, 10 )((year(getdate())*10000)+(month(getdate())*100)+day(getdate())) + &quot;_&quot; + RIGHT(&quot;0&quot; + (DT_WSTR,2)DATEPART(&quot;hh&quot;, GETDATE()), 2)  + RIGHT(&quot;0&quot; + (DT_WSTR,2)DATEPART(&quot;mi&quot;, GETDATE()), 2) + &quot;\\&quot; +  UPPER( @[User::Environment])"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Releases">
+      <DTS:VariableValue
+        DTS:DataType="8">\\SDKCPHETL010\BI Deployment Repository\\Releases\20171110_0915\TEST</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Assign Variables"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{2ED764F4-2027-481D-ABB4-DE9BFDB3B509}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Assign Variables"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{72953190-AB34-460C-B611-E302E6F93CBC}"
+          SQLTask:SqlStatementSource="exec [deployment].[AssignVariables]  ?, ? "
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::DeploymentRepository" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Package::Environment"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="130"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="System::PackageName"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="130"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Main"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{89C82F73-F3F3-4AAA-906F-B42B9CE1507C}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Main">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Main\Dimension Alignment"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{85E0F53F-8070-4B1E-910F-7D1E6922DC26}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Dimension Alignment"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{F4F36F40-EA70-43DA-AEA4-948D124458BB}"
+              SQLTask:SqlStatementSource="exec [deployment].[Database_DimensionAlignment]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Main\Enable solution jobs"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{A5E2317A-CC8A-47A7-9406-7F0DC05D3794}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Enable solution jobs"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{F4F36F40-EA70-43DA-AEA4-948D124458BB}"
+              SQLTask:SqlStatementSource="exec [deployment].[PostExecute_EnableJobs]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Main\Release management"
+          DTS:CreationName="STOCK:SEQUENCE"
+          DTS:Description="Sequence Container"
+          DTS:DTSID="{69F3ED8E-C92F-41F3-BC6D-C09E260B85A2}"
+          DTS:ExecutableType="STOCK:SEQUENCE"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Release management">
+          <DTS:Variables />
+          <DTS:Executables>
+            <DTS:Executable
+              DTS:refId="Package\Main\Release management\Backup Database"
+              DTS:CreationName="Microsoft.FileSystemTask"
+              DTS:DelayValidation="True"
+              DTS:Description="File System Task"
+              DTS:DTSID="{12B4AEE2-8286-472C-AF55-381746FA1D53}"
+              DTS:ExecutableType="Microsoft.FileSystemTask"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Backup Database"
+              DTS:TaskContact="File System Task;Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+              DTS:ThreadHint="0">
+              <DTS:Variables>
+                <DTS:Variable
+                  DTS:CreationName=""
+                  DTS:DTSID="{F3E4A9E5-00E2-4D07-953F-4290D1B29BFB}"
+                  DTS:EvaluateAsExpression="True"
+                  DTS:Expression="@[User::DeploymentRepository] + &quot;\\Deployment Files\\1. Database&quot;"
+                  DTS:IncludeInDebugDump="2345"
+                  DTS:Namespace="User"
+                  DTS:ObjectName="DeploymentRepositoryDatabase">
+                  <DTS:VariableValue
+                    DTS:DataType="8">\\SDKCPHETL010\BI Deployment Repository\\Deployment Files\1. Database</DTS:VariableValue>
+                </DTS:Variable>
+              </DTS:Variables>
+              <DTS:ObjectData>
+                <FileSystemData
+                  TaskOperationType="CopyDirectory"
+                  TaskOverwriteDestFile="True"
+                  TaskSourcePath="User::DeploymentRepositoryDatabase"
+                  TaskIsSourceVariable="True"
+                  TaskDestinationPath="User::Releases"
+                  TaskIsDestinationVariable="True" />
+              </DTS:ObjectData>
+            </DTS:Executable>
+            <DTS:Executable
+              DTS:refId="Package\Main\Release management\Backup SSAS"
+              DTS:CreationName="Microsoft.FileSystemTask"
+              DTS:DelayValidation="True"
+              DTS:Description="File System Task"
+              DTS:DTSID="{6EA2CD2E-B6CA-483B-9BDB-863A236E5928}"
+              DTS:ExecutableType="Microsoft.FileSystemTask"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Backup SSAS"
+              DTS:TaskContact="File System Task;Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+              DTS:ThreadHint="1">
+              <DTS:Variables>
+                <DTS:Variable
+                  DTS:CreationName=""
+                  DTS:DTSID="{C67830C0-13C6-47EB-B921-E77A0F766DCC}"
+                  DTS:EvaluateAsExpression="True"
+                  DTS:Expression="@[User::DeploymentRepository] + &quot;\\Deployment Files\\3. SSAS&quot;"
+                  DTS:IncludeInDebugDump="2345"
+                  DTS:Namespace="User"
+                  DTS:ObjectName="DeploymentRepositoryDatabase">
+                  <DTS:VariableValue
+                    DTS:DataType="8">\\SDKCPHETL010\BI Deployment Repository\\Deployment Files\3. SSAS</DTS:VariableValue>
+                </DTS:Variable>
+              </DTS:Variables>
+              <DTS:ObjectData>
+                <FileSystemData
+                  TaskOperationType="CopyDirectory"
+                  TaskOverwriteDestFile="True"
+                  TaskSourcePath="User::DeploymentRepositoryDatabase"
+                  TaskIsSourceVariable="True"
+                  TaskDestinationPath="User::Releases"
+                  TaskIsDestinationVariable="True" />
+              </DTS:ObjectData>
+            </DTS:Executable>
+            <DTS:Executable
+              DTS:refId="Package\Main\Release management\Backup SSIS"
+              DTS:CreationName="Microsoft.FileSystemTask"
+              DTS:DelayValidation="True"
+              DTS:Description="File System Task"
+              DTS:DTSID="{13F38BF4-7339-4844-A0DD-272D5A92F16B}"
+              DTS:ExecutableType="Microsoft.FileSystemTask"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Backup SSIS"
+              DTS:TaskContact="File System Task;Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+              DTS:ThreadHint="2">
+              <DTS:Variables>
+                <DTS:Variable
+                  DTS:CreationName=""
+                  DTS:DTSID="{EB3FE3AB-71B4-46A5-A3F4-58FB4D2EB45F}"
+                  DTS:EvaluateAsExpression="True"
+                  DTS:Expression="@[User::DeploymentRepository] + &quot;\\Deployment Files\\2. SSIS&quot;"
+                  DTS:IncludeInDebugDump="2345"
+                  DTS:Namespace="User"
+                  DTS:ObjectName="DeploymentRepositoryDatabase">
+                  <DTS:VariableValue
+                    DTS:DataType="8">\\SDKCPHETL010\BI Deployment Repository\\Deployment Files\2. SSIS</DTS:VariableValue>
+                </DTS:Variable>
+              </DTS:Variables>
+              <DTS:ObjectData>
+                <FileSystemData
+                  TaskOperationType="CopyDirectory"
+                  TaskOverwriteDestFile="True"
+                  TaskSourcePath="User::DeploymentRepositoryDatabase"
+                  TaskIsSourceVariable="True"
+                  TaskDestinationPath="User::Releases"
+                  TaskIsDestinationVariable="True" />
+              </DTS:ObjectData>
+            </DTS:Executable>
+          </DTS:Executables>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Main.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{11E32803-2BD1-4525-B550-8D0FD849B3D5}"
+          DTS:From="Package\Main\Enable solution jobs"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Main\Dimension Alignment" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Main.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{4DFDA294-4F21-48EB-A1E9-4063BF1C3178}"
+          DTS:From="Package\Main\Dimension Alignment"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\Main\Release management" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{4E64CFD7-CE48-441F-AD1A-CC150D0859B4}"
+      DTS:From="Package\Assign Variables"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Main" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="155,42"
+          Id="Package\Assign Variables"
+          TopLeft="119,31.5" />
+        <NodeLayout
+          Size="179,42"
+          Id="Package\Main\Dimension Alignment"
+          TopLeft="37.5,114.5" />
+        <NodeLayout
+          Size="173,42"
+          Id="Package\Main\Enable solution jobs"
+          TopLeft="40.5,12.5" />
+        <NodeLayout
+          Size="160,42"
+          Id="Package\Main\Release management\Backup Database"
+          TopLeft="16,13.5" />
+        <NodeLayout
+          Size="141,42"
+          Id="Package\Main\Release management\Backup SSAS"
+          TopLeft="18,108" />
+        <NodeLayout
+          Size="138,42"
+          Id="Package\Main\Release management\Backup SSIS"
+          TopLeft="15.5,60" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="205,168"
+          Size="205,211"
+          Id="Package\Main\Release management"
+          TopLeft="21,204" />
+        <EdgeLayout
+          Id="Package\Main.PrecedenceConstraints[Constraint]"
+          TopLeft="127,54.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Main.PrecedenceConstraints[Constraint 1]"
+          TopLeft="125.25,156.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,47.5"
+              Start="0,0"
+              End="0,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="250,522"
+          Size="250,565"
+          Id="Package\Main"
+          TopLeft="68.0000000000001,107.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="194.75,73.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,34"
+              Start="0,0"
+              End="0,26.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

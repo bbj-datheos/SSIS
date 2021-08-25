@@ -1,0 +1,991 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="3/8/2017 12:25:00 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="mim-ext"
+  DTS:DTSID="{7205AA61-D082-4DF2-8611-C84184C3EE04}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_CustomerClassCount"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="10"
+  DTS:VersionGUID="{AA94CC91-4D81-466F-9D7A-6E4DB2FB3598}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{3E0610A9-B9B9-48CC-AD70-1E4BFD4829F8}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{4FCB3B37-FA08-492A-B472-0350992EBB07}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{EA0AEAA1-A8BF-400A-A363-394B4D83F77B}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{4C4FDB35-6EC3-4A42-91FF-8A99A66540EA}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">fact</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{D2F13EEB-9C0F-4654-B60E-F55A9D495AE3}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.CustomerClassCount</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{B0D77A79-80FD-458E-84EE-A6049FF601CB}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">CustomerClassCount</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{F176BE55-8196-44A9-9ED1-013654245769}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{201ED0E5-F5FB-45EA-959F-FBA0F4AF4443}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{4FCB3B37-FA08-492A-B472-0350992EBB07}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform CustomerClassCount"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{B48D4AB7-74B5-401B-87B5-531E3AC9E455}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform CustomerClassCount">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{824C3B4A-199E-47FF-98EF-BFBC0567C99A}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform CustomerClassCount"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES CustomerClassCount"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES CustomerClassCount">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[MonthID]"
+                          cachedDataType="i4"
+                          cachedName="MonthID"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[MonthID]"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[MonthID]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CustomerBillToKey]"
+                          cachedDataType="wstr"
+                          cachedLength="51"
+                          cachedName="CustomerBillToKey"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CustomerBillToKey]"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[CustomerBillToKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[NumOfSalesPeriods]"
+                          cachedDataType="i4"
+                          cachedName="NumOfSalesPeriods"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[NumOfSalesPeriods]"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[NumOfSalesPeriods]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[NumOfDistinctGPPGs]"
+                          cachedDataType="i4"
+                          cachedName="NumOfDistinctGPPGs"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[NumOfDistinctGPPGs]"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[NumOfDistinctGPPGs]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[NumOfChurnPeriods]"
+                          cachedDataType="i4"
+                          cachedName="NumOfChurnPeriods"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[NumOfChurnPeriods]"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[NumOfChurnPeriods]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[NumOfLostPeriods]"
+                          cachedDataType="i4"
+                          cachedName="NumOfLostPeriods"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[NumOfLostPeriods]"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[NumOfLostPeriods]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[NumOfWinbackPeriods]"
+                          cachedDataType="i4"
+                          cachedName="NumOfWinbackPeriods"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[NumOfWinbackPeriods]"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[NumOfWinbackPeriods]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CustomerClassKey]"
+                          cachedDataType="wstr"
+                          cachedLength="63"
+                          cachedName="CustomerClassKey"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CustomerClassKey]"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[CustomerClassKey]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[MonthID]"
+                          dataType="i4"
+                          name="MonthID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CustomerBillToKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="CustomerBillToKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[NumOfSalesPeriods]"
+                          dataType="i4"
+                          name="NumOfSalesPeriods" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[NumOfDistinctGPPGs]"
+                          dataType="i4"
+                          name="NumOfDistinctGPPGs" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[NumOfChurnPeriods]"
+                          dataType="i4"
+                          name="NumOfChurnPeriods" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[NumOfLostPeriods]"
+                          dataType="i4"
+                          name="NumOfLostPeriods" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[NumOfWinbackPeriods]"
+                          dataType="i4"
+                          name="NumOfWinbackPeriods" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CustomerClassKey]"
+                          dataType="wstr"
+                          length="63"
+                          name="CustomerClassKey" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">WITH f AS
+(SELECT
+	
+	c.MonthKey
+	,s.[CustomerBillToKey]	
+	,(SELECT
+		count(distinct year(h.[CalendarKey]) * 100 + month(h.[CalendarKey]))
+	
+		FROM [EETDW_Stage].[dbo].[SalesItemLedgerEntry] AS h
+	
+		WHERE h.[CalendarKey] BETWEEN c.FirstDayOM AND c.LastDayOM 
+			AND h.[CustomerBillToKey] = s.[CustomerBillToKey]
+			AND LEFT(h.[OrderTypeKey],5) = '0-0-0') AS NumOfSales 
+	
+	
+	,(SELECT
+	count(distinct a.[Item Area Code])
+	FROM [EETDW_Stage].[dbo].[SalesItemLedgerEntry] AS h
+	INNER JOIN
+	  (SELECT [Code] ,[Item Area Code] FROM [EETDW_Extract].[nav].[Gen_ Product Posting Group] WHERE [DWNavisionCompany]='EET Group') a ON h.GPPGCurrentKey=a.Code
+	WHERE 1=1
+	    AND h.[CalendarKey] BETWEEN DATEADD(month, -(SELECT Value FROM [EETDW_Extract].control.[Parameters] WHERE [TextLabel] = 'FrequencyWindow') + 1 , c.FirstDayOM) --DATEADD(month, -11, c.FirstDayOM) 
+		AND c.LastDayOM--c.FirstDayOM AND c.LastDayOM 
+		AND h.[CustomerBillToKey] = s.[CustomerBillToKey]
+	    AND NOT (a.[Item Area Code]='' OR a.[Item Area Code] LIKE '%inactive')
+	    AND LEFT(OrderTypeKey,5) = '0-0-0') AS NumOfDistinctGPPGs 
+	,(SELECT
+	count(distinct year(h.[CalendarKey]) * 100 + month(h.[CalendarKey]))
+	FROM [EETDW_Stage].[dbo].[SalesItemLedgerEntry] AS h
+	WHERE h.[CalendarKey] BETWEEN DATEADD(month, -(SELECT Value FROM [EETDW_Extract].control.[Parameters] WHERE [TextLabel] = 'FrequencyWindow') + 1 , c.FirstDayOM) --DATEADD(month, -11, c.FirstDayOM) 
+		AND c.LastDayOM 
+		AND h.[CustomerBillToKey] = s.[CustomerBillToKey]
+		AND LEFT(h.[OrderTypeKey],5) = '0-0-0') AS NumOfSalesRolling 
+	
+	
+	,(SELECT
+	count(distinct year(h.[CalendarKey]) * 100 + month(h.[CalendarKey]))
+	FROM (SELECT [CalendarKey],[CustomerBillToKey] FROM [EETDW_Stage].[dbo].[SalesItemLedgerEntry] UNION ALL SELECT CAST('2013-12-31' AS DATETIME) AS CalendarKey, [CustomerBillToKey] FROM [EETDW_Extract].[control].[Invoice_OpeningCustomer_2014]) AS h
+	WHERE h.[CalendarKey] BETWEEN '1900-01-01' AND DATEADD(day,-1,c.FirstDayOM)
+		AND h.[CustomerBillToKey] = s.[CustomerBillToKey]
+		-- we cannot do this here AND h.[OrderTypeKey] = '0-0-0'
+		) AS NumOfSalesAllPrevious 
+	
+	
+	,(SELECT
+	count(distinct year(h.[CalendarKey]) * 100 + month(h.[CalendarKey]))
+	FROM [EETDW_Stage].[dbo].[SalesItemLedgerEntry] AS h
+	WHERE h.[CalendarKey] BETWEEN DATEADD(month, -(SELECT Value FROM [EETDW_Extract].control.[Parameters] WHERE [TextLabel] = 'ChurnDefinitionPeriod') + 1 , c.FirstDayOM) -- DATEADD(month, -2, c.FirstDayOM) 
+		AND c.LastDayOM 
+		AND h.[CustomerBillToKey] = s.[CustomerBillToKey]
+		AND LEFT(h.[OrderTypeKey],5) = '0-0-0') AS NumOfSalesChurnPeriod 
+	
+	
+	,(SELECT
+	count(distinct year(h.[CalendarKey]) * 100 + month(h.[CalendarKey]))
+	FROM [EETDW_Stage].[dbo].[SalesItemLedgerEntry] AS h
+	WHERE h.[CalendarKey] BETWEEN DATEADD(month, -(SELECT Value FROM [EETDW_Extract].control.[Parameters] WHERE [TextLabel] = 'ChurnDefinitionPeriod'), c.FirstDayOM) -- DATEADD(month, -3, c.FirstDayOM) 
+		AND c.LastDayOM 
+		AND h.[CustomerBillToKey] = s.[CustomerBillToKey]
+		AND LEFT(h.[OrderTypeKey],5) = '0-0-0') AS NumOfSalesLostPeriod 	
+   
+   ,(SELECT
+	count(distinct year(h.[CalendarKey]) * 100 + month(h.[CalendarKey]))
+	FROM [EETDW_Stage].[dbo].[SalesItemLedgerEntry] AS h
+	WHERE h.[CalendarKey] BETWEEN DATEADD(month, -(SELECT Value FROM [EETDW_Extract].control.[Parameters] WHERE [TextLabel] = 'ChurnDefinitionPeriod'), c.FirstDayOM) -- DATEADD(month, -3, c.FirstDayOM) 
+		AND DATEADD(day,-1, c.FirstDayOM)
+		AND h.[CustomerBillToKey] = s.[CustomerBillToKey]
+		AND LEFT(h.[OrderTypeKey],5) = '0-0-0') AS NumOfSalesReWinPeriod 	
+
+FROM 
+
+(SELECT MIN(CalendarDate) AS FirstDayOM
+		,MAX(EOMONTH(CalendarDate)) AS LastDayOM
+		,YearKey 
+		,MonthKey 
+	  FROM [EETDW].dim.Calendar 
+	  WHERE CalendarDate BETWEEN '2015-01-01' AND eomonth(dateadd(month, -1, GETDATE()))
+	  GROUP BY YearKey, MonthKey)  as c
+
+CROSS JOIN 
+
+(SELECT DISTINCT CustomerBillToKey,CompanyKey FROM [EETDW_Stage].[dbo].[SalesItemLedgerEntry] 
+                                 WHERE [CalendarKey] BETWEEN '2014-01-01' AND GETDATE()
+								        AND LEFT([OrderTypeKey],5) = '0-0-0') AS s -- since we also need customers with sales 1 year back
+	
+--WHERE 
+--s.CustomerBillToKey = 'EET Austria-+4312165585'
+--s.CustomerBillToKey = 'EET DENMARK-48792080'
+
+GROUP BY s.CustomerBillToKey, c.YearKey, c.MonthKey, c.FirstDayOM, c.LastDayOM
+
+)
+
+SELECT
+	[MonthKey] AS MonthID
+   ,CONVERT(nvarchar(51), [CustomerBillToKey]) AS [CustomerBillToKey]
+   ,(CASE WHEN NumOfSalesAllPrevious=0 AND NumOfSalesRolling=0 THEN N'X'
+        WHEN NumOfSalesAllPrevious=0 THEN N'N'
+        WHEN NumOfSalesLostPeriod=0 THEN N'L'
+        WHEN NumOfSalesChurnPeriod=0 THEN N'C'
+        WHEN NumOfSalesReWinPeriod=0 THEN N'W'
+	    ELSE N'R'
+		END) + N'-' + CAST(NumOfDistinctGPPGs AS nvarchar) + N'-' + CAST(NumOfSalesRolling AS nvarchar) AS CustomerClassKey
+   ,NumOfSalesRolling AS [NumOfSalesPeriods] -- [NumOfSales]
+   ,[NumOfDistinctGPPGs]
+   ,CASE WHEN NumOfSalesChurnPeriod = 0 AND NumOfSalesLostPeriod &gt; 0 THEN 1 ELSE 0 END AS NumOfChurnPeriods
+   ,CASE WHEN NumOfSalesLostPeriod = 0 THEN 1 ELSE 0 END AS NumOfLostPeriods
+   ,CASE WHEN NumOfSalesReWinPeriod = 0 AND NumOfSalesLostPeriod &gt; 0 THEN 1 ELSE 0 END AS NumOfWinbackPeriods
+ --INTO dbo.[TempActiveCustomerCount]
+ FROM f
+ WHERE NOT (NumOfSalesAllPrevious=0 AND NumOfSalesRolling=0)
+ ORDER BY CustomerBillToKey, MonthKey</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[MonthID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].ExternalColumns[MonthID]"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[MonthID]"
+                          name="MonthID"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[CustomerBillToKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerBillToKey]"
+                          length="51"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[CustomerBillToKey]"
+                          name="CustomerBillToKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[NumOfSalesPeriods]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].ExternalColumns[NumOfSalesPeriods]"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[NumOfSalesPeriods]"
+                          name="NumOfSalesPeriods"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[NumOfDistinctGPPGs]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].ExternalColumns[NumOfDistinctGPPGs]"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[NumOfDistinctGPPGs]"
+                          name="NumOfDistinctGPPGs"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[NumOfChurnPeriods]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].ExternalColumns[NumOfChurnPeriods]"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[NumOfChurnPeriods]"
+                          name="NumOfChurnPeriods"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[NumOfLostPeriods]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].ExternalColumns[NumOfLostPeriods]"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[NumOfLostPeriods]"
+                          name="NumOfLostPeriods"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[NumOfWinbackPeriods]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].ExternalColumns[NumOfWinbackPeriods]"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[NumOfWinbackPeriods]"
+                          name="NumOfWinbackPeriods"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[CustomerClassKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerClassKey]"
+                          length="63"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].Columns[CustomerClassKey]"
+                          name="CustomerClassKey"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].ExternalColumns[MonthID]"
+                          dataType="i4"
+                          name="MonthID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerBillToKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="CustomerBillToKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].ExternalColumns[NumOfSalesPeriods]"
+                          dataType="i4"
+                          name="NumOfSalesPeriods" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].ExternalColumns[NumOfDistinctGPPGs]"
+                          dataType="i4"
+                          name="NumOfDistinctGPPGs" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].ExternalColumns[NumOfChurnPeriods]"
+                          dataType="i4"
+                          name="NumOfChurnPeriods" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].ExternalColumns[NumOfLostPeriods]"
+                          dataType="i4"
+                          name="NumOfLostPeriods" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].ExternalColumns[NumOfWinbackPeriods]"
+                          dataType="i4"
+                          name="NumOfWinbackPeriods" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerClassKey]"
+                          dataType="wstr"
+                          length="63"
+                          name="CustomerClassKey" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[MonthID]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[MonthID]"
+                          name="MonthID" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[CustomerBillToKey]"
+                          dataType="wstr"
+                          length="51"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[CustomerBillToKey]"
+                          name="CustomerBillToKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[CustomerClassKey]"
+                          dataType="wstr"
+                          length="63"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[CustomerClassKey]"
+                          name="CustomerClassKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[NumOfSalesPeriods]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[NumOfSalesPeriods]"
+                          name="NumOfSalesPeriods" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[NumOfDistinctGPPGs]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[NumOfDistinctGPPGs]"
+                          name="NumOfDistinctGPPGs" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[NumOfChurnPeriods]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[NumOfChurnPeriods]"
+                          name="NumOfChurnPeriods" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[NumOfLostPeriods]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[NumOfLostPeriods]"
+                          name="NumOfLostPeriods" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[NumOfWinbackPeriods]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[NumOfWinbackPeriods]"
+                          name="NumOfWinbackPeriods" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount.Paths[DER Audit_Output_OLE DES CustomerClassCount]"
+                  endId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount.Inputs[DER Audit_Output_OLE DES CustomerClassCount]"
+                  name="DER Audit_Output_OLE DES CustomerClassCount"
+                  startId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount.Paths[OLE SRC Extract_Output_DER Audit]"
+                  endId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="OLE SRC Extract_Output_DER Audit"
+                  startId="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform CustomerClassCount\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{9AE61A1A-59FE-40D9-849B-24A4FF740689}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{EA0AEAA1-A8BF-400A-A363-394B4D83F77B}"
+              SQLTask:SqlStatementSource="EXEC('TRUNCATE TABLE ' + ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform CustomerClassCount.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform CustomerClassCount]"
+          DTS:CreationName=""
+          DTS:DTSID="{A9933C5A-FBE6-4B60-9490-8E8E677A4F12}"
+          DTS:From="Package\SEQC Transform CustomerClassCount\Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_Truncate Table_To_DFT Transform CustomerClassCount"
+          DTS:To="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SEQC Transform CustomerClassCount_To_SEQC MaintainDW]"
+      DTS:CreationName=""
+      DTS:DTSID="{6E76F420-D269-4436-A793-B97FD6F663DB}"
+      DTS:From="Package\SEQC Transform CustomerClassCount"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SEQC Transform CustomerClassCount_To_SEQC MaintainDW"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,103"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="50.0000000000001,313.5" />
+        <NodeLayout
+          Size="250,42"
+          Id="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount"
+          TopLeft="5.50000000000003,107.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform CustomerClassCount\Truncate Table"
+          TopLeft="55.5,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform CustomerClassCount.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform CustomerClassCount]"
+          TopLeft="130.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="261,205"
+          Size="261,248"
+          Id="Package\SEQC Transform CustomerClassCount"
+          TopLeft="5.50000000000003,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_SEQC Transform CustomerClassCount_To_SEQC MaintainDW]"
+          TopLeft="136,253.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="220,42"
+          Id="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount"
+          TopLeft="5.50000000000003,209.5" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\DER Audit"
+          TopLeft="52.5,107.5" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract"
+          TopLeft="37.5,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount.Paths[OLE SRC Extract_Output_DER Audit]"
+          TopLeft="115.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount.Paths[DER Audit_Output_OLE DES CustomerClassCount]"
+          TopLeft="115.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE DES CustomerClassCount">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform CustomerClassCount\DFT Transform CustomerClassCount\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

@@ -1,0 +1,737 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/6/2017 2:38:35 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="mim-ext"
+  DTS:DTSID="{B19F943E-8376-4855-A5EC-6120522593D4}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_SalespersonBudget"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="63"
+  DTS:VersionGUID="{0AEA3428-371F-4958-9397-C1E9530C1553}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{913C7007-0FCE-43B1-AA35-92CACDE0C121}"
+      DTS:ObjectName="DW">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_DW]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_All;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{59B423E8-088B-4AF7-B59B-9E0831539BC3}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;SELECT * FROM &quot; + @[$Project::TransformFactViewSchema]+ &quot;.&quot;+@[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SelectAllFromTransform">
+      <DTS:VariableValue
+        DTS:DataType="8">SELECT * FROM TransformFactView.SalespersonBudget</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{EF2E433D-6871-4C19-8094-2BD609BDCA4F}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;TransformFact.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="StageTable">
+      <DTS:VariableValue
+        DTS:DataType="8">TransformFact.SalespersonBudget</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{683AA387-D802-49FD-8A3A-8531CB014BB3}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">SalespersonBudget</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform SalespersonBudget"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{59BC0F7F-EC2F-4430-B229-36C8A11492D6}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform SalespersonBudget">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{53BD61D8-F191-4EBE-8C86-1F6B6FEBD808}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform SalespersonBudget"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES SalespersonBudget"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::StageTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES CustomerClassCount">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CompanyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CompanyKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CompanyKey]"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CalendarKey]"
+                          cachedDataType="dbDate"
+                          cachedName="CalendarKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[SalesBudgetTypeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="SalesBudgetTypeKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[SalesBudgetTypeKey]"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[SalesBudgetTypeKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[EmployeeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="EmployeeKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[EmployeeKey]"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[EmployeeKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CustomerKey]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="CustomerKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CustomerKey]"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[CustomerKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[SalespersonBudgetSalesProfitAmountLCY]"
+                          cachedDataType="numeric"
+                          cachedName="SalespersonBudgetSalesProfitAmountLCY"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[SalespersonBudgetSalesProfitAmountLCY]"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[SalespersonBudgetSalesProfitAmountLCY]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[BudgetTypeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="BudgetTypeKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[BudgetTypeKey]"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[GPPGCurrentKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="GPPGCurrentKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[GPPGCurrentKey]"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[GPPGCurrentKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[GPPGHistoricalKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="GPPGHistoricalKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[GPPGHistoricalKey]"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[GPPGHistoricalKey]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[EmployeeKey]"
+                          dataType="wstr"
+                          length="50"
+                          name="EmployeeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[SalesBudgetTypeKey]"
+                          dataType="wstr"
+                          length="50"
+                          name="SalesBudgetTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CustomerKey]"
+                          dataType="wstr"
+                          length="50"
+                          name="CustomerKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[SalespersonBudgetSalesProfitAmountLCY]"
+                          dataType="numeric"
+                          name="SalespersonBudgetSalesProfitAmountLCY"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[BudgetTypeKey]"
+                          dataType="wstr"
+                          length="50"
+                          name="BudgetTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[GPPGCurrentKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="GPPGCurrentKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[GPPGHistoricalKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="GPPGHistoricalKey" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+*
+FROM
+	[TransformFactView].[CustomerClassCount]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable">User::SelectAllFromTransform</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]"
+                          name="CompanyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]"
+                          dataType="dbDate"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]"
+                          name="CalendarKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[SalesBudgetTypeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].ExternalColumns[SalesBudgetTypeKey]"
+                          length="50"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[SalesBudgetTypeKey]"
+                          name="SalesBudgetTypeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[EmployeeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].ExternalColumns[EmployeeKey]"
+                          length="50"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[EmployeeKey]"
+                          name="EmployeeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[CustomerKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerKey]"
+                          length="50"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[CustomerKey]"
+                          name="CustomerKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[SalespersonBudgetSalesProfitAmountLCY]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].ExternalColumns[SalespersonBudgetSalesProfitAmountLCY]"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[SalespersonBudgetSalesProfitAmountLCY]"
+                          name="SalespersonBudgetSalesProfitAmountLCY"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].ExternalColumns[BudgetTypeKey]"
+                          length="50"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[BudgetTypeKey]"
+                          name="BudgetTypeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[GPPGCurrentKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].ExternalColumns[GPPGCurrentKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[GPPGCurrentKey]"
+                          name="GPPGCurrentKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[GPPGHistoricalKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].ExternalColumns[GPPGHistoricalKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].Columns[GPPGHistoricalKey]"
+                          name="GPPGHistoricalKey"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarKey]"
+                          dataType="dbDate"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].ExternalColumns[SalesBudgetTypeKey]"
+                          dataType="wstr"
+                          length="50"
+                          name="SalesBudgetTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].ExternalColumns[EmployeeKey]"
+                          dataType="wstr"
+                          length="50"
+                          name="EmployeeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerKey]"
+                          dataType="wstr"
+                          length="50"
+                          name="CustomerKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].ExternalColumns[SalespersonBudgetSalesProfitAmountLCY]"
+                          dataType="numeric"
+                          name="SalespersonBudgetSalesProfitAmountLCY"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].ExternalColumns[BudgetTypeKey]"
+                          dataType="wstr"
+                          length="50"
+                          name="BudgetTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].ExternalColumns[GPPGCurrentKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="GPPGCurrentKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output].ExternalColumns[GPPGHistoricalKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="GPPGHistoricalKey" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[SalesBudgetTypeKey]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[SalesBudgetTypeKey]"
+                          name="SalesBudgetTypeKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[BudgetTypeKey]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[BudgetTypeKey]"
+                          name="BudgetTypeKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[CalendarKey]"
+                          dataType="dbDate"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[CalendarKey]"
+                          name="CalendarKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[CompanyKey]"
+                          name="CompanyKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[EmployeeKey]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[EmployeeKey]"
+                          name="EmployeeKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[CustomerKey]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[CustomerKey]"
+                          name="CustomerKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[GPPGCurrentKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[GPPGCurrentKey]"
+                          name="GPPGCurrentKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[GPPGHistoricalKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[GPPGHistoricalKey]"
+                          name="GPPGHistoricalKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[SalespersonBudgetSalesProfitAmountLCY]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[SalespersonBudgetSalesProfitAmountLCY]"
+                          name="SalespersonBudgetSalesProfitAmountLCY"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget.Paths[Output]"
+                  endId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget.Inputs[DER Audit_Output_OLE DES CustomerClassCount]"
+                  name="Output"
+                  startId="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform SalespersonBudget\SQL Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{8B62A94F-FE53-4ED1-A60A-50DAF80A5BB4}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{913C7007-0FCE-43B1-AA35-92CACDE0C121}"
+              SQLTask:SqlStatementSource="&#xA;         EXEC('TRUNCATE TABLE ' + ?)&#xA;        " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::StageTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform SalespersonBudget.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{874875EF-895C-44FE-83C3-0D203168BFCD}"
+          DTS:From="Package\SEQC Transform SalespersonBudget\SQL Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="242,42"
+          Id="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget"
+          TopLeft="5.50000000000003,107.5" />
+        <NodeLayout
+          Size="172,42"
+          Id="Package\SEQC Transform SalespersonBudget\SQL Truncate Table"
+          TopLeft="44.5,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform SalespersonBudget.PrecedenceConstraints[Constraint]"
+          TopLeft="128.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="286,205"
+          Size="286,248"
+          Id="Package\SEQC Transform SalespersonBudget"
+          TopLeft="59.5,132.5" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract"
+          TopLeft="37.5,5.5" />
+        <NodeLayout
+          Size="213,42"
+          Id="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget"
+          TopLeft="5.50000000000001,107.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget.Paths[Output]"
+          TopLeft="113.75,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE DES SalespersonBudget">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform SalespersonBudget\DFT Transform SalespersonBudget\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

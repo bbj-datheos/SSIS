@@ -1,0 +1,1732 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/6/2017 2:42:33 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="mim-ext"
+  DTS:DTSID="{3B832E6F-7270-4B8C-BF99-05EE93F71522}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="LoadFact_CustomerAmount"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="27"
+  DTS:VersionGUID="{14DF803D-15AB-4167-9BFA-9F7F08D9B624}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{1A5878A7-3ECE-4C11-9408-0D567D5FBC0D}"
+      DTS:ObjectName="DW">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_DW]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=TEST-BI-01;Initial Catalog=EETDW;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{1F029A49-A237-435C-BFAD-D94BF9773659}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=TEST-BI-01;Initial Catalog=EETDW;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{AC38EB61-6733-482B-A818-A34982F421D3}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=TEST-BI-01;Initial Catalog=EETDW;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{45C29CD1-8316-4D4C-8B77-29EAF3191123}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="@[$Project::MartFactSchema] +&quot;.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">MartFact.CustomerAmount</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{00E80C6C-5F04-471D-968A-C1230BF28DDA}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;SELECT * FROM &quot; +  @[User::SourceTable]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SelectAllFrom">
+      <DTS:VariableValue
+        DTS:DataType="8">SELECT * FROM TransformFact.CustomerAmount</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{1B8C78F4-06BA-410F-A5CA-96E7E851116F}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="@[$Project::TransformFactSchema] + &quot;.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SourceTable">
+      <DTS:VariableValue
+        DTS:DataType="8">TransformFact.CustomerAmount</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{8C1BF8A8-4B1C-44EA-B45C-FE13CB74E55B}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">CustomerAmount</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC FullLoad FactSalesItemLedgerEntry"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{9599327A-F4C2-4ACB-8A47-96FAF9E334C5}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC FullLoad FactSalesItemLedgerEntry">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{48DF71BE-50D8-4719-989C-53EAD7D8D6BE}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT LoadFactCustomerAmount"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\DER Error Handling"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Error Handling"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\DER Error Handling.Inputs[LKP WebUser_Match_DER Error Handling]"
+                      name="LKP WebUser_Match_DER Error Handling">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\DER Error Handling.Inputs[LKP WebUser_Match_DER Error Handling].Columns[CompanyID]"
+                          cachedDataType="i4"
+                          cachedName="CompanyID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Outputs[Match].Columns[CompanyID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[REPLACENULL](#{Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Outputs[Match].Columns[CompanyID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(CompanyID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\DER Error Handling.Inputs[LKP WebUser_Match_DER Error Handling].Columns[CurrencyID]"
+                          cachedDataType="i4"
+                          cachedName="CurrencyID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Outputs[Match].Columns[CurrencyID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[REPLACENULL](#{Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Outputs[Match].Columns[CurrencyID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(CurrencyID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\DER Error Handling.Inputs[LKP WebUser_Match_DER Error Handling].Columns[CustomerSellToID]"
+                          cachedDataType="i4"
+                          cachedName="CustomerSellToID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Outputs[Match].Columns[CustomerSellToID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[REPLACENULL](#{Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Outputs[Match].Columns[CustomerSellToID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(CustomerSellToID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\DER Error Handling.Inputs[LKP WebUser_Match_DER Error Handling].Columns[CustomerBillToID]"
+                          cachedDataType="i4"
+                          cachedName="CustomerBillToID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Outputs[Match].Columns[CustomerBillToID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[REPLACENULL](#{Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Outputs[Match].Columns[CustomerBillToID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(CustomerBillToID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\DER Error Handling.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\DER Error Handling.Inputs[LKP WebUser_Match_DER Error Handling]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\DER Error Handling.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\DER Error Handling.Inputs[LKP WebUser_Match_DER Error Handling]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\DER Error Handling.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\DER Error Handling.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\DER Error Handling.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\DER Error Handling.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;5"
+                  name="LKP Company"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT CompanyID,  CompanyKey FROM MartDim.Company</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT CompanyID,  CompanyKey FROM MartDim.Company) [refTable]
+where [refTable].[CompanyKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="CompanyID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CompanyKey" dataType="DT_WSTR" length="10" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CompanyKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Inputs[LKP Calendar_Match_LKP Company]"
+                      name="LKP Calendar_Match_LKP Company">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Inputs[LKP Calendar_Match_LKP Company].Columns[CompanyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CompanyKey"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CompanyKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">CompanyKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Outputs[Match]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Match"
+                      synchronousInputId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Inputs[LKP Calendar_Match_LKP Company]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Outputs[Match].Columns[CompanyID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="CopyColumn"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Outputs[Match].Columns[CompanyID]"
+                          name="CompanyID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">CompanyID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Outputs[NoMatch]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="NoMatch"
+                      synchronousInputId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Inputs[LKP Calendar_Match_LKP Company]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Inputs[LKP Calendar_Match_LKP Company]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;5"
+                  name="LKP Currency"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT CurrencyID,  CurrencyKey FROM MartDim.Currency</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT CurrencyID,  CurrencyKey FROM MartDim.Currency) [refTable]
+where [refTable].[CurrencyKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="CurrencyID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CurrencyKey" dataType="DT_WSTR" length="10" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CurrencyKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Inputs[LKP CostChangeReason_Match_LKP Currency]"
+                      name="LKP CostChangeReason_Match_LKP Currency">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Inputs[LKP CostChangeReason_Match_LKP Currency].Columns[CurrencyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CurrencyKey"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CurrencyKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">CurrencyKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Outputs[Match]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Match"
+                      synchronousInputId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Inputs[LKP CostChangeReason_Match_LKP Currency]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Outputs[Match].Columns[CurrencyID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="CopyColumn"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Outputs[Match].Columns[CurrencyID]"
+                          name="CurrencyID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">CurrencyID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Outputs[NoMatch]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="NoMatch"
+                      synchronousInputId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Inputs[LKP CostChangeReason_Match_LKP Currency]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Inputs[LKP CostChangeReason_Match_LKP Currency]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;5"
+                  name="LKP CustomerBillTo"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT CustomerID,  CustomerKey FROM MartDim.Customer</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT CustomerID,  CustomerKey FROM MartDim.Customer) [refTable]
+where [refTable].[CustomerKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="CustomerID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CustomerKey" dataType="DT_WSTR" length="51" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CustomerBillToKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Inputs[LKP Currency_Match_LKP CustomerSellTo]"
+                      name="LKP Currency_Match_LKP CustomerSellTo">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Inputs[LKP Currency_Match_LKP CustomerSellTo].Columns[CustomerBillToKey]"
+                          cachedDataType="wstr"
+                          cachedLength="51"
+                          cachedName="CustomerBillToKey"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CustomerBillToKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">CustomerKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Outputs[Match]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Match"
+                      synchronousInputId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Inputs[LKP Currency_Match_LKP CustomerSellTo]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Outputs[Match].Columns[CustomerBillToID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="CopyColumn"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Outputs[Match].Columns[CustomerBillToID]"
+                          name="CustomerBillToID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">CustomerID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Outputs[NoMatch]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="NoMatch"
+                      synchronousInputId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Inputs[LKP Currency_Match_LKP CustomerSellTo]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Inputs[LKP Currency_Match_LKP CustomerSellTo]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;5"
+                  name="LKP CustomerSellTo"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT CustomerID,  CustomerKey FROM MartDim.Customer</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT CustomerID,  CustomerKey FROM MartDim.Customer) [refTable]
+where [refTable].[CustomerKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="CustomerID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CustomerKey" dataType="DT_WSTR" length="51" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CustomerSellToKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Inputs[LKP Currency_Match_LKP CustomerSellTo]"
+                      name="LKP Currency_Match_LKP CustomerSellTo">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Inputs[LKP Currency_Match_LKP CustomerSellTo].Columns[CustomerSellToKey]"
+                          cachedDataType="wstr"
+                          cachedLength="51"
+                          cachedName="CustomerSellToKey"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CustomerSellToKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">CustomerKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Outputs[Match]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Match"
+                      synchronousInputId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Inputs[LKP Currency_Match_LKP CustomerSellTo]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Outputs[Match].Columns[CustomerSellToID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="CopyColumn"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Outputs[Match].Columns[CustomerSellToID]"
+                          name="CustomerSellToID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">CustomerID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Outputs[NoMatch]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="NoMatch"
+                      synchronousInputId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Inputs[LKP Currency_Match_LKP CustomerSellTo]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Inputs[LKP Currency_Match_LKP CustomerSellTo]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="OLE DB Source"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
+ UPPER([CompanyKey]) AS [CompanyKey]
+,UPPER([CustomerSellToKey]) AS [CustomerSellToKey]
+,UPPER([CustomerBillToKey]) AS [CustomerBillToKey]
+,UPPER([CurrencyKey]) AS [CurrencyKey]
+,[CreditLimitAmount]
+,[InsuranceAmount]
+FROM [dbo].[CustomerAmount]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable">User::SelectAllFrom</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CompanyKey]"
+                          length="10"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CompanyKey]"
+                          name="CompanyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CustomerSellToKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CustomerSellToKey]"
+                          length="51"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CustomerSellToKey]"
+                          name="CustomerSellToKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CustomerBillToKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CustomerBillToKey]"
+                          length="51"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CustomerBillToKey]"
+                          name="CustomerBillToKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CreditLimitAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CreditLimitAmount]"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CreditLimitAmount]"
+                          name="CreditLimitAmount"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[InsuranceAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[InsuranceAmount]"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[InsuranceAmount]"
+                          name="InsuranceAmount"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CurrencyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CurrencyKey]"
+                          length="10"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CurrencyKey]"
+                          name="CurrencyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[DWNavisionCompany]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DWNavisionCompany]"
+                          length="200"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[DWNavisionCompany]"
+                          name="DWNavisionCompany"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CustomerSellToKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="CustomerSellToKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CustomerBillToKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="CustomerBillToKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CreditLimitAmount]"
+                          dataType="numeric"
+                          name="CreditLimitAmount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[InsuranceAmount]"
+                          dataType="numeric"
+                          name="InsuranceAmount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CurrencyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CurrencyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DWNavisionCompany]"
+                          dataType="wstr"
+                          length="200"
+                          name="DWNavisionCompany" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CompanyKey]"
+                          name="CompanyKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CustomerSellToKey]"
+                          dataType="wstr"
+                          length="51"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CustomerSellToKey]"
+                          name="CustomerSellToKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CustomerBillToKey]"
+                          dataType="wstr"
+                          length="51"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CustomerBillToKey]"
+                          name="CustomerBillToKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CurrencyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CurrencyKey]"
+                          name="CurrencyKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CreditLimitAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CreditLimitAmount]"
+                          name="CreditLimitAmount"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[InsuranceAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[InsuranceAmount]"
+                          name="InsuranceAmount"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DWNavisionCompany]"
+                          dataType="wstr"
+                          length="200"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DWNavisionCompany]"
+                          name="DWNavisionCompany" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES FactSalesCustomerAmount"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES FactSalesItemLedgerEntry">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].Columns[CustomerSellToID]"
+                          cachedDataType="i4"
+                          cachedName="CustomerSellToID"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].ExternalColumns[CustomerSellToID]"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Outputs[Match].Columns[CustomerSellToID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].Columns[CompanyID]"
+                          cachedDataType="i4"
+                          cachedName="CompanyID"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].ExternalColumns[CompanyID]"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Outputs[Match].Columns[CompanyID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].Columns[CustomerBillToID]"
+                          cachedDataType="i4"
+                          cachedName="CustomerBillToID"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].ExternalColumns[CustomerBillToID]"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Outputs[Match].Columns[CustomerBillToID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].Columns[CreditLimitAmount]"
+                          cachedDataType="numeric"
+                          cachedName="CreditLimitAmount"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].ExternalColumns[CreditLimitAmount]"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[CreditLimitAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].Columns[InsuranceAmount]"
+                          cachedDataType="numeric"
+                          cachedName="InsuranceAmount"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].ExternalColumns[InsuranceAmount]"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output].Columns[InsuranceAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].Columns[CurrencyID]"
+                          cachedDataType="i4"
+                          cachedName="CurrencyID"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].ExternalColumns[CurrencyID]"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Outputs[Match].Columns[CurrencyID]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].ExternalColumns[CompanyID]"
+                          dataType="i4"
+                          name="CompanyID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].ExternalColumns[CustomerSellToID]"
+                          dataType="i4"
+                          name="CustomerSellToID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].ExternalColumns[CustomerBillToID]"
+                          dataType="i4"
+                          name="CustomerBillToID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].ExternalColumns[CreditLimitAmount]"
+                          dataType="numeric"
+                          name="CreditLimitAmount"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].ExternalColumns[InsuranceAmount]"
+                          dataType="numeric"
+                          name="InsuranceAmount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry].ExternalColumns[CurrencyID]"
+                          dataType="i4"
+                          name="CurrencyID" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount.Paths[LKP Currency_Match_LKP CustomerSellTo]"
+                  endId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Inputs[LKP Currency_Match_LKP CustomerSellTo]"
+                  name="LKP Currency_Match_LKP CustomerSellTo"
+                  startId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Outputs[Match]" />
+                <path
+                  refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount.Paths[Match]"
+                  endId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Inputs[LKP Currency_Match_LKP CustomerSellTo]"
+                  name="Match"
+                  startId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo.Outputs[Match]" />
+                <path
+                  refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount.Paths[Match1]"
+                  endId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency.Inputs[LKP CostChangeReason_Match_LKP Currency]"
+                  name="Match"
+                  startId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Outputs[Match]" />
+                <path
+                  refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount.Paths[Match2]"
+                  endId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\DER Error Handling.Inputs[LKP WebUser_Match_DER Error Handling]"
+                  name="Match"
+                  startId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo.Outputs[Match]" />
+                <path
+                  refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount.Paths[OLE DB Source Output]"
+                  endId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company.Inputs[LKP Calendar_Match_LKP Company]"
+                  name="OLE DB Source Output"
+                  startId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source.Outputs[OLE DB Source Output]" />
+                <path
+                  refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount.Paths[Output]"
+                  endId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount.Inputs[DER Audit_Output_OLE DES FactSalesItemLedgerEntry]"
+                  name="Output"
+                  startId="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\DER Error Handling.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC FullLoad FactSalesItemLedgerEntry\SQL Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{40BF4FAF-7317-4BF5-AC21-7ED531D88FBF}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{1A5878A7-3ECE-4C11-9408-0D567D5FBC0D}"
+              SQLTask:SqlStatementSource="&#xA;         EXEC('TRUNCATE TABLE ' + ?)&#xA;        " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC FullLoad FactSalesItemLedgerEntry.PrecedenceConstraints[Constraint_SQL Truncate Table_To_DFT LoadFactSalesItemLedgerEntry]"
+          DTS:CreationName=""
+          DTS:DTSID="{C1C002B1-05EE-4A50-B87E-32F263B515BD}"
+          DTS:From="Package\SEQC FullLoad FactSalesItemLedgerEntry\SQL Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_SQL Truncate Table_To_DFT LoadFactSalesItemLedgerEntry"
+          DTS:To="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="247,42"
+          Id="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount"
+          TopLeft="5.50000000000003,107.5" />
+        <NodeLayout
+          Size="172,42"
+          Id="Package\SEQC FullLoad FactSalesItemLedgerEntry\SQL Truncate Table"
+          TopLeft="43,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactSalesItemLedgerEntry.PrecedenceConstraints[Constraint_SQL Truncate Table_To_DFT LoadFactSalesItemLedgerEntry]"
+          TopLeft="129,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="258,205"
+          Size="258,248"
+          Id="Package\SEQC FullLoad FactSalesItemLedgerEntry"
+          TopLeft="5.50000000000003,5.5" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="170,42"
+          Id="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\DER Error Handling"
+          TopLeft="44.0000000000001,515.5" />
+        <NodeLayout
+          Size="142,42"
+          Id="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency"
+          TopLeft="58,209.5" />
+        <NodeLayout
+          Size="173,42"
+          Id="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo"
+          TopLeft="42.5,311.5" />
+        <NodeLayout
+          Size="247,42"
+          Id="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount"
+          TopLeft="5.50000000000009,719.5" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company"
+          TopLeft="57,107.5" />
+        <NodeLayout
+          Size="170,42"
+          Id="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo"
+          TopLeft="44,413.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source"
+          TopLeft="54,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount.Paths[Output]"
+          TopLeft="129,557.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,162"
+              Start="0,0"
+              End="0,154.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,154.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount.Paths[OLE DB Source Output]"
+          TopLeft="129,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount.Paths[Match2]"
+          TopLeft="129,455.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-13.56193359375,21.37548828125,27.1238671875,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount.Paths[Match1]"
+          TopLeft="129,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-13.56193359375,21.37548828125,27.1238671875,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount.Paths[Match]"
+          TopLeft="129,353.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-13.56193359375,21.37548828125,27.1238671875,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount.Paths[LKP Currency_Match_LKP CustomerSellTo]"
+          TopLeft="129,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-13.56193359375,21.37548828125,27.1238671875,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Currency">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerSellTo">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DES FactSalesCustomerAmount">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP Company">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\LKP CustomerBillTo">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad FactSalesItemLedgerEntry\DFT LoadFactCustomerAmount\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

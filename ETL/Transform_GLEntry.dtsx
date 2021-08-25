@@ -1,0 +1,1088 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="1/16/2017 12:25:48 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="bbj-ext"
+  DTS:DTSID="{6869A584-162C-4FB1-B196-5585E01971D7}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_GLEntry"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="14"
+  DTS:VersionGUID="{125D0498-C467-4B34-8793-81A881CE22BB}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{28711403-720B-4A96-9A06-164AFB41B957}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{7293DB78-46C6-4C3A-9257-932DFB8CDEEF}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{CC10500D-21B0-4B48-A1A8-D93E7A0DFD48}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{9D11AE31-E212-4D9B-919B-D2B669174FA5}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">fact</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{1F412D4E-44FC-4D2E-B972-4926BB40A3C8}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.GLEntry</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{C33537E1-3FD9-4B94-83BD-DBA57D987D35}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">GLEntry</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{5773A76C-7A3E-4599-AD8F-6F0BFBCD5D1F}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{E7913EA1-BE40-4FE4-A3AD-45A4730065B7}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{7293DB78-46C6-4C3A-9257-932DFB8CDEEF}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform GLEntry"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{696A8EFE-C191-4E16-A7A0-1DA5A7E46919}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform GLEntry">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{AB23336B-FACB-460E-A0C0-0C76C6B9D4CA}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform GLEntry"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES GLEntry"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[GLEntry]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES GLEntry">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].Columns[Entry No.]"
+                          cachedDataType="i4"
+                          cachedName="Entry No."
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[Entry No.]"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[Entry No.]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].Columns[CalendarKey]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="CalendarKey"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].Columns[CompanyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CompanyKey"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[CompanyKey]"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].Columns[CurrencyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CurrencyKey"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[CurrencyKey]"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[CurrencyKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].Columns[DepartmentKey]"
+                          cachedDataType="wstr"
+                          cachedLength="300"
+                          cachedName="DepartmentKey"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[DepartmentKey]"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[DepartmentKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].Columns[Amount]"
+                          cachedDataType="numeric"
+                          cachedName="Amount"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[Amount]"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[Amount]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].Columns[GlobalAccountKey]"
+                          cachedDataType="wstr"
+                          cachedLength="300"
+                          cachedName="GlobalAccountKey"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[GlobalAccountKey]"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[GlobalAccountKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].Columns[DocumentKey]"
+                          cachedDataType="wstr"
+                          cachedLength="65"
+                          cachedName="DocumentKey"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[DocumentKey]"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[DocumentKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].Columns[Document Type]"
+                          cachedDataType="wstr"
+                          cachedLength="19"
+                          cachedName="Document Type"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[Document Type]"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[Document Type]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].Columns[Document No]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="Document No"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[Document No]"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[Document No]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].Columns[CostChangeReasonKey]"
+                          cachedDataType="wstr"
+                          cachedLength="41"
+                          cachedName="CostChangeReasonKey"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[CostChangeReasonKey]"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[CostChangeReasonKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].Columns[GLInfoKey]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="GLInfoKey"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[GLInfoKey]"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[GLInfoKey]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[Entry No.]"
+                          dataType="i4"
+                          name="Entry No." />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[CurrencyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CurrencyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[DepartmentKey]"
+                          dataType="wstr"
+                          length="300"
+                          name="DepartmentKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[Amount]"
+                          dataType="numeric"
+                          name="Amount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[GlobalAccountKey]"
+                          dataType="wstr"
+                          length="300"
+                          name="GlobalAccountKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[DocumentKey]"
+                          dataType="wstr"
+                          length="100"
+                          name="DocumentKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[Document Type]"
+                          dataType="wstr"
+                          length="30"
+                          name="Document Type" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[Document No]"
+                          dataType="wstr"
+                          length="30"
+                          name="Document No" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[CostChangeReasonKey]"
+                          dataType="wstr"
+                          length="81"
+                          name="CostChangeReasonKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry].ExternalColumns[GLInfoKey]"
+                          dataType="wstr"
+                          length="50"
+                          name="GLInfoKey" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT --TOP 1000 
+	[Entry No.]
+	,N'GLE-' + CAST ([Document Type] AS NVARCHAR) + N'-' +  [Document No.] AS DocumentKey
+	,CASE [Document Type]
+		WHEN 0 THEN N''
+		WHEN 1 THEN N'Payment'
+		WHEN 2 THEN N'Invoice'
+		WHEN 3 THEN N'Credit Memo'
+		WHEN 4 THEN N'Finance Charge Memo'
+		WHEN 5 THEN N'Reminder'
+		ELSE N'Unknown'
+	END AS [Document Type]
+	,[Document No.] AS [Document No]
+	,[Posting Date] AS [CalendarKey]
+	,ISNULL((SELECT MAX([Code]) FROM [EETDW_Extract].[navcom].[Business Unit] WHERE [Consolidate]=1 AND [Company Name]=gle.[DWNavisionCompany] AND [Department Code]=gle.[Department Code])
+		,(SELECT MAX([Code]) FROM [EETDW_Extract].[navcom].[Business Unit] WHERE [Consolidate]=1 AND [Company Name]=gle.[DWNavisionCompany] AND [Department Code]='')) AS [CompanyKey]
+	,ISNULL((SELECT MAX([Local Currency Code]) FROM [EETDW_Extract].[navcom].[Business Unit] WHERE [Consolidate]=1 AND [Company Name]=gle.[DWNavisionCompany] AND [Department Code]=gle.[Department Code])
+	      ,(SELECT MAX([Local Currency Code]) FROM [EETDW_Extract].[navcom].[Business Unit] WHERE [Consolidate]=1 AND [Company Name]=gle.[DWNavisionCompany] AND [Department Code]='')) AS [CurrencyKey]
+	,[DWNavisionCompany] + N'-' + [Department Code] AS [DepartmentKey]
+	,[DWNavisionCompany] + N'-' + [G/L Account No.] AS [GlobalAccountKey]
+	,CONVERT(NVARCHAR(20),gle.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(20),gle.[Reason Code]) AS CostChangeReasonKey
+	,CONVERT(nvarchar(50),[DWNavisionCompany] + N'-'+ CONVERT(nvarchar(40),[Entry No.])) AS GLInfoKey
+	,CASE
+		WHEN (SELECT ga.[Income/Balance] FROM [EETDW_Extract].[nav].[G/L Account] ga WHERE ga.DWNavisionCompany = gle.[DWNavisionCompany] AND ga.[No.] = gle.[G/L Account No.]) = 0
+			THEN [Amount] * -1
+		ELSE [Amount]
+	END AS Amount
+FROM
+	[EETDW_Extract].[nav].[G/L Entry] gle
+
+UNION ALL
+
+SELECT
+	[Entry No.]
+	,N'' AS DocumentKey
+	,N'' AS [Document Type]
+	,N'' AS [Document No]
+	,[CalendarKey]
+	,[CompanyKey]
+	,[CurrencyKey]
+	,N'' AS [DepartmentKey]
+	,[GlobalAccountKey]
+	,N'' AS CostChangeReasonKey
+	,N'' AS GLInfoKey
+	,[Amount]
+FROM
+	[EETDW_Extract].[control].[GL_OpeningBalance_2014]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[Entry No.]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[Entry No.]"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[Entry No.]"
+                          name="Entry No."
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]"
+                          name="CalendarKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]"
+                          name="CompanyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[CurrencyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CurrencyKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[CurrencyKey]"
+                          name="CurrencyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[DepartmentKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[DepartmentKey]"
+                          length="300"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[DepartmentKey]"
+                          name="DepartmentKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[Amount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[Amount]"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[Amount]"
+                          name="Amount"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[GlobalAccountKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[GlobalAccountKey]"
+                          length="300"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[GlobalAccountKey]"
+                          name="GlobalAccountKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[DocumentKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[DocumentKey]"
+                          length="65"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[DocumentKey]"
+                          name="DocumentKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[Document Type]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[Document Type]"
+                          length="19"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[Document Type]"
+                          name="Document Type"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[Document No]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[Document No]"
+                          length="30"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[Document No]"
+                          name="Document No"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[CostChangeReasonKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CostChangeReasonKey]"
+                          length="41"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[CostChangeReasonKey]"
+                          name="CostChangeReasonKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[GLInfoKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[GLInfoKey]"
+                          length="50"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].Columns[GLInfoKey]"
+                          name="GLInfoKey"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[Entry No.]"
+                          dataType="i4"
+                          name="Entry No." />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CurrencyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CurrencyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[DepartmentKey]"
+                          dataType="wstr"
+                          length="211"
+                          name="DepartmentKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[Amount]"
+                          dataType="numeric"
+                          name="Amount"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[GlobalAccountKey]"
+                          dataType="wstr"
+                          length="231"
+                          name="GlobalAccountKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[DocumentKey]"
+                          dataType="wstr"
+                          length="65"
+                          name="DocumentKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[Document Type]"
+                          dataType="wstr"
+                          length="19"
+                          name="Document Type" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[Document No]"
+                          dataType="wstr"
+                          length="30"
+                          name="Document No" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[CostChangeReasonKey]"
+                          dataType="wstr"
+                          length="41"
+                          name="CostChangeReasonKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output].ExternalColumns[GLInfoKey]"
+                          dataType="wstr"
+                          length="50"
+                          name="GLInfoKey" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[Entry No.]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[Entry No.]"
+                          name="Entry No." />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[DocumentKey]"
+                          dataType="wstr"
+                          length="65"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[DocumentKey]"
+                          name="DocumentKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[Document Type]"
+                          dataType="wstr"
+                          length="19"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[Document Type]"
+                          name="Document Type" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[Document No]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[Document No]"
+                          name="Document No" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[CalendarKey]"
+                          name="CalendarKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[CompanyKey]"
+                          name="CompanyKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[CurrencyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[CurrencyKey]"
+                          name="CurrencyKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[DepartmentKey]"
+                          dataType="wstr"
+                          length="211"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[DepartmentKey]"
+                          name="DepartmentKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[GlobalAccountKey]"
+                          dataType="wstr"
+                          length="231"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[GlobalAccountKey]"
+                          name="GlobalAccountKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[CostChangeReasonKey]"
+                          dataType="wstr"
+                          length="41"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[CostChangeReasonKey]"
+                          name="CostChangeReasonKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[GLInfoKey]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[GLInfoKey]"
+                          name="GLInfoKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[Amount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[Amount]"
+                          name="Amount"
+                          precision="38"
+                          scale="18" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry.Paths[DER Audit_Output_OLE DES GLEntry]"
+                  endId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry.Inputs[DER Audit_Output_OLE DES GLEntry]"
+                  name="DER Audit_Output_OLE DES GLEntry"
+                  startId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC Transform GLEntry\DFT Transform GLEntry.Paths[OLE SRC Extract_Output_DER Audit]"
+                  endId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="OLE SRC Extract_Output_DER Audit"
+                  startId="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform GLEntry\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{3C1EEAAA-906C-4C08-8941-97D7363168B1}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{CC10500D-21B0-4B48-A1A8-D93E7A0DFD48}"
+              SQLTask:SqlStatementSource="EXEC('TRUNCATE TABLE ' + ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform GLEntry.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform GLEntry]"
+          DTS:CreationName=""
+          DTS:DTSID="{CE6BD256-F46B-4380-A593-FF44594E820F}"
+          DTS:From="Package\SEQC Transform GLEntry\Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_Truncate Table_To_DFT Transform GLEntry"
+          DTS:To="Package\SEQC Transform GLEntry\DFT Transform GLEntry" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SEQC Transform GLEntry_To_SEQC MaintainDW]"
+      DTS:CreationName=""
+      DTS:DTSID="{8E74B16D-A316-4E87-A541-22EAACB2DFD1}"
+      DTS:From="Package\SEQC Transform GLEntry"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SEQC Transform GLEntry_To_SEQC MaintainDW"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,103"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="20.0000000000001,313.5" />
+        <NodeLayout
+          Size="190,42"
+          Id="Package\SEQC Transform GLEntry\DFT Transform GLEntry"
+          TopLeft="5.50000000000001,107.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform GLEntry\Truncate Table"
+          TopLeft="25.5,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform GLEntry.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform GLEntry]"
+          TopLeft="100.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="201,205"
+          Size="201,248"
+          Id="Package\SEQC Transform GLEntry"
+          TopLeft="5.50000000000003,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_SEQC Transform GLEntry_To_SEQC MaintainDW]"
+          TopLeft="106,253.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform GLEntry\DFT Transform GLEntry">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry"
+          TopLeft="5.50000000000003,209.5" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract"
+          TopLeft="8.00000000000001,5.5" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform GLEntry\DFT Transform GLEntry\DER Audit"
+          TopLeft="23,107.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform GLEntry\DFT Transform GLEntry.Paths[OLE SRC Extract_Output_DER Audit]"
+          TopLeft="86,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform GLEntry\DFT Transform GLEntry.Paths[DER Audit_Output_OLE DES GLEntry]"
+          TopLeft="86,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE DES GLEntry">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform GLEntry\DFT Transform GLEntry\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

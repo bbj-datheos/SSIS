@@ -1,0 +1,979 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/3/2017 2:07:13 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="mim-ext"
+  DTS:DTSID="{134925A6-D9DA-4865-BCF4-B97920E927FE}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_GLEntryBudget"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="42"
+  DTS:VersionGUID="{BC838068-6AE6-4AB4-B170-0D5BC519C446}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{2313CEB3-CD22-419B-80F5-54137DD2BEA4}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{D8A0D089-D3A2-4EDC-859E-534D781334CB}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{971CE4A1-DEA3-465C-ADDC-9D1B706EE9C9}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{CAE6F8F3-78EC-42E6-BB5B-794AEF0B6863}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">fact</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{46D1CE39-9E4D-472A-A304-EA1611FF4B90}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.GLEntryBudget</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{F7B912C3-FEB4-4615-A71E-63052AA9417C}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">GLEntryBudget</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{BDCC3283-145F-4A49-9BF7-79CE5CAB2966}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{F2A26181-6543-4A9D-A315-934E41291624}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{D8A0D089-D3A2-4EDC-859E-534D781334CB}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform GLEntryBudget"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{25B9EEA6-9F3F-475A-8DE7-74DCCE47A9A9}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform GLEntryBudget">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform GLEntryBudget\Delete FROM"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{AEB1557F-CB30-4C5D-B476-B33DA42E3FAF}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Delete FROM"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2016; © 2015 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{971CE4A1-DEA3-465C-ADDC-9D1B706EE9C9}"
+              SQLTask:SqlStatementSource="DELETE&#xA;&#x9;GL&#xA;FROM&#xA;&#x9;[EETDW_Stage].[dbo].[GLEntryBudget] AS GL&#xA;&#x9;INNER JOIN [EETDW_Stage].[dbo].[BudgetType] AS BT&#xA;&#x9;ON GL.BudgetTypeKey = BT.BudgetTypeKey&#xA;WHERE&#xA;&#x9;BudgetTypeVersion IN&#xA;&#x9; (&#xA;&#x9;&#x9;SELECT DISTINCT&#xA;&#x9;&#x9;&#x9;[BudgetTypeVersion]&#xA;&#x9;&#x9;FROM&#xA;&#x9;&#x9;&#x9;[EETDW_Extract].[control].[EET_GLBudget]&#xA;&#x9;)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{C7E3748B-C47E-4E14-B28A-B09960E6F127}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform GLEntryBudget"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="OLE DB Destination GLEntryBudget"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[CompanyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CompanyKey"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[CompanyKey]"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[CompanyKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[CalendarKey]"
+                          cachedDataType="dbDate"
+                          cachedName="CalendarKey"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[CalendarKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[MainIndexNo.]"
+                          cachedDataType="i4"
+                          cachedName="MainIndexNo."
+                          externalMetadataColumnId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[MainIndexNo.]"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[MainIndexNo.]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[SubIndexNo.]"
+                          cachedDataType="i4"
+                          cachedName="SubIndexNo."
+                          externalMetadataColumnId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[SubIndexNo.]"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[SubIndexNo.]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[BudgetTypeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="BudgetTypeKey"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[BudgetTypeKey]"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[BudgetTypeKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[NavisionDimensionKey]"
+                          cachedDataType="wstr"
+                          cachedLength="40"
+                          cachedName="NavisionDimensionKey"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[NavisionDimensionKey]"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[NavisionDimensionKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[GLBudgetLCY]"
+                          cachedDataType="numeric"
+                          cachedName="GLBudgetLCY"
+                          cachedPrecision="30"
+                          cachedScale="10"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[GLBudgetLCY]"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[GLBudgetLCY]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[GLBudgetDKK]"
+                          cachedDataType="numeric"
+                          cachedName="GLBudgetDKK"
+                          cachedPrecision="30"
+                          cachedScale="10"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[GLBudgetDKK]"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[GLBudgetDKK]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[MainIndexNo.]"
+                          dataType="i4"
+                          name="MainIndexNo." />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[SubIndexNo.]"
+                          dataType="i4"
+                          name="SubIndexNo." />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[BudgetTypeKey]"
+                          dataType="wstr"
+                          length="100"
+                          name="BudgetTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[NavisionDimensionKey]"
+                          dataType="wstr"
+                          length="40"
+                          name="NavisionDimensionKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[GLBudgetLCY]"
+                          dataType="numeric"
+                          name="GLBudgetLCY"
+                          precision="30"
+                          scale="10" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[GLBudgetDKK]"
+                          dataType="numeric"
+                          name="GLBudgetDKK"
+                          precision="30"
+                          scale="10" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="OLE Source GLEntryBudget"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
+	 CONVERT(nvarchar(10),g.[BusinessUnitCode]) AS [CompanyKey]
+	,CONVERT(datetime,LEFT([CalendarID],4)+N'-'+SUBSTRING([CalendarID],5,2)+N'-'+LEFT([CalendarID],2)) AS [CalendarKey]
+	,CONVERT(int,[MainIndexNo]) AS [MainIndexNo.]
+	,CONVERT(int,[SubIndexNo]) AS [SubIndexNo.]
+	,CONVERT(nvarchar(100),t.BudgetTypeKey) AS BudgetTypeKey
+	,CONVERT(nvarchar(40),NavisionDimensionKey) AS NavisionDimensionKey
+	,CONVERT(numeric(30,10),[AmountLCY]) AS [GLBudgetLCY]
+	,CONVERT(numeric(30,10),[AmountDKK]) AS [GLBudgetDKK]
+FROM
+	[EETDW_Extract].[control].[EET_GLBudget] AS g
+	LEFT JOIN [EETDW_Stage].[dbo].[Company] AS c
+	ON g.[BusinessUnitCode]=c.[CompanyKey]
+	LEFT JOIN [EETDW_Stage].[dbo].[BudgetType] AS t
+	ON g.[BudgetTypeVersion]=t.[BudgetTypeVersion]
+	AND g.[BudgetTypeIsCurrentBudget]=t.[BudgetTypeIsCurrentBudget]
+	AND g.[BudgetTypeIsCurrentForecast]=t.[BudgetTypeIsCurrentForecast]
+	AND g.[BudgetTypeCategory]=t.[BudgetTypeCategory]
+	AND g.[BudgetBrandType]=t.[BudgetBrandType]
+	AND g.[BudgetTypeMeasure]=t.[BudgetTypeMeasure]
+	LEFT JOIN [EETDW_Stage].[dbo].[NavisionDimension] AS d
+	ON d.[DepartmentCode]=g.[DepartmentCode]
+	AND d.[ProjectCode]=g.[ProjectCode]
+	AND d.[DWNavisionCompany]=c.[Company Name]
+WHERE
+	NOT (AmountLCY=0 AND AmountDKK=0)</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[CompanyKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[CompanyKey]"
+                          name="CompanyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[CalendarKey]"
+                          dataType="dbDate"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[CalendarKey]"
+                          name="CalendarKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[MainIndexNo.]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[MainIndexNo.]"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[MainIndexNo.]"
+                          name="MainIndexNo."
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[SubIndexNo.]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[SubIndexNo.]"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[SubIndexNo.]"
+                          name="SubIndexNo."
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[BudgetTypeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[BudgetTypeKey]"
+                          length="100"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[BudgetTypeKey]"
+                          name="BudgetTypeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[NavisionDimensionKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[NavisionDimensionKey]"
+                          length="40"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[NavisionDimensionKey]"
+                          name="NavisionDimensionKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[GLBudgetLCY]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[GLBudgetLCY]"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[GLBudgetLCY]"
+                          name="GLBudgetLCY"
+                          precision="30"
+                          scale="10"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[GLBudgetDKK]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[GLBudgetDKK]"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].Columns[GLBudgetDKK]"
+                          name="GLBudgetDKK"
+                          precision="30"
+                          scale="10"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[MainIndexNo.]"
+                          dataType="i4"
+                          name="MainIndexNo." />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[SubIndexNo.]"
+                          dataType="i4"
+                          name="SubIndexNo." />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[BudgetTypeKey]"
+                          dataType="wstr"
+                          length="100"
+                          name="BudgetTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[NavisionDimensionKey]"
+                          dataType="wstr"
+                          length="40"
+                          name="NavisionDimensionKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[GLBudgetLCY]"
+                          dataType="numeric"
+                          name="GLBudgetLCY"
+                          precision="30"
+                          scale="10" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[GLBudgetDKK]"
+                          dataType="numeric"
+                          name="GLBudgetDKK"
+                          precision="30"
+                          scale="10" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[CompanyKey]"
+                          name="CompanyKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[CalendarKey]"
+                          name="CalendarKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[MainIndexNo.]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[MainIndexNo.]"
+                          name="MainIndexNo." />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[SubIndexNo.]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[SubIndexNo.]"
+                          name="SubIndexNo." />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[BudgetTypeKey]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[BudgetTypeKey]"
+                          name="BudgetTypeKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[NavisionDimensionKey]"
+                          dataType="wstr"
+                          length="40"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[NavisionDimensionKey]"
+                          name="NavisionDimensionKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[GLBudgetLCY]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[GLBudgetLCY]"
+                          name="GLBudgetLCY"
+                          precision="30"
+                          scale="10" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[GLBudgetDKK]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[GLBudgetDKK]"
+                          name="GLBudgetDKK"
+                          precision="30"
+                          scale="10" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget.Paths[OLE DB Source Output]"
+                  endId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="OLE DB Source Output"
+                  startId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget.Outputs[OLE DB Source Output]" />
+                <path
+                  refId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget.Paths[Output]"
+                  endId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget.Inputs[OLE DB Destination Input]"
+                  name="Output"
+                  startId="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\DER Audit.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform GLEntryBudget\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Disabled="True"
+          DTS:DTSID="{B97F8428-F567-4A90-9326-501C11526901}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{971CE4A1-DEA3-465C-ADDC-9D1B706EE9C9}"
+              SQLTask:SqlStatementSource="EXEC('TRUNCATE TABLE ' + ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform GLEntryBudget.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{79E30A52-DA42-42DB-82CE-11B387DFB2C7}"
+          DTS:From="Package\SEQC Transform GLEntryBudget\Delete FROM"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SEQC Transform SalesOrder_To_SEQC MaintainDW]"
+      DTS:CreationName=""
+      DTS:DTSID="{F5E531DC-611D-46DC-8F37-52BC73903D75}"
+      DTS:From="Package\SEQC Transform GLEntryBudget"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SEQC Transform SalesOrder_To_SEQC MaintainDW"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,103"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="27.0000000000001,313.5" />
+        <NodeLayout
+          Size="223,42"
+          Id="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget"
+          TopLeft="6.50000000000001,134.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform GLEntryBudget\Truncate Table"
+          TopLeft="32.5,5.5" />
+        <NodeLayout
+          Size="140,42"
+          Id="Package\SEQC Transform GLEntryBudget\Delete FROM"
+          TopLeft="24,59" />
+        <EdgeLayout
+          Id="Package\SEQC Transform GLEntryBudget.PrecedenceConstraints[Constraint]"
+          TopLeft="94,101">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="24,33.5"
+              Start="0,0"
+              End="24,26">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,12.75" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,12.75"
+                    Point2="0,16.75"
+                    Point3="4,16.75" />
+                  <mssgle:LineSegment
+                    End="20,16.75" />
+                  <mssgle:CubicBezierSegment
+                    Point1="20,16.75"
+                    Point2="24,16.75"
+                    Point3="24,20.75" />
+                  <mssgle:LineSegment
+                    End="24,26" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="253,232"
+          Size="253,274"
+          Id="Package\SEQC Transform GLEntryBudget"
+          TopLeft="5.50000000000003,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_SEQC Transform SalesOrder_To_SEQC MaintainDW]"
+          TopLeft="132,279.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-18.9999999999999,34"
+              Start="0,0"
+              End="-18.9999999999999,26.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,13" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13"
+                    Point2="0,17"
+                    Point3="-4,17" />
+                  <mssgle:LineSegment
+                    End="-14.9999999999999,17" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-14.9999999999999,17"
+                    Point2="-18.9999999999999,17"
+                    Point3="-18.9999999999999,21" />
+                  <mssgle:LineSegment
+                    End="-18.9999999999999,26.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="245,42"
+          Id="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget"
+          TopLeft="21,186" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\DER Audit"
+          TopLeft="81,106.5" />
+        <NodeLayout
+          Size="207,42"
+          Id="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget"
+          TopLeft="37,19" />
+        <EdgeLayout
+          Id="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget.Paths[Output]"
+          TopLeft="143.75,148.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,37.5"
+              Start="0,0"
+              End="0,30">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,30" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget.Paths[OLE DB Source Output]"
+          TopLeft="142.25,61">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,45.5"
+              Start="0,0"
+              End="0,38">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,38" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE DB Destination GLEntryBudget">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform GLEntryBudget\DFT Transform GLEntryBudget\OLE Source GLEntryBudget">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

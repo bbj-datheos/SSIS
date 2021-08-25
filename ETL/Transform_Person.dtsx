@@ -1,0 +1,1127 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="5/29/2017 10:10:55 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="taa-ext"
+  DTS:DTSID="{E6E88945-FA33-4672-8008-B046637787EF}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_Person"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="7"
+  DTS:VersionGUID="{52C12496-F92C-43A9-BA6B-A66F5128A18F}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{F64C89DE-7A4F-4BB8-96FE-09473C9B5865}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02\BI;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{BC2B4864-D542-4857-8544-9B990B5797FB}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02\BI;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{53D72ED3-F1E0-47C2-B6AF-7D6168661E5A}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02\BI;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{3502ADBC-CB65-4A11-A31B-D852B5726289}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">dim</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{08BCDCAF-EABD-4996-8290-4C144BE3A6D5}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.Person</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{90D85959-A49E-4121-9390-F7EAC61720F8}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">Person</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{24CA8784-E965-4BEA-9124-28B938907D0F}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{BA345AB2-5317-4BE7-80CB-1020912BCE50}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{BC2B4864-D542-4857-8544-9B990B5797FB}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform Person"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{588CF76D-6096-4288-84BC-E28F8DD6D4B6}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform Person">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform Person\DFT Transform Person"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{E5CAF884-BF71-4762-8F4C-3D78C4FF7E69}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform Person"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform Person\DFT Transform Person\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform Person\DFT Transform Person\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform Person\DFT Transform Person\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform Person\DFT Transform Person\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform Person\DFT Transform Person\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform Person\DFT Transform Person\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES Person"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES Person">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].Columns[PersonKey]"
+                          cachedDataType="i4"
+                          cachedName="PersonKey"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonKey]"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].Columns[PersonUserID]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="PersonUserID"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonUserID]"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonUserID]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].Columns[PersonName]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="PersonName"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonName]"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonName]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].Columns[PersonADUser]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="PersonADUser"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonADUser]"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonADUser]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].Columns[PersonCompany]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="PersonCompany"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonCompany]"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonCompany]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].Columns[PersonAccountType]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="PersonAccountType"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonAccountType]"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonAccountType]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].Columns[PersonDepartment]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="PersonDepartment"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonDepartment]"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonDepartment]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].Columns[PersonJobFunction]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="PersonJobFunction"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonJobFunction]"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonJobFunction]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].Columns[PersonWorkArea]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="PersonWorkArea"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonWorkArea]"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonWorkArea]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].Columns[PersonLocation]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="PersonLocation"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonLocation]"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonLocation]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonKey]"
+                          dataType="i4"
+                          name="PersonKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonUserID]"
+                          dataType="wstr"
+                          length="100"
+                          name="PersonUserID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonName]"
+                          dataType="wstr"
+                          length="100"
+                          name="PersonName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonADUser]"
+                          dataType="wstr"
+                          length="100"
+                          name="PersonADUser" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonCompany]"
+                          dataType="wstr"
+                          length="100"
+                          name="PersonCompany" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonAccountType]"
+                          dataType="wstr"
+                          length="100"
+                          name="PersonAccountType" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonDepartment]"
+                          dataType="wstr"
+                          length="100"
+                          name="PersonDepartment" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonJobFunction]"
+                          dataType="wstr"
+                          length="100"
+                          name="PersonJobFunction" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonWorkArea]"
+                          dataType="wstr"
+                          length="100"
+                          name="PersonWorkArea" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person].ExternalColumns[PersonLocation]"
+                          dataType="wstr"
+                          length="100"
+                          name="PersonLocation" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select
+	 ID as PersonKey
+	,FirstFoundID as PersonUserID
+	,case
+		when Name is null then FirstFoundID
+		else Name
+	 end as PersonName
+	,lower(Username) as PersonADUser
+	,Company as PersonCompany
+	,AccountType as PersonAccountType
+	,Department as PersonDepartment
+	,JobFunction as PersonJobFunction
+	,WorkArea as PersonWorkArea
+	,Location as PersonLocation
+from (
+select 
+	 id
+    ,FirstFoundID
+	,convert(nvarchar(100), Name) as Name
+	,convert(nvarchar(100), Username) as Username
+	,convert(nvarchar(100), Company) as Company
+	,convert(nvarchar(100), eetAccountType) as AccountType
+	,convert(nvarchar(100), eetDepartment) as Department
+	,convert(nvarchar(100), eetJobFunction) as JobFunction
+	,convert(nvarchar(100), eetWorkArea) as WorkArea
+	,convert(nvarchar(100), eetLocation) as Location
+from EETDW_Stage.map.PersonID m
+left join (select distinct SID, Username, EmailAddress, Name, Company, eetAccountType, eetDepartment, eetJobFunction, eetWorkArea, eetLocation 
+		   from EETDW_Extract.adu.Users) u on m.FirstFoundID = u.SID
+where FirstSourceSystem = 'ad'
+
+union all 
+
+select 
+	 id
+    ,FirstFoundID
+	,convert(nvarchar(100), Name) as Name
+	,convert(nvarchar(100), '') as Username
+	,convert(nvarchar(100), '') as Company
+	,convert(nvarchar(100), '') as AccountType
+	,convert(nvarchar(100), '') as Department
+	,convert(nvarchar(100), '') as JobFunction
+	,convert(nvarchar(100), '') as WorkArea
+	,convert(nvarchar(100), '') as Location
+from EETDW_Stage.map.PersonID m
+left join (select sender, max(e.Name) as name
+    	   from EETDW_Extract.exch.Emails e
+		   where SenderType = 'Internal'
+		   group by sender) e on m.FirstFoundID = e.sender
+where FirstSourceSystem = 'email'
+
+union all
+
+select 
+    id
+    ,FirstFoundID
+	,convert(nvarchar(100), EmployeeName) as Name
+	,convert(nvarchar(100), '')  as Username
+	,convert(nvarchar(100), '') as Company
+	,convert(nvarchar(100), '') as AccountType
+	,convert(nvarchar(100), '') as Department
+	,convert(nvarchar(100), '') as JobFunction
+	,convert(nvarchar(100), '') as WorkArea
+	,convert(nvarchar(100), '') as Location
+from EETDW_Stage.map.PersonID m 
+left join (select max(EmployeeName) as EmployeeName, EmployeeExtension 
+		   from EETDW_Extract.exch.UC_Analytics 
+		   group by EmployeeExtension) s on s.EmployeeExtension = m.FirstFoundID
+where FirstSourceSystem = 'skype' 
+
+union all 
+
+select 
+    id
+    ,FirstFoundID
+	,convert(nvarchar(100), Name) as Name
+	,convert(nvarchar(100), '')  as UserName
+	,convert(nvarchar(100), '') as Company
+	,convert(nvarchar(100), '') as AccountType
+	,convert(nvarchar(100), '') as Department
+	,convert(nvarchar(100), '') as JobFunction
+	,convert(nvarchar(100), '') as WorkArea
+	,convert(nvarchar(100), '') as Location
+from EETDW_Stage.map.PersonID m 
+left join (select distinct c.Name as Name, MailBox
+		  from EETDW_Extract.exch.Calendar c) c on c.MailBox = m.FirstFoundID
+where FirstSourceSystem = 'calendar'
+
+union all 
+
+select 
+    id
+    ,FirstFoundID
+	,convert(nvarchar(100), Name) as Name
+	,convert(nvarchar(100), '') as Username
+	,convert(nvarchar(100), '') as Company
+	,convert(nvarchar(100), '') as AccountType
+	,convert(nvarchar(100), '') as Department
+	,convert(nvarchar(100), '') as JobFunction
+	,convert(nvarchar(100), '') as WorkArea
+	,convert(nvarchar(100), '') as Location
+from EETDW_Stage.map.PersonID m 
+left join (select distinct SID, max(Name) as Name
+		   from EETDW_Extract.navcom.[System User]
+		   group by SID) n on n.SID = m.FirstFoundID
+where FirstSourceSystem = 'navision') as users</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonKey]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonKey]"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonKey]"
+                          name="PersonKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonUserID]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonUserID]"
+                          length="100"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonUserID]"
+                          name="PersonUserID"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonName]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonName]"
+                          length="100"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonName]"
+                          name="PersonName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonADUser]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonADUser]"
+                          length="100"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonADUser]"
+                          name="PersonADUser"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonCompany]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonCompany]"
+                          length="100"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonCompany]"
+                          name="PersonCompany"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonAccountType]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonAccountType]"
+                          length="100"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonAccountType]"
+                          name="PersonAccountType"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonDepartment]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonDepartment]"
+                          length="100"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonDepartment]"
+                          name="PersonDepartment"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonJobFunction]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonJobFunction]"
+                          length="100"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonJobFunction]"
+                          name="PersonJobFunction"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonWorkArea]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonWorkArea]"
+                          length="100"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonWorkArea]"
+                          name="PersonWorkArea"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonLocation]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonLocation]"
+                          length="100"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].Columns[PersonLocation]"
+                          name="PersonLocation"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonKey]"
+                          dataType="i4"
+                          name="PersonKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonUserID]"
+                          dataType="wstr"
+                          length="100"
+                          name="PersonUserID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonName]"
+                          dataType="wstr"
+                          length="100"
+                          name="PersonName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonADUser]"
+                          dataType="wstr"
+                          length="100"
+                          name="PersonADUser" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonCompany]"
+                          dataType="wstr"
+                          length="100"
+                          name="PersonCompany" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonAccountType]"
+                          dataType="wstr"
+                          length="100"
+                          name="PersonAccountType" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonDepartment]"
+                          dataType="wstr"
+                          length="100"
+                          name="PersonDepartment" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonJobFunction]"
+                          dataType="wstr"
+                          length="100"
+                          name="PersonJobFunction" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonWorkArea]"
+                          dataType="wstr"
+                          length="100"
+                          name="PersonWorkArea" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonLocation]"
+                          dataType="wstr"
+                          length="100"
+                          name="PersonLocation" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonKey]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonKey]"
+                          name="PersonKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonUserID]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonUserID]"
+                          name="PersonUserID" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonName]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonName]"
+                          name="PersonName" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonADUser]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonADUser]"
+                          name="PersonADUser" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonCompany]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonCompany]"
+                          name="PersonCompany" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonAccountType]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonAccountType]"
+                          name="PersonAccountType" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonDepartment]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonDepartment]"
+                          name="PersonDepartment" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonJobFunction]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonJobFunction]"
+                          name="PersonJobFunction" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonWorkArea]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonWorkArea]"
+                          name="PersonWorkArea" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonLocation]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[PersonLocation]"
+                          name="PersonLocation" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform Person\DFT Transform Person.Paths[DER Audit_Output_OLE DES Person]"
+                  endId="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person.Inputs[DER Audit_Output_OLE DES Person]"
+                  name="DER Audit_Output_OLE DES Person"
+                  startId="Package\SEQC Transform Person\DFT Transform Person\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC Transform Person\DFT Transform Person.Paths[OLE SRC Extract_Output_DER Audit]"
+                  endId="Package\SEQC Transform Person\DFT Transform Person\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="OLE SRC Extract_Output_DER Audit"
+                  startId="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform Person\EST Person Pre-burner"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{9A67FA03-74F8-4F68-AA8F-1991952C978E}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="EST Person Pre-burner"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{53D72ED3-F1E0-47C2-B6AF-7D6168661E5A}"
+              SQLTask:SqlStatementSource="&#xA;if object_id('tempdb..#ADUsers') is not null&#xA;    drop table #ADUsers&#xA;go&#xA;&#xA;select&#xA;&#x9;Username&#xA;&#x9;,SID&#xA;&#x9;,eetRID&#xA;&#x9;,EmailAddress&#xA;&#x9;,main&#xA;&#x9;,convert(nvarchar, (iif(Enabled = 'True', 1, 0))) as isCurrent&#xA;into #ADUsers&#xA;from (&#xA;select Username, EmailAddress, SID, EmailAddress as main, Enabled, eetRID &#xA;&#x9;   from EETDW_Extract.adu.Users &#xA;union&#xA;select Username, SecondaryEmailAddresses, SID, EmailAddress as main, Enabled, eetRID &#xA;&#x9;   from EETDW_Extract.adu.Users &#xA;&#x9;   where SecondaryEmailAddresses != '') tmp&#xA;&#xA;go&#xA;&#xA;if object_id('tempdb..#tmp') is not null&#xA;    drop table #tmp&#xA;go&#xA;--ad&#xA;&#xA;begin&#xA;&#x9;select  &#xA;&#x9;&#x9; Username&#xA;&#x9;&#x9;,EmailAddress&#xA;&#x9;&#x9;,SID&#xA;&#x9;&#x9;,eetRID&#xA;&#x9;&#x9;,isCurrent&#xA;&#x9;into #tmp &#xA;&#x9;from #ADUsers&#xA;&#x9;where SID not in (select guid from EETDW_Stage.map.PersonAD) &#xA;&#xA;&#x9;if exists (select SID from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where iif(eetRID != '', eetRID, SID) in (select FirstFoundID from EETDW_Stage.map.PersonID)&#xA;&#x9;&#x9;&#x9;&#x9;or EmailAddress in (select FirstFoundID from EETDW_Stage.map.PersonID))&#xA;&#x9;begin&#xA;&#x9;insert into EETDW_Stage.map.PersonAD&#xA;&#x9;select distinct&#xA;&#x9;&#x9; id&#xA;&#x9;&#x9;,UserName&#xA;&#x9;&#x9;,SID&#xA;&#x9;&#x9;,isCurrent&#xA;&#x9;from #tmp&#xA;&#x9;inner join EETDW_Stage.map.PersonID p on #tmp.Username = p.FirstFoundID&#xA;&#x9;end&#xA;&#x9;else&#xA;&#x9;begin&#xA;&#x9;insert into EETDW_Stage.map.PersonID &#xA;&#x9;select distinct &#xA;&#x9;&#x9; SID&#xA;&#x9;&#x9;,'ad' as source&#xA;&#x9;from #tmp&#xA;&#x9;insert into EETDW_Stage.map.PersonAD&#xA;&#x9;select distinct&#xA;&#x9;&#x9; id&#xA;&#x9;&#x9;,username&#xA;&#x9;&#x9;,SID&#xA;&#x9;&#x9;,isCurrent&#xA;&#x9;from #tmp&#xA;&#x9;inner join EETDW_Stage.map.PersonID p on #tmp.SID = p.FirstFoundID&#xA;&#x9;end&#xA;&#x9;&#xA;&#x9;&#x9;&#xA;end&#xA;go&#xA;&#x9;alter table #ADusers&#xA;&#x9;add&#x9;ID int&#xA;&#x9;go&#xA;&#xA;&#x9;update a&#xA;&#x9;set a.ID = ad.ID&#xA;&#x9;from #ADUsers a&#xA;&#x9;inner join EETDW_Stage.map.PersonAD ad on a.SID = ad.guid or a.eetRID = ad.guid&#xA;&#x9;&#xA;go&#xA;&#xA;if object_id('tempdb..#tmp') is not null&#xA;    drop table #tmp&#xA;go&#xA;&#xA;--navision&#xA;begin&#xA;&#x9;select distinct&#xA;&#x9;&#x9; [User ID] as UserName&#xA;&#x9;&#x9;,Email as EmailAddress&#xA;&#x9;&#x9;,SID&#xA;&#x9;into #tmp&#xA;&#x9;from [EETDW_Extract].[navcom].[System User]&#xA;&#x9;where SID not in (select SID from EETDW_Stage.map.PersonNavision)&#xA;&#x9;&#xA;&#x9;if exists (select SID from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where SID in (select FirstFoundID from EETDW_Stage.map.PersonID))&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;begin&#xA;&#x9;insert into EETDW_Stage.map.PersonNavision&#xA;&#x9;select distinct&#xA;&#x9;&#x9; id&#xA;&#x9;&#x9;,UserName&#xA;&#x9;&#x9;,SID&#xA;&#x9;from #tmp&#xA;&#x9;inner join EETDW_Stage.map.PersonID p on #tmp.SID = p.FirstFoundID&#xA;&#x9;end&#xA;&#x9;else&#xA;&#x9;begin&#xA;&#x9;insert into EETDW_Stage.map.PersonID &#xA;&#x9;select distinct -- Same user exists only with one identity column; avoid differential emails&#xA;&#x9;&#x9; SID&#xA;&#x9;&#x9;,'navision' as source&#xA;&#x9;from #tmp&#xA;&#x9;insert into EETDW_Stage.map.PersonNavision&#xA;&#x9;select distinct&#xA;&#x9;&#x9; id&#xA;&#x9;&#x9;,UserName&#xA;&#x9;&#x9;,SID&#xA;&#x9;from #tmp&#xA;&#x9;inner join EETDW_Stage.map.PersonID p on #tmp.SID = p.FirstFoundID&#xA;&#x9;end&#xA;end&#xA;&#xA;if object_id('tempdb..#tmp') is not null&#xA;    drop table #tmp&#xA;go&#xA;&#xA;--email&#xA;begin&#xA;&#x9;select distinct sender as EmailAddress&#xA;&#x9;into #tmp&#xA;    from [EETDW_Extract].[exch].[Emails]&#xA;&#x9;where SenderType = 'Internal'&#xA;&#x9;and sender not in (select Email from EETDW_Stage.map.PersonEmail)&#xA;&#x9;--Exists in both&#xA;&#x9;if exists (select EmailAddress from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where EmailAddress in (select FirstFoundID from EETDW_Stage.map.PersonID))&#xA;&#x9;and &#xA;&#x9;   exists (select EmailAddress from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where EmailAddress in (select EmailAddress from #ADUsers))&#xA;&#xA;&#x9;begin&#xA;&#x9;insert into EETDW_Stage.map.PersonEmail (ID, Email)&#xA;&#x9;select distinct&#xA;&#x9;&#x9; p.id as ID&#xA;&#x9;&#x9;,#tmp.EmailAddress as Email&#xA;&#x9;from #tmp&#xA;&#x9;inner join #ADUsers p on #tmp.EmailAddress = p.EmailAddress&#xA;&#x9;end&#xA;&#x9;-- AD has higher priority&#xA;&#x9;if exists (select EmailAddress from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where EmailAddress in (select EmailAddress from #ADUsers))&#xA;&#x9;and&#xA;&#x9;not exists (select EmailAddress from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where EmailAddress in (select Email from EETDW_Stage.map.PersonEmail)) &#xA;&#x9;begin&#xA;&#x9;insert into EETDW_Stage.map.PersonEmail (ID, Email)&#xA;&#x9;select distinct&#xA;&#x9;&#x9; p.id as ID&#xA;&#x9;&#x9;,#tmp.EmailAddress as Email&#xA;&#x9;from #tmp&#xA;&#x9;inner join #ADUsers p on #tmp.EmailAddress = p.EmailAddress&#xA;&#x9;end&#xA;&#x9;else -- Will only insert if join criteria is met&#x9;&#xA;&#x9;begin&#xA;&#x9;insert into EETDW_Stage.map.PersonEmail (ID, Email)&#xA;&#x9;select distinct&#xA;&#x9;&#x9; id&#xA;&#x9;&#x9;,EmailAddress&#xA;&#x9;from #tmp&#xA;&#x9;inner join EETDW_Stage.map.PersonID p on #tmp.EmailAddress = p.FirstFoundID&#xA;&#x9;where EmailAddress not in (select Email from map.PersonEmail)&#xA;&#x9;end&#xA;&#x9;-- Otherwise it doesn't exists in either insert new&#xA;&#x9;if not exists (select EmailAddress from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where EmailAddress in (select FirstFoundID from EETDW_Stage.map.PersonID))&#xA;&#x9;and &#xA;&#x9;   not exists (select EmailAddress from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where EmailAddress in (select EmailAddress from #ADUsers))&#xA;&#xA;&#x9;begin&#xA;&#x9;insert into EETDW_Stage.map.PersonID &#xA;&#x9;select &#xA;&#x9;&#x9; EmailAddress &#xA;&#x9;&#x9;,'email' as source&#xA;&#x9;from #tmp&#xA;&#x9;insert into EETDW_Stage.map.PersonEmail&#xA;&#x9;select&#xA;&#x9;&#x9; id&#xA;&#x9;&#x9;,EmailAddress&#xA;&#x9;&#x9;,EmailAddress as main&#xA;&#x9;from #tmp&#xA;&#x9;inner join EETDW_Stage.map.PersonID p on #tmp.EmailAddress = p.FirstFoundID&#xA;&#x9;end&#xA;end &#xA;go&#xA;&#xA;if object_id('tempdb..#tmp') is not null&#xA;    drop table #tmp&#xA;go&#xA;&#xA;--skype&#xA;begin&#x9;   &#xA;&#x9;select distinct EmployeeExtension as EmailAddress&#xA;&#x9;into #tmp&#xA;&#x9;from [EETDW_Extract].[exch].[UC_Analytics]&#xA;&#x9;where EmployeeExtension not in (select SkypeUser from EETDW_Stage.map.PersonSkype)&#xA;&#xA;&#x9;--Exists in both&#xA;&#x9;if exists (select EmailAddress from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where EmailAddress in (select FirstFoundID from EETDW_Stage.map.PersonID))&#xA;&#x9;and &#xA;&#x9;   exists (select EmailAddress from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where EmailAddress in (select EmailAddress from #ADUsers))&#xA;&#xA;&#x9;begin&#xA;&#x9;insert into EETDW_Stage.map.PersonSkype&#xA;&#x9;select distinct&#xA;&#x9;&#x9; p.id as ID&#xA;&#x9;&#x9;,#tmp.EmailAddress as Email&#xA;&#x9;from #tmp&#xA;&#x9;inner join #ADUsers p on #tmp.EmailAddress = p.EmailAddress&#xA;&#x9;end&#xA;&#x9;-- AD has higher priority&#xA;&#x9;if exists (select EmailAddress from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where EmailAddress in (select Username + '@eetnordic.net' from #ADUsers))&#xA;&#xA;--bbj/nna 20170621: error - corrected (select EmailAddress from #ADUsers) in above criteria - with fully qualified email user... &#xA;&#xA;&#xA;&#x9;and &#xA;&#x9;not exists (select EmailAddress from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where EmailAddress in (select SkypeUser from EETDW_Stage.map.PersonSkype)) &#xA;&#x9;begin&#xA;&#x9;insert into EETDW_Stage.map.PersonSkype&#xA;&#x9;select distinct&#xA;&#x9;&#x9; p.id as ID&#xA;&#x9;&#x9;,#tmp.EmailAddress as Email&#xA;&#x9;from #tmp&#xA;&#x9;inner join #ADUsers p on #tmp.EmailAddress = p.Username + '@eetnordic.net'&#xA;&#xA;&#x9;end&#xA;&#x9;else -- Will only insert if join criteria is met&#x9;&#xA;&#x9;begin&#xA;&#x9;insert into EETDW_Stage.map.PersonSkype&#xA;&#x9;select distinct&#xA;&#x9;&#x9; id&#xA;&#x9;&#x9;,EmailAddress&#xA;&#x9;from #tmp&#xA;&#x9;inner join EETDW_Stage.map.PersonID p on #tmp.EmailAddress = p.FirstFoundID&#xA;&#x9;where EmailAddress not in (select distinct SkypeUser from map.PersonSkype)&#xA;&#x9;end&#xA;&#x9;-- Otherwise it doesn't exists in either insert new&#xA;&#x9;if not exists (select EmailAddress from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where EmailAddress in (select FirstFoundID from EETDW_Stage.map.PersonID))&#xA;&#x9;and &#xA;&#x9;   not exists (select EmailAddress from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where EmailAddress in (select EmailAddress from #ADUsers))&#xA;&#xA;&#x9;begin&#xA;&#x9;insert into EETDW_Stage.map.PersonID &#xA;&#x9;select &#xA;&#x9;&#x9; EmailAddress &#xA;&#x9;&#x9;,'skype' as source&#xA;&#x9;from #tmp&#xA;&#x9;insert into EETDW_Stage.map.PersonSkype&#xA;&#x9;select&#xA;&#x9;&#x9; id&#xA;&#x9;&#x9;,EmailAddress&#xA;&#x9;from #tmp&#xA;&#x9;inner join EETDW_Stage.map.PersonID p on #tmp.EmailAddress = p.FirstFoundID&#xA;&#x9;end&#xA;end &#xA;go&#xA;&#xA;if object_id('tempdb..#tmp') is not null&#xA;    drop table #tmp&#xA;go&#xA;--calendar&#xA;  &#xA;begin&#xA;&#x9;select distinct MailBox as EmailAddress&#xA;&#x9;into #tmp&#xA;&#x9;from [EETDW_Extract].[exch].[Calendar]&#xA;&#x9;where MailBox not in (select CalendarEmail from EETDW_Stage.map.PersonCalendar)&#xA;&#x9;&#xA;&#x9;--Exists in both&#xA;&#x9;if exists (select EmailAddress from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where EmailAddress in (select FirstFoundID from EETDW_Stage.map.PersonID))&#xA;&#x9;and &#xA;&#x9;   exists (select EmailAddress from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where EmailAddress in (select EmailAddress from #ADUsers))&#xA;&#xA;&#x9;begin&#xA;&#x9;insert into EETDW_Stage.map.PersonCalendar&#xA;&#x9;select distinct&#xA;&#x9;&#x9; p.id as ID&#xA;&#x9;&#x9;,#tmp.EmailAddress as Email&#xA;&#x9;from #tmp&#xA;&#x9;inner join #ADUsers p on #tmp.EmailAddress = p.EmailAddress&#xA;&#x9;end&#xA;&#x9;-- AD has higher priority&#xA;&#x9;if exists (select EmailAddress from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where EmailAddress in (select EmailAddress from #ADUsers))&#xA;&#x9;and&#xA;&#x9;not exists (select EmailAddress from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where EmailAddress in (select CalendarEmail from EETDW_Stage.map.PersonCalendar)) &#xA;&#x9;begin&#xA;&#x9;insert into EETDW_Stage.map.PersonCalendar&#xA;&#x9;select distinct&#xA;&#x9;&#x9; p.id as ID&#xA;&#x9;&#x9;,#tmp.EmailAddress as Email&#xA;&#x9;from #tmp&#xA;&#x9;inner join #ADUsers p on #tmp.EmailAddress = p.EmailAddress&#xA;&#x9;end&#xA;&#x9;else -- Will only insert if join criteria is met&#x9;&#xA;&#x9;begin&#xA;&#x9;insert into EETDW_Stage.map.PersonCalendar&#xA;&#x9;select distinct&#xA;&#x9;&#x9; id&#xA;&#x9;&#x9;,EmailAddress&#xA;&#x9;from #tmp&#xA;&#x9;inner join EETDW_Stage.map.PersonID p on #tmp.EmailAddress = p.FirstFoundID&#xA;&#x9;where EmailAddress not in (select CalendarEmail from map.PersonCalendar)&#xA;&#x9;end&#xA;&#x9;-- Otherwise it doesn't exists in either insert new&#xA;&#x9;if not exists (select EmailAddress from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where EmailAddress in (select FirstFoundID from EETDW_Stage.map.PersonID))&#xA;&#x9;and &#xA;&#x9;   not exists (select EmailAddress from #tmp&#xA;&#x9;&#x9;&#x9;&#x9;where EmailAddress in (select EmailAddress from #ADUsers))&#xA;&#xA;&#x9;begin&#xA;&#x9;insert into EETDW_Stage.map.PersonID &#xA;&#x9;select &#xA;&#x9;&#x9; EmailAddress &#xA;&#x9;&#x9;,'calendar' as source&#xA;&#x9;from #tmp&#xA;&#x9;insert into EETDW_Stage.map.PersonCalendar&#xA;&#x9;select&#xA;&#x9;&#x9; id&#xA;&#x9;&#x9;,EmailAddress&#xA;&#x9;from #tmp&#xA;&#x9;inner join EETDW_Stage.map.PersonID p on #tmp.EmailAddress = p.FirstFoundID&#xA;&#x9;end&#xA;end&#xA; &#xA;go&#xA;&#xA;/*&#xA;truncate table map.personnavision&#xA;truncate table map.personid&#xA;truncate table map.personad&#xA;truncate table map.personemail&#xA;truncate table map.personcalendar&#xA;truncate table map.personskype&#xA;*/&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform Person\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{D60B24B2-03A9-4537-91CC-66CFF33957A5}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{53D72ED3-F1E0-47C2-B6AF-7D6168661E5A}"
+              SQLTask:SqlStatementSource="EXEC('TRUNCATE TABLE ' + ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform Person.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{11BE495F-A680-4206-99B7-235FF79B19E8}"
+          DTS:From="Package\SEQC Transform Person\Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\SEQC Transform Person\EST Person Pre-burner" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform Person.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{CF5B3247-EF01-4B5E-9E25-AD1354DBAD7F}"
+          DTS:From="Package\SEQC Transform Person\EST Person Pre-burner"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\SEQC Transform Person\DFT Transform Person" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SEQC Transform Person_To_SEQC MaintainDW]"
+      DTS:CreationName=""
+      DTS:DTSID="{3CD3EE3A-7DB2-4D8C-9579-4F306DFD82A1}"
+      DTS:From="Package\SEQC Transform Person"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SEQC Transform Person_To_SEQC MaintainDW"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,103"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="20.5000000000001,331.5" />
+        <NodeLayout
+          Size="185,42"
+          Id="Package\SEQC Transform Person\DFT Transform Person"
+          TopLeft="6.50000000000001,169.5" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\SEQC Transform Person\EST Person Pre-burner"
+          TopLeft="9,79" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform Person\Truncate Table"
+          TopLeft="23,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform Person.PrecedenceConstraints[Constraint]"
+          TopLeft="100,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,31.5"
+              Start="0,0"
+              End="0,24">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,24" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform Person.PrecedenceConstraints[Constraint 1]"
+          TopLeft="100.5,121">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,48.5"
+              Start="0,0"
+              End="0,41">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,41" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="215,267"
+          Size="215,310"
+          Id="Package\SEQC Transform Person"
+          TopLeft="5.50000000000003,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_SEQC Transform Person_To_SEQC MaintainDW]"
+          TopLeft="109.75,302.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,29"
+              Start="0,0"
+              End="0,21.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform Person\DFT Transform Person">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="155,42"
+          Id="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person"
+          TopLeft="6.00000000000003,209.5" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform Person\DFT Transform Person\DER Audit"
+          TopLeft="20.5,107.5" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract"
+          TopLeft="5.50000000000001,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform Person\DFT Transform Person.Paths[OLE SRC Extract_Output_DER Audit]"
+          TopLeft="83.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform Person\DFT Transform Person.Paths[DER Audit_Output_OLE DES Person]"
+          TopLeft="83.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform Person\DFT Transform Person\OLE DES Person">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform Person\DFT Transform Person\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

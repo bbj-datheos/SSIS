@@ -1,0 +1,1259 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="3/8/2017 3:40:49 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="mim-ext"
+  DTS:DTSID="{95DFFFA6-4429-4AA4-AD04-A74FFDD3B3DC}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="LoadFact_CustomerClassCount"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="39"
+  DTS:VersionGUID="{E3F6C274-69DE-46B1-8E25-96C943B8E2EB}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{12857530-95A4-410C-A35F-2EBC336361C3}"
+      DTS:ObjectName="DW">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_DW]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=TEST-BI-01;Initial Catalog=EETDW;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{78B4C9C4-4DE6-4B6C-A967-B95E898C39E0}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="@[$Project::MartFactSchema] +&quot;.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTableMart">
+      <DTS:VariableValue
+        DTS:DataType="8">MartFact.CustomerClassCount</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{1913A4F3-313A-437C-8BC9-9DDF16FF4330}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;SELECT * FROM &quot; + @[User::StageTable]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SelectAllFromStage">
+      <DTS:VariableValue
+        DTS:DataType="8">SELECT * FROM TransformFact.CustomerClassCount</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{2D1E927F-8CFA-46D3-A36C-A211B2CFBD5C}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;TransformFact.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="StageTable">
+      <DTS:VariableValue
+        DTS:DataType="8">TransformFact.CustomerClassCount</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{4664022E-4548-4A99-9DB6-B84DDE2065F3}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">CustomerClassCount</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC FullLoad FactCustomerClassCount"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{BEACD8D6-CC7F-4EBC-B397-0B4FDFC3C9E1}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC FullLoad FactCustomerClassCount">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{DCAD66E5-A0BD-4746-8299-3C2E03AEDE19}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT LoadFactCustomerClassCount"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\DER Error Handling"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Error Handling"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\DER Error Handling.Inputs[LKP CustomerClass_Match_DER Error Handling]"
+                      name="LKP CustomerClass_Match_DER Error Handling">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\DER Error Handling.Inputs[LKP CustomerClass_Match_DER Error Handling].Columns[CustomerBillToID]"
+                          cachedDataType="i4"
+                          cachedName="CustomerBillToID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Outputs[Match].Columns[CustomerBillToID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">REPLACENULL(#{Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Outputs[Match].Columns[CustomerBillToID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(CustomerBillToID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\DER Error Handling.Inputs[LKP CustomerClass_Match_DER Error Handling].Columns[CustomerClassID]"
+                          cachedDataType="i4"
+                          cachedName="CustomerClassID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Outputs[Match].Columns[CustomerClassID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">REPLACENULL(#{Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Outputs[Match].Columns[CustomerClassID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(CustomerClassID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\DER Error Handling.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\DER Error Handling.Inputs[LKP CustomerClass_Match_DER Error Handling]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\DER Error Handling.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\DER Error Handling.Inputs[LKP CustomerClass_Match_DER Error Handling]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\DER Error Handling.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\DER Error Handling.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\DER Error Handling.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\DER Error Handling.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;5"
+                  name="LKP CustomerBillTo"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT CustomerID, CustomerKey FROM Martdim.Customer</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT CustomerID, CustomerKey FROM Martdim.Customer) [refTable]
+where [refTable].[CustomerKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="CustomerID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CustomerKey" dataType="DT_WSTR" length="51" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[CustomerBillToKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Inputs[OLE SRC CustomerClassCount_Output_LKP CustomerBillTo]"
+                      name="OLE SRC CustomerClassCount_Output_LKP CustomerBillTo">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Inputs[OLE SRC CustomerClassCount_Output_LKP CustomerBillTo].Columns[CustomerBillToKey]"
+                          cachedDataType="wstr"
+                          cachedLength="51"
+                          cachedName="CustomerBillToKey"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[CustomerBillToKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">CustomerKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Outputs[Match]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Match"
+                      synchronousInputId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Inputs[OLE SRC CustomerClassCount_Output_LKP CustomerBillTo]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Outputs[Match].Columns[CustomerBillToID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="CopyColumn"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Outputs[Match].Columns[CustomerBillToID]"
+                          name="CustomerBillToID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">CustomerID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Outputs[NoMatch]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="NoMatch"
+                      synchronousInputId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Inputs[OLE SRC CustomerClassCount_Output_LKP CustomerBillTo]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Inputs[OLE SRC CustomerClassCount_Output_LKP CustomerBillTo]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;5"
+                  name="LKP CustomerClass"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT CustomerClassID,  CustomerClassKey FROM Martdim.CustomerClass</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT CustomerClassID,  CustomerClassKey FROM Martdim.CustomerClass) [refTable]
+where [refTable].[CustomerClassKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="CustomerClassID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CustomerClassKey" dataType="DT_WSTR" length="7" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[CustomerClassKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Inputs[LKP CustomerBillTo_Match_LKP CustomerClass]"
+                      name="LKP CustomerBillTo_Match_LKP CustomerClass">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Inputs[LKP CustomerBillTo_Match_LKP CustomerClass].Columns[CustomerClassKey]"
+                          cachedDataType="wstr"
+                          cachedLength="63"
+                          cachedName="CustomerClassKey"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[CustomerClassKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">CustomerClassKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Outputs[Match]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Match"
+                      synchronousInputId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Inputs[LKP CustomerBillTo_Match_LKP CustomerClass]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Outputs[Match].Columns[CustomerClassID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="CopyColumn"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Outputs[Match].Columns[CustomerClassID]"
+                          name="CustomerClassID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">CustomerClassID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Outputs[NoMatch]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="NoMatch"
+                      synchronousInputId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Inputs[LKP CustomerBillTo_Match_LKP CustomerClass]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Inputs[LKP CustomerBillTo_Match_LKP CustomerClass]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES FactCustomerClassCount"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTableMart</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES FactCustomerClassCount">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].Columns[CustomerClassID]"
+                          cachedDataType="i4"
+                          cachedName="CustomerClassID"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].ExternalColumns[CustomerClassID]"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Outputs[Match].Columns[CustomerClassID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].Columns[CustomerBillToID]"
+                          cachedDataType="i4"
+                          cachedName="CustomerBillToID"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].ExternalColumns[CustomerBillToID]"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Outputs[Match].Columns[CustomerBillToID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].Columns[MonthID]"
+                          cachedDataType="i4"
+                          cachedName="MonthID"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].ExternalColumns[MonthID]"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[MonthID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].Columns[NumOfSalesPeriods]"
+                          cachedDataType="i4"
+                          cachedName="NumOfSalesPeriods"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].ExternalColumns[NumOfSalesPeriods]"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[NumOfSalesPeriods]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].Columns[NumOfDistinctGPPGs]"
+                          cachedDataType="i4"
+                          cachedName="NumOfDistinctGPPGs"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].ExternalColumns[NumOfDistinctGPPGs]"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[NumOfDistinctGPPGs]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].Columns[NumOfChurnPeriods]"
+                          cachedDataType="i4"
+                          cachedName="NumOfChurnPeriods"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].ExternalColumns[NumOfChurnPeriods]"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[NumOfChurnPeriods]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].Columns[NumOfLostPeriods]"
+                          cachedDataType="i4"
+                          cachedName="NumOfLostPeriods"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].ExternalColumns[NumOfLostPeriods]"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[NumOfLostPeriods]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].Columns[NumOfWinbackPeriods]"
+                          cachedDataType="i4"
+                          cachedName="NumOfWinbackPeriods"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].ExternalColumns[NumOfWinbackPeriods]"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[NumOfWinbackPeriods]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].ExternalColumns[MonthID]"
+                          dataType="i4"
+                          name="MonthID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].ExternalColumns[CustomerBillToID]"
+                          dataType="i4"
+                          name="CustomerBillToID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].ExternalColumns[CustomerClassID]"
+                          dataType="i4"
+                          name="CustomerClassID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].ExternalColumns[NumOfSalesPeriods]"
+                          dataType="i4"
+                          name="NumOfSalesPeriods" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].ExternalColumns[NumOfDistinctGPPGs]"
+                          dataType="i4"
+                          name="NumOfDistinctGPPGs" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].ExternalColumns[NumOfChurnPeriods]"
+                          dataType="i4"
+                          name="NumOfChurnPeriods" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].ExternalColumns[NumOfLostPeriods]"
+                          dataType="i4"
+                          name="NumOfLostPeriods" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].ExternalColumns[NumOfWinbackPeriods]"
+                          dataType="i4"
+                          name="NumOfWinbackPeriods" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC CustomerClassCount"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
+ UPPER([CustomerBillToKey]) AS [CustomerBillToKey]
+,UPPER([CustomerClassKey]) AS [CustomerClassKey]
+,[MonthID]
+,[NumOfSalesPeriods]
+,[NumOfDistinctGPPGs]
+,[NumOfChurnPeriods]
+,[NumOfLostPeriods]
+,[NumOfWinbackPeriods]
+FROM [dbo].[CustomerClassCount]
+</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable">User::SelectAllFromStage</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[CustomerBillToKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].ExternalColumns[CustomerBillToKey]"
+                          length="51"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[CustomerBillToKey]"
+                          name="CustomerBillToKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[CustomerClassKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].ExternalColumns[CustomerClassKey]"
+                          length="63"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[CustomerClassKey]"
+                          name="CustomerClassKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[MonthID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].ExternalColumns[MonthID]"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[MonthID]"
+                          name="MonthID"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[NumOfSalesPeriods]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].ExternalColumns[NumOfSalesPeriods]"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[NumOfSalesPeriods]"
+                          name="NumOfSalesPeriods"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[NumOfDistinctGPPGs]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].ExternalColumns[NumOfDistinctGPPGs]"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[NumOfDistinctGPPGs]"
+                          name="NumOfDistinctGPPGs"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[NumOfChurnPeriods]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].ExternalColumns[NumOfChurnPeriods]"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[NumOfChurnPeriods]"
+                          name="NumOfChurnPeriods"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[NumOfLostPeriods]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].ExternalColumns[NumOfLostPeriods]"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[NumOfLostPeriods]"
+                          name="NumOfLostPeriods"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[NumOfWinbackPeriods]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].ExternalColumns[NumOfWinbackPeriods]"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[NumOfWinbackPeriods]"
+                          name="NumOfWinbackPeriods"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].ExternalColumns[CustomerBillToKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="CustomerBillToKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].ExternalColumns[CustomerClassKey]"
+                          dataType="wstr"
+                          length="63"
+                          name="CustomerClassKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].ExternalColumns[MonthID]"
+                          dataType="i4"
+                          name="MonthID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].ExternalColumns[NumOfSalesPeriods]"
+                          dataType="i4"
+                          name="NumOfSalesPeriods" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].ExternalColumns[NumOfDistinctGPPGs]"
+                          dataType="i4"
+                          name="NumOfDistinctGPPGs" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].ExternalColumns[NumOfChurnPeriods]"
+                          dataType="i4"
+                          name="NumOfChurnPeriods" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].ExternalColumns[NumOfLostPeriods]"
+                          dataType="i4"
+                          name="NumOfLostPeriods" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].ExternalColumns[NumOfWinbackPeriods]"
+                          dataType="i4"
+                          name="NumOfWinbackPeriods" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[CustomerBillToKey]"
+                          dataType="wstr"
+                          length="51"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[CustomerBillToKey]"
+                          name="CustomerBillToKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[CustomerClassKey]"
+                          dataType="wstr"
+                          length="63"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[CustomerClassKey]"
+                          name="CustomerClassKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[MonthID]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[MonthID]"
+                          name="MonthID" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[NumOfSalesPeriods]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[NumOfSalesPeriods]"
+                          name="NumOfSalesPeriods" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[NumOfDistinctGPPGs]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[NumOfDistinctGPPGs]"
+                          name="NumOfDistinctGPPGs" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[NumOfChurnPeriods]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[NumOfChurnPeriods]"
+                          name="NumOfChurnPeriods" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[NumOfLostPeriods]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[NumOfLostPeriods]"
+                          name="NumOfLostPeriods" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[NumOfWinbackPeriods]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[NumOfWinbackPeriods]"
+                          name="NumOfWinbackPeriods" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[DWCreatedDate]"
+                          name="DWCreatedDate" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount.Paths[LKP CustomerBillTo_Match_LKP CustomerClass]"
+                  endId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Inputs[LKP CustomerBillTo_Match_LKP CustomerClass]"
+                  name="LKP CustomerBillTo_Match_LKP CustomerClass"
+                  startId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Outputs[Match]" />
+                <path
+                  refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount.Paths[LKP CustomerClass_Match_DER Error Handling]"
+                  endId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\DER Error Handling.Inputs[LKP CustomerClass_Match_DER Error Handling]"
+                  name="LKP CustomerClass_Match_DER Error Handling"
+                  startId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass.Outputs[Match]" />
+                <path
+                  refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount.Paths[OLE SRC CustomerClassCount_Output_LKP CustomerBillTo]"
+                  endId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo.Inputs[OLE SRC CustomerClassCount_Output_LKP CustomerBillTo]"
+                  name="OLE SRC CustomerClassCount_Output_LKP CustomerBillTo"
+                  startId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount.Paths[Output]"
+                  endId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount.Inputs[DER Audit_Output_OLE DES FactCustomerClassCount]"
+                  name="Output"
+                  startId="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\DER Error Handling.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC FullLoad FactCustomerClassCount\SQL Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{A0E8C273-005F-4CB8-B79B-4265D4DB5E60}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{12857530-95A4-410C-A35F-2EBC336361C3}"
+              SQLTask:SqlStatementSource="&#xA;         EXEC('TRUNCATE TABLE ' + ?)&#xA;        " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTableMart"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC FullLoad FactCustomerClassCount.PrecedenceConstraints[Constraint_SQL Truncate Table_To_DFT LoadFactCustomerClassCount]"
+          DTS:CreationName=""
+          DTS:DTSID="{A8917EE3-01D4-4502-88DF-AB7EEFB00C94}"
+          DTS:From="Package\SEQC FullLoad FactCustomerClassCount\SQL Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_SQL Truncate Table_To_DFT LoadFactCustomerClassCount"
+          DTS:To="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="240,42"
+          Id="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount"
+          TopLeft="5.50000000000001,107.5" />
+        <NodeLayout
+          Size="172,42"
+          Id="Package\SEQC FullLoad FactCustomerClassCount\SQL Truncate Table"
+          TopLeft="39.5,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactCustomerClassCount.PrecedenceConstraints[Constraint_SQL Truncate Table_To_DFT LoadFactCustomerClassCount]"
+          TopLeft="125.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="251,205"
+          Size="251,248"
+          Id="Package\SEQC FullLoad FactCustomerClassCount"
+          TopLeft="5.5,5.5" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="170,42"
+          Id="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo"
+          TopLeft="40.5,107.5" />
+        <NodeLayout
+          Size="240,42"
+          Id="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount"
+          TopLeft="5.50000000000004,413.5" />
+        <NodeLayout
+          Size="220,42"
+          Id="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount"
+          TopLeft="15.5,5.5" />
+        <NodeLayout
+          Size="169,42"
+          Id="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass"
+          TopLeft="41,209.5" />
+        <NodeLayout
+          Size="170,42"
+          Id="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\DER Error Handling"
+          TopLeft="40.5,311.5" />
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount.Paths[OLE SRC CustomerClassCount_Output_LKP CustomerBillTo]"
+          TopLeft="125.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount.Paths[LKP CustomerClass_Match_DER Error Handling]"
+          TopLeft="125.5,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-13.56193359375,21.37548828125,27.1238671875,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount.Paths[LKP CustomerBillTo_Match_LKP CustomerClass]"
+          TopLeft="125.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-13.56193359375,21.37548828125,27.1238671875,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount.Paths[Output]"
+          TopLeft="125.5,353.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE SRC CustomerClassCount">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerClass">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\OLE DES FactCustomerClassCount">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad FactCustomerClassCount\DFT LoadFactCustomerClassCount\LKP CustomerBillTo">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

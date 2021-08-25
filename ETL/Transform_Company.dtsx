@@ -1,0 +1,984 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="1/15/2017 11:18:10 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="bbj-ext"
+  DTS:DTSID="{2469607C-1AAC-45E2-BF8B-AE5B601390E8}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_Company"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="2"
+  DTS:VersionGUID="{4E2A2156-384A-4F60-B75B-EDADDF18C01B}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{37425343-4594-45F8-84B5-6B555DE113A4}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{57FE1ED9-2334-4583-93BB-C3C666FD0724}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{83726E77-C77B-45F5-AEC6-DEC78E42BACC}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{1193F75B-8FA1-4988-AA74-AF18CF373EE8}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">dim</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{2DFA6695-19D9-44EC-896E-E3FCCB940A60}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.Company</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{66F3CBD5-0A8C-4FE8-880B-0F4482FDB658}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">Company</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{5B139743-1A8F-4374-BF4E-18EF227CB762}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{3C3D8B1E-EB99-4615-BA88-DE53924E32EE}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{57FE1ED9-2334-4583-93BB-C3C666FD0724}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform Company"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{A7DB42EB-9061-4B57-9B28-BA15F4EEB079}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform Company">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform Company\DFT Transform Company"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{A44E7DA0-9CB8-41D2-BF3D-45FA34BDCE9E}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform Company"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform Company\DFT Transform Company\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES Company"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES Company">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].Columns[CompanyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CompanyKey"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[CompanyKey]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].Columns[Sorting]"
+                          cachedDataType="i4"
+                          cachedName="Sorting"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[Sorting]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Sorting]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].Columns[Business Unit Name]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="Business Unit Name"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[Business Unit Name]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Business Unit Name]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].Columns[Company Name]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="Company Name"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[Company Name]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Company Name]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].Columns[Group Name]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="Group Name"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[Group Name]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Group Name]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].Columns[Local Currency Code]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="Local Currency Code"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[Local Currency Code]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Local Currency Code]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].Columns[Reporting Currency Code]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="Reporting Currency Code"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[Reporting Currency Code]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Reporting Currency Code]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].Columns[Department Code]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="Department Code"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[Department Code]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Department Code]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].Columns[Group Currency Code]"
+                          cachedDataType="wstr"
+                          cachedLength="3"
+                          cachedName="Group Currency Code"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[Group Currency Code]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Group Currency Code]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].Columns[Business Unit Email]"
+                          cachedDataType="wstr"
+                          cachedLength="80"
+                          cachedName="Business Unit Email"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[Business Unit Email]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Business Unit Email]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[Sorting]"
+                          dataType="i4"
+                          name="Sorting" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[Business Unit Name]"
+                          dataType="wstr"
+                          length="30"
+                          name="Business Unit Name" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[Company Name]"
+                          dataType="wstr"
+                          length="30"
+                          name="Company Name" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[Group Name]"
+                          dataType="wstr"
+                          length="30"
+                          name="Group Name" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[Local Currency Code]"
+                          dataType="wstr"
+                          length="10"
+                          name="Local Currency Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[Reporting Currency Code]"
+                          dataType="wstr"
+                          length="10"
+                          name="Reporting Currency Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[Department Code]"
+                          dataType="wstr"
+                          length="10"
+                          name="Department Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[Group Currency Code]"
+                          dataType="wstr"
+                          length="3"
+                          name="Group Currency Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company].ExternalColumns[Business Unit Email]"
+                          dataType="wstr"
+                          length="100"
+                          name="Business Unit Email" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [Code] AS CompanyKey
+
+      ,[Sorting]      ,[Business Unit Name]
+      ,[Company Name]
+      ,[Group Name]
+	  ,[Local Currency Code]
+      ,[Reporting Currency Code]
+	  , N'DKK' AS [Group Currency Code]
+	  ,[Department Code]
+	  ,Email AS [Business Unit Email]
+
+  FROM [EETDW_Extract].[navcom].[Business Unit] 
+  WHERE [Consolidate]=1
+  ORDER BY [Sorting]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]"
+                          name="CompanyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Sorting]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[Sorting]"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Sorting]"
+                          name="Sorting"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Business Unit Name]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[Business Unit Name]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Business Unit Name]"
+                          name="Business Unit Name"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Company Name]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[Company Name]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Company Name]"
+                          name="Company Name"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Group Name]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[Group Name]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Group Name]"
+                          name="Group Name"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Local Currency Code]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[Local Currency Code]"
+                          length="10"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Local Currency Code]"
+                          name="Local Currency Code"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Reporting Currency Code]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[Reporting Currency Code]"
+                          length="10"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Reporting Currency Code]"
+                          name="Reporting Currency Code"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Department Code]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[Department Code]"
+                          length="10"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Department Code]"
+                          name="Department Code"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Group Currency Code]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[Group Currency Code]"
+                          length="3"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Group Currency Code]"
+                          name="Group Currency Code"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Business Unit Email]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[Business Unit Email]"
+                          length="80"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].Columns[Business Unit Email]"
+                          name="Business Unit Email"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[Sorting]"
+                          dataType="i4"
+                          name="Sorting" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[Business Unit Name]"
+                          dataType="wstr"
+                          length="30"
+                          name="Business Unit Name" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[Company Name]"
+                          dataType="wstr"
+                          length="30"
+                          name="Company Name" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[Group Name]"
+                          dataType="wstr"
+                          length="30"
+                          name="Group Name" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[Local Currency Code]"
+                          dataType="wstr"
+                          length="10"
+                          name="Local Currency Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[Reporting Currency Code]"
+                          dataType="wstr"
+                          length="10"
+                          name="Reporting Currency Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[Department Code]"
+                          dataType="wstr"
+                          length="10"
+                          name="Department Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[Group Currency Code]"
+                          dataType="wstr"
+                          length="3"
+                          name="Group Currency Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output].ExternalColumns[Business Unit Email]"
+                          dataType="wstr"
+                          length="80"
+                          name="Business Unit Email" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[CompanyKey]"
+                          name="CompanyKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[Sorting]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[Sorting]"
+                          name="Sorting" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[Business Unit Name]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[Business Unit Name]"
+                          name="Business Unit Name" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[Company Name]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[Company Name]"
+                          name="Company Name" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[Group Name]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[Group Name]"
+                          name="Group Name" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[Local Currency Code]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[Local Currency Code]"
+                          name="Local Currency Code" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[Reporting Currency Code]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[Reporting Currency Code]"
+                          name="Reporting Currency Code" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[Group Currency Code]"
+                          dataType="wstr"
+                          length="3"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[Group Currency Code]"
+                          name="Group Currency Code" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[Department Code]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[Department Code]"
+                          name="Department Code" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[Business Unit Email]"
+                          dataType="wstr"
+                          length="80"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[Business Unit Email]"
+                          name="Business Unit Email" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform Company\DFT Transform Company.Paths[DER Audit_Output_OLE DES Company]"
+                  endId="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company.Inputs[DER Audit_Output_OLE DES Company]"
+                  name="DER Audit_Output_OLE DES Company"
+                  startId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC Transform Company\DFT Transform Company.Paths[OLE SRC Extract_Output_DER Audit]"
+                  endId="Package\SEQC Transform Company\DFT Transform Company\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="OLE SRC Extract_Output_DER Audit"
+                  startId="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform Company\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{2E8A8FFC-5AB3-429D-BA03-5F05078C4C0C}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{83726E77-C77B-45F5-AEC6-DEC78E42BACC}"
+              SQLTask:SqlStatementSource="EXEC('TRUNCATE TABLE ' + ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform Company.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform Company]"
+          DTS:CreationName=""
+          DTS:DTSID="{85DD02EA-C63A-408D-8C18-49465585B48E}"
+          DTS:From="Package\SEQC Transform Company\Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_Truncate Table_To_DFT Transform Company"
+          DTS:To="Package\SEQC Transform Company\DFT Transform Company" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SEQC Transform Company_To_SEQC MaintainDW]"
+      DTS:CreationName=""
+      DTS:DTSID="{4AAFFC4C-9E32-44D4-A256-6627EC17EA59}"
+      DTS:From="Package\SEQC Transform Company"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SEQC Transform Company_To_SEQC MaintainDW"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,103"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="23.5000000000001,313.5" />
+        <NodeLayout
+          Size="197,42"
+          Id="Package\SEQC Transform Company\DFT Transform Company"
+          TopLeft="5.50000000000001,107.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform Company\Truncate Table"
+          TopLeft="29,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform Company.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform Company]"
+          TopLeft="104,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="208,205"
+          Size="208,248"
+          Id="Package\SEQC Transform Company"
+          TopLeft="5.50000000000003,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_SEQC Transform Company_To_SEQC MaintainDW]"
+          TopLeft="109.5,253.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform Company\DFT Transform Company">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract"
+          TopLeft="11.5,5.5" />
+        <NodeLayout
+          Size="168,42"
+          Id="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company"
+          TopLeft="5.50000000000003,209.5" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform Company\DFT Transform Company\DER Audit"
+          TopLeft="26.5,107.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform Company\DFT Transform Company.Paths[DER Audit_Output_OLE DES Company]"
+          TopLeft="89.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform Company\DFT Transform Company.Paths[OLE SRC Extract_Output_DER Audit]"
+          TopLeft="89.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform Company\DFT Transform Company\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform Company\DFT Transform Company\OLE DES Company">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

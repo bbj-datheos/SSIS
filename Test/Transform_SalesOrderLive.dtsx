@@ -1,0 +1,1299 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/6/2017 2:38:35 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="mim-ext"
+  DTS:DTSID="{62B0FD4E-EBE3-43D3-A977-C37F93CF1679}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="14.0.3008.28"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_SalesOrderLive"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="66"
+  DTS:VersionGUID="{D4522F32-6428-4808-A66A-A1301CA48C08}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{9387C4A9-FFF4-45FF-A49A-0B10FF66F49D}"
+      DTS:ObjectName="DW">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_DW]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_All;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{C30D3086-8FD5-40BC-BE13-E1BC5A5E46C9}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;SELECT * FROM &quot; + @[$Project::TransformFactViewSchema]+ &quot;.&quot;+@[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SelectAllFromTransform">
+      <DTS:VariableValue
+        DTS:DataType="8">SELECT * FROM TransformFactView.SalesOrderLive</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{DF07AD65-05F3-4764-9988-63A72176E59F}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;TransformFact.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="StageTable">
+      <DTS:VariableValue
+        DTS:DataType="8">TransformFact.SalesOrderLive</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{85CDB979-E453-4A08-BEF4-BCBC9FD4B07B}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">SalesOrderLive</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform SalesOrderLive"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{4E2EEAED-9B4B-4C7A-BBFC-3BB2BEA510A6}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform SalesOrderLive">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{3E3EB856-ED34-43CD-9E7E-C7C4A2CE2D7F}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform SalesOrderLive"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES SalesOrderLive"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::StageTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES CustomerClassCount">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CompanyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CompanyKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CompanyKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CalendarKey]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="CalendarKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[SalesNo]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="SalesNo"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[SalesNo]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[SalesNo]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[SalesLineNo]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="SalesLineNo"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[SalesLineNo]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[SalesLineNo]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CustomerSellToKey]"
+                          cachedDataType="wstr"
+                          cachedLength="51"
+                          cachedName="CustomerSellToKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CustomerSellToKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CustomerSellToKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CustomerBillToKey]"
+                          cachedDataType="wstr"
+                          cachedLength="51"
+                          cachedName="CustomerBillToKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CustomerBillToKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CustomerBillToKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[ItemKey]"
+                          cachedDataType="wstr"
+                          cachedLength="75"
+                          cachedName="ItemKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[ItemKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[ItemKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CalendarOrderKey]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="CalendarOrderKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CalendarOrderKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CalendarOrderKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CalendarShippingKey]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="CalendarShippingKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CalendarShippingKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CalendarShippingKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[OriginOfOrderKey]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="OriginOfOrderKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[OriginOfOrderKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[OriginOfOrderKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CurrencyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CurrencyKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CurrencyKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CurrencyKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[OrderTypeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="OrderTypeKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[OrderTypeKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[OrderTypeKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[CostChangeReasonKey]"
+                          cachedDataType="wstr"
+                          cachedLength="72"
+                          cachedName="CostChangeReasonKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CostChangeReasonKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CostChangeReasonKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[EmployeeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="41"
+                          cachedName="EmployeeKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[EmployeeKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[EmployeeKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[PersonKey]"
+                          cachedDataType="i4"
+                          cachedName="PersonKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[PersonKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[PersonKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[OrderStatusKey]"
+                          cachedDataType="wstr"
+                          cachedLength="41"
+                          cachedName="OrderStatusKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[OrderStatusKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[OrderStatusKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[SalesAmount]"
+                          cachedDataType="numeric"
+                          cachedName="SalesAmount"
+                          cachedPrecision="38"
+                          cachedScale="6"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[SalesAmount]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[SalesAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[OrderCostAmount]"
+                          cachedDataType="numeric"
+                          cachedName="OrderCostAmount"
+                          cachedPrecision="38"
+                          cachedScale="6"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[OrderCostAmount]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[OrderCostAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[OrderProfitMarginAmount]"
+                          cachedDataType="numeric"
+                          cachedName="OrderProfitMarginAmount"
+                          cachedPrecision="38"
+                          cachedScale="6"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[OrderProfitMarginAmount]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[OrderProfitMarginAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[UnitCostAmount]"
+                          cachedDataType="numeric"
+                          cachedName="UnitCostAmount"
+                          cachedPrecision="38"
+                          cachedScale="6"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[UnitCostAmount]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[UnitCostAmount]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[UnitsPerParcel]"
+                          cachedDataType="numeric"
+                          cachedName="UnitsPerParcel"
+                          cachedPrecision="18"
+                          cachedScale="6"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[UnitsPerParcel]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[UnitsPerParcel]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[SalesOrderQuantity]"
+                          cachedDataType="numeric"
+                          cachedName="SalesOrderQuantity"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[SalesOrderQuantity]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[SalesOrderQuantity]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[DocumentKey]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="DocumentKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[DocumentKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[DocumentKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[InventoryTypeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="InventoryTypeKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[InventoryTypeKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[InventoryTypeKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].Columns[WebUserKey]"
+                          cachedDataType="wstr"
+                          cachedLength="62"
+                          cachedName="WebUserKey"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[WebUserKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[WebUserKey]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[SalesNo]"
+                          dataType="wstr"
+                          length="20"
+                          name="SalesNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[SalesLineNo]"
+                          dataType="wstr"
+                          length="30"
+                          name="SalesLineNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CustomerSellToKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="CustomerSellToKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CustomerBillToKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="CustomerBillToKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[ItemKey]"
+                          dataType="wstr"
+                          length="71"
+                          name="ItemKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CalendarOrderKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarOrderKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CalendarShippingKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarShippingKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[OriginOfOrderKey]"
+                          dataType="wstr"
+                          length="20"
+                          name="OriginOfOrderKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CurrencyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CurrencyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[OrderTypeKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="OrderTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[CostChangeReasonKey]"
+                          dataType="wstr"
+                          length="81"
+                          name="CostChangeReasonKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[EmployeeKey]"
+                          dataType="wstr"
+                          length="41"
+                          name="EmployeeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[PersonKey]"
+                          dataType="i4"
+                          name="PersonKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[OrderStatusKey]"
+                          dataType="wstr"
+                          length="20"
+                          name="OrderStatusKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[SalesAmount]"
+                          dataType="numeric"
+                          name="SalesAmount"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[OrderCostAmount]"
+                          dataType="numeric"
+                          name="OrderCostAmount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[OrderProfitMarginAmount]"
+                          dataType="numeric"
+                          name="OrderProfitMarginAmount"
+                          precision="38"
+                          scale="18" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[UnitCostAmount]"
+                          dataType="numeric"
+                          name="UnitCostAmount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[UnitsPerParcel]"
+                          dataType="numeric"
+                          name="UnitsPerParcel"
+                          precision="18"
+                          scale="6" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[SalesOrderQuantity]"
+                          dataType="numeric"
+                          name="SalesOrderQuantity"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[DocumentKey]"
+                          dataType="wstr"
+                          length="100"
+                          name="DocumentKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[InventoryTypeKey]"
+                          dataType="wstr"
+                          length="50"
+                          name="InventoryTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount].ExternalColumns[WebUserKey]"
+                          dataType="wstr"
+                          length="80"
+                          name="WebUserKey" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT
+*
+FROM
+	[TransformFactView].[CustomerClassCount]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable">User::SelectAllFromTransform</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CompanyKey]"
+                          name="CompanyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CalendarKey]"
+                          name="CalendarKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[SalesNo]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[SalesNo]"
+                          length="20"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[SalesNo]"
+                          name="SalesNo"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[SalesLineNo]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[SalesLineNo]"
+                          length="30"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[SalesLineNo]"
+                          name="SalesLineNo"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CustomerSellToKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerSellToKey]"
+                          length="51"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CustomerSellToKey]"
+                          name="CustomerSellToKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CustomerBillToKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerBillToKey]"
+                          length="51"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CustomerBillToKey]"
+                          name="CustomerBillToKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[ItemKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemKey]"
+                          length="75"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[ItemKey]"
+                          name="ItemKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CalendarOrderKey]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarOrderKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CalendarOrderKey]"
+                          name="CalendarOrderKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CalendarShippingKey]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarShippingKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CalendarShippingKey]"
+                          name="CalendarShippingKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[OriginOfOrderKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[OriginOfOrderKey]"
+                          length="20"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[OriginOfOrderKey]"
+                          name="OriginOfOrderKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CurrencyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[CurrencyKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CurrencyKey]"
+                          name="CurrencyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[OrderTypeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderTypeKey]"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[OrderTypeKey]"
+                          name="OrderTypeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CostChangeReasonKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[CostChangeReasonKey]"
+                          length="72"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[CostChangeReasonKey]"
+                          name="CostChangeReasonKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[EmployeeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[EmployeeKey]"
+                          length="41"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[EmployeeKey]"
+                          name="EmployeeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[PersonKey]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonKey]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[PersonKey]"
+                          name="PersonKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[OrderStatusKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderStatusKey]"
+                          length="41"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[OrderStatusKey]"
+                          name="OrderStatusKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[SalesAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[SalesAmount]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[SalesAmount]"
+                          name="SalesAmount"
+                          precision="38"
+                          scale="6"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[OrderCostAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderCostAmount]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[OrderCostAmount]"
+                          name="OrderCostAmount"
+                          precision="38"
+                          scale="6"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[OrderProfitMarginAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderProfitMarginAmount]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[OrderProfitMarginAmount]"
+                          name="OrderProfitMarginAmount"
+                          precision="38"
+                          scale="6"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[UnitCostAmount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[UnitCostAmount]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[UnitCostAmount]"
+                          name="UnitCostAmount"
+                          precision="38"
+                          scale="6"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[UnitsPerParcel]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[UnitsPerParcel]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[UnitsPerParcel]"
+                          name="UnitsPerParcel"
+                          precision="18"
+                          scale="6"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[SalesOrderQuantity]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[SalesOrderQuantity]"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[SalesOrderQuantity]"
+                          name="SalesOrderQuantity"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[DocumentKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[DocumentKey]"
+                          length="100"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[DocumentKey]"
+                          name="DocumentKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[InventoryTypeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[InventoryTypeKey]"
+                          length="50"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[InventoryTypeKey]"
+                          name="InventoryTypeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[WebUserKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserKey]"
+                          length="62"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].Columns[WebUserKey]"
+                          name="WebUserKey"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[SalesNo]"
+                          dataType="wstr"
+                          length="20"
+                          name="SalesNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[SalesLineNo]"
+                          dataType="wstr"
+                          length="30"
+                          name="SalesLineNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerSellToKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="CustomerSellToKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[CustomerBillToKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="CustomerBillToKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemKey]"
+                          dataType="wstr"
+                          length="75"
+                          name="ItemKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarOrderKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarOrderKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[CalendarShippingKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarShippingKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[OriginOfOrderKey]"
+                          dataType="wstr"
+                          length="20"
+                          name="OriginOfOrderKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[CurrencyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CurrencyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderTypeKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="OrderTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[CostChangeReasonKey]"
+                          dataType="wstr"
+                          length="72"
+                          name="CostChangeReasonKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[EmployeeKey]"
+                          dataType="wstr"
+                          length="41"
+                          name="EmployeeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[PersonKey]"
+                          dataType="i4"
+                          name="PersonKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderStatusKey]"
+                          dataType="wstr"
+                          length="41"
+                          name="OrderStatusKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[SalesAmount]"
+                          dataType="numeric"
+                          name="SalesAmount"
+                          precision="38"
+                          scale="6" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderCostAmount]"
+                          dataType="numeric"
+                          name="OrderCostAmount"
+                          precision="38"
+                          scale="6" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[OrderProfitMarginAmount]"
+                          dataType="numeric"
+                          name="OrderProfitMarginAmount"
+                          precision="38"
+                          scale="6" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[UnitCostAmount]"
+                          dataType="numeric"
+                          name="UnitCostAmount"
+                          precision="38"
+                          scale="6" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[UnitsPerParcel]"
+                          dataType="numeric"
+                          name="UnitsPerParcel"
+                          precision="18"
+                          scale="6" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[SalesOrderQuantity]"
+                          dataType="numeric"
+                          name="SalesOrderQuantity"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[DocumentKey]"
+                          dataType="wstr"
+                          length="100"
+                          name="DocumentKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[InventoryTypeKey]"
+                          dataType="wstr"
+                          length="50"
+                          name="InventoryTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserKey]"
+                          dataType="wstr"
+                          length="62"
+                          name="WebUserKey" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[CalendarKey]"
+                          name="CalendarKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[SalesNo]"
+                          dataType="wstr"
+                          length="20"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[SalesNo]"
+                          name="SalesNo" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[SalesLineNo]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[SalesLineNo]"
+                          name="SalesLineNo" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[CustomerSellToKey]"
+                          dataType="wstr"
+                          length="51"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[CustomerSellToKey]"
+                          name="CustomerSellToKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[CustomerBillToKey]"
+                          dataType="wstr"
+                          length="51"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[CustomerBillToKey]"
+                          name="CustomerBillToKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[ItemKey]"
+                          dataType="wstr"
+                          length="75"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[ItemKey]"
+                          name="ItemKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[CompanyKey]"
+                          name="CompanyKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[CalendarOrderKey]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[CalendarOrderKey]"
+                          name="CalendarOrderKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[CalendarShippingKey]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[CalendarShippingKey]"
+                          name="CalendarShippingKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[OriginOfOrderKey]"
+                          dataType="wstr"
+                          length="20"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[OriginOfOrderKey]"
+                          name="OriginOfOrderKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[CurrencyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[CurrencyKey]"
+                          name="CurrencyKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[OrderTypeKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[OrderTypeKey]"
+                          name="OrderTypeKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[WebUserKey]"
+                          dataType="wstr"
+                          length="62"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[WebUserKey]"
+                          name="WebUserKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[CostChangeReasonKey]"
+                          dataType="wstr"
+                          length="72"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[CostChangeReasonKey]"
+                          name="CostChangeReasonKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[EmployeeKey]"
+                          dataType="wstr"
+                          length="41"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[EmployeeKey]"
+                          name="EmployeeKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[PersonKey]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[PersonKey]"
+                          name="PersonKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[OrderStatusKey]"
+                          dataType="wstr"
+                          length="41"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[OrderStatusKey]"
+                          name="OrderStatusKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[SalesAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[SalesAmount]"
+                          name="SalesAmount"
+                          precision="38"
+                          scale="6" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[OrderCostAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[OrderCostAmount]"
+                          name="OrderCostAmount"
+                          precision="38"
+                          scale="6" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[OrderProfitMarginAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[OrderProfitMarginAmount]"
+                          name="OrderProfitMarginAmount"
+                          precision="38"
+                          scale="6" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[UnitCostAmount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[UnitCostAmount]"
+                          name="UnitCostAmount"
+                          precision="38"
+                          scale="6" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[UnitsPerParcel]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[UnitsPerParcel]"
+                          name="UnitsPerParcel"
+                          precision="18"
+                          scale="6" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[SalesOrderQuantity]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[SalesOrderQuantity]"
+                          name="SalesOrderQuantity"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[DocumentKey]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[DocumentKey]"
+                          name="DocumentKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[InventoryTypeKey]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[InventoryTypeKey]"
+                          name="InventoryTypeKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive.Paths[Output]"
+                  endId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive.Inputs[DER Audit_Output_OLE DES CustomerClassCount]"
+                  name="Output"
+                  startId="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform SalesOrderLive\SQL Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{D5808DA8-910F-4671-815E-F012C4100F75}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{9387C4A9-FFF4-45FF-A49A-0B10FF66F49D}"
+              SQLTask:SqlStatementSource="&#xA;         EXEC('TRUNCATE TABLE ' + ?)&#xA;        " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::StageTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform SalesOrderLive.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{727A88F0-4AF1-46ED-B1F4-98CBC376F482}"
+          DTS:From="Package\SEQC Transform SalesOrderLive\SQL Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="223,42"
+          Id="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive"
+          TopLeft="5.50000000000003,107.5" />
+        <NodeLayout
+          Size="172,42"
+          Id="Package\SEQC Transform SalesOrderLive\SQL Truncate Table"
+          TopLeft="44.5,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform SalesOrderLive.PrecedenceConstraints[Constraint]"
+          TopLeft="130.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-13.5,60"
+              Start="0,0"
+              End="-13.5,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="-4,30" />
+                  <mssgle:LineSegment
+                    End="-9.49999999999997,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-9.49999999999997,30"
+                    Point2="-13.5,30"
+                    Point3="-13.5,34" />
+                  <mssgle:LineSegment
+                    End="-13.5,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="286,205"
+          Size="286,248"
+          Id="Package\SEQC Transform SalesOrderLive"
+          TopLeft="59.5,132.5" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract"
+          TopLeft="37.5,5.5" />
+        <NodeLayout
+          Size="193,42"
+          Id="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive"
+          TopLeft="5.50000000000001,107.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive.Paths[Output]"
+          TopLeft="115.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-13.5,60"
+              Start="0,0"
+              End="-13.5,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="-4,30" />
+                  <mssgle:LineSegment
+                    End="-9.49999999999999,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-9.49999999999999,30"
+                    Point2="-13.5,30"
+                    Point3="-13.5,34" />
+                  <mssgle:LineSegment
+                    End="-13.5,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE DES SalesOrderLive">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform SalesOrderLive\DFT Transform SalesOrderLive\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

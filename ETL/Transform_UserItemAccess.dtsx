@@ -1,0 +1,798 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/1/2017 7:52:41 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="nna-ext"
+  DTS:DTSID="{A7F6199A-DF45-4FA9-BF7B-CD82EADF69A9}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_UserItemAccess"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="5"
+  DTS:VersionGUID="{05025BDA-8ADE-4DE2-B0FA-5E85163E5883}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{74B8420D-C907-4721-A1AC-1DDB1A40A99A}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{C36FFC9E-E7A9-43EC-9963-E4B269DD3F12}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{E16F7B08-17B6-4AC0-8BE6-E23A6BFC014F}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{0AF74682-2CE4-4311-9A4B-F7D72DDC3336}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">bridge</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{57FDC155-B660-47FE-BD17-D99BA0966E46}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.UserItemAccess</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{5F0164C7-8A1E-495D-BC88-23552CF8266B}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">UserItemAccess</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{DBD0DD8C-064F-426C-A582-F6C423C8E690}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{268D92FD-5878-4227-AB6B-67207063A04C}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{C36FFC9E-E7A9-43EC-9963-E4B269DD3F12}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform UserItemAccess"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{08A186BD-9E83-45D4-AB85-D30D5AB21887}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform UserItemAccess">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{35F2B8DB-A83F-45AE-9801-83D487425798}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform UserItemAccess"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES UserItemAccess"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess.Inputs[DER Audit_Output_OLE DES UserItemAccess]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES UserItemAccess">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess.Inputs[DER Audit_Output_OLE DES UserItemAccess].Columns[SystemUserKey]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="SystemUserKey"
+                          externalMetadataColumnId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess.Inputs[DER Audit_Output_OLE DES UserItemAccess].ExternalColumns[SystemUserKey]"
+                          lineageId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Output].Columns[SystemUserKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess.Inputs[DER Audit_Output_OLE DES UserItemAccess].Columns[ItemKey]"
+                          cachedDataType="wstr"
+                          cachedLength="51"
+                          cachedName="ItemKey"
+                          externalMetadataColumnId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess.Inputs[DER Audit_Output_OLE DES UserItemAccess].ExternalColumns[ItemKey]"
+                          lineageId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Output].Columns[ItemKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess.Inputs[DER Audit_Output_OLE DES UserItemAccess].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess.Inputs[DER Audit_Output_OLE DES UserItemAccess].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess.Inputs[DER Audit_Output_OLE DES UserItemAccess].ExternalColumns[SystemUserKey]"
+                          dataType="wstr"
+                          length="30"
+                          name="SystemUserKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess.Inputs[DER Audit_Output_OLE DES UserItemAccess].ExternalColumns[ItemKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="ItemKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess.Inputs[DER Audit_Output_OLE DES UserItemAccess].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess.Inputs[DER Audit_Output_OLE DES UserItemAccess]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">--[Gen. Prod. Posting Group]
+
+SELECT DISTINCT
+ CONVERT(NVARCHAR(30), bua.[UserId]) AS SystemUserKey
+,CONVERT(NVARCHAR(20),ifu.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(30),ifu.[Item No.]) as [ItemKey]
+FROM [navcom].[BI User Access] bua
+JOIN dbo.tmp_PreBurnerUserItemAccess ifu
+ON ifu.[Gen. Prod. Posting Group] = bua.[Gen. Prod. Posting Group]
+
+UNION ALL
+
+--[Product Group]
+
+SELECT DISTINCT
+ CONVERT(NVARCHAR(30), bua.[UserId]) AS SystemUserKey
+,CONVERT(NVARCHAR(20),ifu.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(30),ifu.[Item No.]) as [ItemKey]
+FROM [navcom].[BI User Access] bua
+JOIN dbo.tmp_PreBurnerUserItemAccess ifu
+ON ifu.[Product Group] = bua.[Product Group]
+
+UNION ALL
+
+--[Brand No.]
+
+SELECT DISTINCT
+ CONVERT(NVARCHAR(30), bua.[UserId]) AS SystemUserKey
+,CONVERT(NVARCHAR(20),ifu.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(30),ifu.[Item No.]) as [ItemKey]
+FROM [navcom].[BI User Access] bua
+JOIN dbo.tmp_PreBurnerUserItemAccess ifu
+ON ifu.[Brand No.] = bua.[Brand No.]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Output].Columns[SystemUserKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Output].ExternalColumns[SystemUserKey]"
+                          length="30"
+                          lineageId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Output].Columns[SystemUserKey]"
+                          name="SystemUserKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Output].Columns[ItemKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemKey]"
+                          length="51"
+                          lineageId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Output].Columns[ItemKey]"
+                          name="ItemKey"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Output].ExternalColumns[SystemUserKey]"
+                          dataType="wstr"
+                          length="30"
+                          name="SystemUserKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemKey]"
+                          dataType="wstr"
+                          length="51"
+                          name="ItemKey" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Error].Columns[SystemUserKey]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Error].Columns[SystemUserKey]"
+                          name="SystemUserKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Error].Columns[ItemKey]"
+                          dataType="wstr"
+                          length="51"
+                          lineageId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Error].Columns[ItemKey]"
+                          name="ItemKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess.Paths[DER Audit_Output_OLE DES UserItemAccess]"
+                  endId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess.Inputs[DER Audit_Output_OLE DES UserItemAccess]"
+                  name="DER Audit_Output_OLE DES UserItemAccess"
+                  startId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess.Paths[OLE SRC Extract_Output_DER Audit]"
+                  endId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="OLE SRC Extract_Output_DER Audit"
+                  startId="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform UserItemAccess\SQL Pre-burner"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{806db384-738d-491e-9584-8eb3a8264f2c}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Pre-burner"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{74B8420D-C907-4721-A1AC-1DDB1A40A99A}"
+              SQLTask:SqlStatementSource="IF OBJECT_ID('dbo.tmp_PreBurnerUserItemAccess', 'U') IS NOT NULL &#xA;  DROP TABLE dbo.tmp_PreBurnerUserItemAccess; &#xA;&#xA;--Preburner&#xA;SELECT DISTINCT&#xA; ile.[DWNavisionCompany]&#xA;,ile.[Item No.]&#xA;,i.[Gen. Prod. Posting Group]&#xA;,i.[Product Group]&#xA;,i.[Brand No.]&#xA; INTO dbo.tmp_PreBurnerUserItemAccess&#xA; FROM nav.[Item Ledger Entry] ile&#xA; JOIN nav.[Item] i &#xA; ON ile.[DWNavisionCompany] = i.DWNavisionCompany&#xA; AND ile.[Item No.] = i.[No.]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform UserItemAccess\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{BAFFD3FA-87EA-4373-A1ED-45F3B1749690}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{E16F7B08-17B6-4AC0-8BE6-E23A6BFC014F}"
+              SQLTask:SqlStatementSource="EXEC('TRUNCATE TABLE ' + ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform UserItemAccess.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{104E1CF4-A301-42DC-A85A-DB50A50B7C39}"
+          DTS:From="Package\SEQC Transform UserItemAccess\Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\SEQC Transform UserItemAccess\SQL Pre-burner" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform UserItemAccess.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{AFB4872F-6CD4-462E-8746-C7DF8D35E5FD}"
+          DTS:From="Package\SEQC Transform UserItemAccess\SQL Pre-burner"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SEQC Transform UserItemAccess_To_SEQC MaintainDW]"
+      DTS:CreationName=""
+      DTS:DTSID="{ED6115FE-48DE-45CD-8F14-004C843FEBBC}"
+      DTS:From="Package\SEQC Transform UserItemAccess"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SEQC Transform UserItemAccess_To_SEQC MaintainDW"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,103"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="39.0000000000001,313.5" />
+        <NodeLayout
+          Size="228,42"
+          Id="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess"
+          TopLeft="1.50000000000001,166.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform UserItemAccess\Truncate Table"
+          TopLeft="44.5,5.5" />
+        <NodeLayout
+          Size="151,42"
+          Id="Package\SEQC Transform UserItemAccess\SQL Pre-burner"
+          TopLeft="47,86" />
+        <EdgeLayout
+          Id="Package\SEQC Transform UserItemAccess.PrecedenceConstraints[Constraint]"
+          TopLeft="121,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,38.5"
+              Start="0,0"
+              End="0,31">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform UserItemAccess.PrecedenceConstraints[Constraint 1]"
+          TopLeft="119,128">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,38.5"
+              Start="0,0"
+              End="0,31">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="260,264"
+          Size="260,306"
+          Id="Package\SEQC Transform UserItemAccess"
+          TopLeft="5.50000000000003,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_SEQC Transform UserItemAccess_To_SEQC MaintainDW]"
+          TopLeft="135.5,311.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="75.5000000000001,75"
+              Start="0,0"
+              End="68.0000000000001,75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,71" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,71"
+                    Point2="0,75"
+                    Point3="4,75" />
+                  <mssgle:LineSegment
+                    End="68.0000000000001,75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract"
+          TopLeft="26.5,5.5" />
+        <NodeLayout
+          Size="198,42"
+          Id="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess"
+          TopLeft="5.50000000000003,209.5" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\DER Audit"
+          TopLeft="41.5,107.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess.Paths[DER Audit_Output_OLE DES UserItemAccess]"
+          TopLeft="104.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess.Paths[OLE SRC Extract_Output_DER Audit]"
+          TopLeft="104.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform UserItemAccess\DFT Transform UserItemAccess\OLE DES UserItemAccess">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

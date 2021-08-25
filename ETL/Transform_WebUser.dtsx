@@ -1,0 +1,1018 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/1/2017 9:17:38 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="mim-ext"
+  DTS:DTSID="{8356BC9D-90C2-4F73-88BA-E2DED6125469}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_WebUser"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="4"
+  DTS:VersionGUID="{8B05D2C8-FD44-4509-AA00-665D44B7967C}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{E866B724-81A2-4DA0-8CFB-062980EC1BDF}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{9089E629-3E85-44F6-9D2F-7C842C57AF52}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{5B856032-CE7C-42E2-AFC4-C22BCD7062CE}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{38594E09-3270-414C-92DA-AE94EC80D757}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">dim</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{06E9643F-1B27-4145-99FD-4B3C88C3F914}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.WebUser</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{DCF703B1-C8D9-49EB-9CE7-61EB979DB0F0}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">WebUser</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{B5F6295E-0622-49BF-A586-8B0DC4E9558E}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{178B4330-CD7C-4271-9823-06409E866494}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{9089E629-3E85-44F6-9D2F-7C842C57AF52}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform WebUser"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{88B9847F-D747-46B1-AF90-F6FD6F4B2DDE}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform WebUser">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform WebUser\DFT Transform WebUser"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{CB29A9FD-E844-4C0D-9615-D3FE8AF035E9}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform WebUser"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform WebUser\DFT Transform WebUser\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform WebUser\DFT Transform WebUser\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform WebUser\DFT Transform WebUser\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform WebUser\DFT Transform WebUser\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform WebUser\DFT Transform WebUser\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform WebUser\DFT Transform WebUser\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES WebUser"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES WebUser">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].Columns[WebUserKey]"
+                          cachedDataType="wstr"
+                          cachedLength="57"
+                          cachedName="WebUserKey"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[WebUserKey]"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].Columns[WebUserNo]"
+                          cachedDataType="wstr"
+                          cachedLength="36"
+                          cachedName="WebUserNo"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[WebUserNo]"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserNo]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].Columns[WebUserName]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="WebUserName"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[WebUserName]"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserName]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].Columns[WebUserCustomerNo]"
+                          cachedDataType="wstr"
+                          cachedLength="41"
+                          cachedName="WebUserCustomerNo"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[WebUserCustomerNo]"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserCustomerNo]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].Columns[WebUserUserRole]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="7"
+                          cachedName="WebUserUserRole"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[WebUserUserRole]"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserUserRole]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].Columns[WebUserBlocked]"
+                          cachedDataType="ui1"
+                          cachedName="WebUserBlocked"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[WebUserBlocked]"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserBlocked]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].Columns[WebUserLastModifiedBy]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="WebUserLastModifiedBy"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[WebUserLastModifiedBy]"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserLastModifiedBy]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].Columns[WebUserCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="WebUserCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[WebUserCreatedDate]"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserCreatedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].Columns[WebUserLastLoginDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="WebUserLastLoginDate"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[WebUserLastLoginDate]"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserLastLoginDate]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[WebUserKey]"
+                          dataType="wstr"
+                          length="57"
+                          name="WebUserKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[WebUserNo]"
+                          dataType="wstr"
+                          length="36"
+                          name="WebUserNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[WebUserName]"
+                          dataType="wstr"
+                          length="30"
+                          name="WebUserName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[WebUserCustomerNo]"
+                          dataType="wstr"
+                          length="41"
+                          name="WebUserCustomerNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[WebUserUserRole]"
+                          codePage="1252"
+                          dataType="str"
+                          length="7"
+                          name="WebUserUserRole" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[WebUserBlocked]"
+                          dataType="ui1"
+                          name="WebUserBlocked" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[WebUserLastModifiedBy]"
+                          dataType="wstr"
+                          length="10"
+                          name="WebUserLastModifiedBy" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[WebUserCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="WebUserCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[WebUserLastLoginDate]"
+                          dataType="dbTimeStamp"
+                          name="WebUserLastLoginDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
+	 CONVERT(NVARCHAR(20), wu.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(36), wu.[No]) AS [WebUserKey]
+	,CONVERT(NVARCHAR(36), wu.[No]) AS [WebUserNo]
+	,CONVERT(NVARCHAR(30), wu.[Name]) AS [WebUserName]
+	,CONVERT(NVARCHAR(10), c.[Company Country Code]) + N'-' +CONVERT(NVARCHAR(30), wu.[Customer No]) AS [WebUserCustomerNo]
+	,CASE
+		WHEN wu.[User Role] = 0 THEN 'Viewer'
+		WHEN wu.[User Role] = 1 THEN 'Normal'
+		WHEN wu.[User Role] = 2 THEN 'Trusted'
+		WHEN wu.[User Role] = 3 THEN 'Admin'
+		ELSE 'SYSTEM'
+	END AS [WebUserUserRole]
+	,wu.[Blocked] AS [WebUserBlocked]
+	,CONVERT(NVARCHAR(10), wu.[Last modified by]) AS [WebUserLastModifiedBy]
+	,wu.[Created date] AS [WebUserCreatedDate]
+	,wu.[Last login at] AS [WebUserLastLoginDate]
+FROM nav.[Web User] as wu
+LEFT JOIN navcom.[Company] as c
+ON wu.DWNavisionCompany = c.Name</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserKey]"
+                          length="57"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserKey]"
+                          name="WebUserKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserNo]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserNo]"
+                          length="36"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserNo]"
+                          name="WebUserNo"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserName]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserName]"
+                          length="30"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserName]"
+                          name="WebUserName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserCustomerNo]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserCustomerNo]"
+                          length="41"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserCustomerNo]"
+                          name="WebUserCustomerNo"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserUserRole]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserUserRole]"
+                          length="7"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserUserRole]"
+                          name="WebUserUserRole"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserBlocked]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserBlocked]"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserBlocked]"
+                          name="WebUserBlocked"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserLastModifiedBy]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserLastModifiedBy]"
+                          length="10"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserLastModifiedBy]"
+                          name="WebUserLastModifiedBy"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserCreatedDate]"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserCreatedDate]"
+                          name="WebUserCreatedDate"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserLastLoginDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserLastLoginDate]"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].Columns[WebUserLastLoginDate]"
+                          name="WebUserLastLoginDate"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserKey]"
+                          dataType="wstr"
+                          length="57"
+                          name="WebUserKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserNo]"
+                          dataType="wstr"
+                          length="36"
+                          name="WebUserNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserName]"
+                          dataType="wstr"
+                          length="30"
+                          name="WebUserName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserCustomerNo]"
+                          dataType="wstr"
+                          length="41"
+                          name="WebUserCustomerNo" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserUserRole]"
+                          codePage="1252"
+                          dataType="str"
+                          length="7"
+                          name="WebUserUserRole" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserBlocked]"
+                          dataType="ui1"
+                          name="WebUserBlocked" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserLastModifiedBy]"
+                          dataType="wstr"
+                          length="10"
+                          name="WebUserLastModifiedBy" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="WebUserCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output].ExternalColumns[WebUserLastLoginDate]"
+                          dataType="dbTimeStamp"
+                          name="WebUserLastLoginDate" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[WebUserKey]"
+                          dataType="wstr"
+                          length="57"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[WebUserKey]"
+                          name="WebUserKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[WebUserNo]"
+                          dataType="wstr"
+                          length="36"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[WebUserNo]"
+                          name="WebUserNo" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[WebUserName]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[WebUserName]"
+                          name="WebUserName" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[WebUserCustomerNo]"
+                          dataType="wstr"
+                          length="41"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[WebUserCustomerNo]"
+                          name="WebUserCustomerNo" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[WebUserUserRole]"
+                          codePage="1252"
+                          dataType="str"
+                          length="7"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[WebUserUserRole]"
+                          name="WebUserUserRole" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[WebUserBlocked]"
+                          dataType="ui1"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[WebUserBlocked]"
+                          name="WebUserBlocked" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[WebUserLastModifiedBy]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[WebUserLastModifiedBy]"
+                          name="WebUserLastModifiedBy" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[WebUserCreatedDate]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[WebUserCreatedDate]"
+                          name="WebUserCreatedDate" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[WebUserLastLoginDate]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[WebUserLastLoginDate]"
+                          name="WebUserLastLoginDate" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform WebUser\DFT Transform WebUser.Paths[DER Audit_Output_OLE DES WebUser]"
+                  endId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser.Inputs[DER Audit_Output_OLE DES WebUser]"
+                  name="DER Audit_Output_OLE DES WebUser"
+                  startId="Package\SEQC Transform WebUser\DFT Transform WebUser\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC Transform WebUser\DFT Transform WebUser.Paths[OLE SRC Extract_Output_DER Audit]"
+                  endId="Package\SEQC Transform WebUser\DFT Transform WebUser\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="OLE SRC Extract_Output_DER Audit"
+                  startId="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform WebUser\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{1D558BF3-BADA-4662-9A7D-6FEA558442CF}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{5B856032-CE7C-42E2-AFC4-C22BCD7062CE}"
+              SQLTask:SqlStatementSource="EXEC('TRUNCATE TABLE ' + ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform WebUser.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform WebUser]"
+          DTS:CreationName=""
+          DTS:DTSID="{520DB646-6B26-40CB-86FD-05E3F385DB48}"
+          DTS:From="Package\SEQC Transform WebUser\Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_Truncate Table_To_DFT Transform WebUser"
+          DTS:To="Package\SEQC Transform WebUser\DFT Transform WebUser" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\WebUserAfterburner"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{57BC0174-BD3B-4CF9-98C0-79D14E233B12}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="WebUserAfterburner"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{5B856032-CE7C-42E2-AFC4-C22BCD7062CE}"
+          SQLTask:SqlStatementSource="INSERT INTO dbo.WebUser (WebUserKey, WebUserName, WebUserBlocked, DWCreatedDate)&#xA;SELECT DISTINCT&#xA; sile.WebUserKey&#xA;,N'Discontinued User' AS WebUserName&#xA;,1 as WebUserBlocked&#xA;,GETDATE() as DWCreatedDate&#xA;FROM dbo.SalesItemLedgerEntry AS sile&#xA;LEFT JOIN dbo.WebUser AS wu&#xA;ON sile.WebUserKey = wu.WebUserKey&#xA;WHERE wu.WebUserKey IS NULL AND RIGHT(sile.WebUserKey, 1) &lt;&gt; '-'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{CB5B9BEA-D9A2-4040-801D-E577E278B84A}"
+      DTS:From="Package\SEQC Transform WebUser"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\WebUserAfterburner" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{D65FB66D-62D9-4132-8908-6AD2223815B7}"
+      DTS:From="Package\WebUserAfterburner"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,103"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="32.5000000000001,437.5" />
+        <NodeLayout
+          Size="195,42"
+          Id="Package\SEQC Transform WebUser\DFT Transform WebUser"
+          TopLeft="5.50000000000001,107.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform WebUser\Truncate Table"
+          TopLeft="28,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform WebUser.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform WebUser]"
+          TopLeft="103,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="206,205"
+          Size="206,248"
+          Id="Package\SEQC Transform WebUser"
+          TopLeft="5.50000000000003,5.5" />
+        <NodeLayout
+          Size="175,42"
+          Id="Package\WebUserAfterburner"
+          TopLeft="33,308" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="108.5,253.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="12,54.5"
+              Start="0,0"
+              End="12,47">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.25" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23.25"
+                    Point2="0,27.25"
+                    Point3="4,27.25" />
+                  <mssgle:LineSegment
+                    End="7.99999999999997,27.25" />
+                  <mssgle:CubicBezierSegment
+                    Point1="7.99999999999997,27.25"
+                    Point2="12,27.25"
+                    Point3="12,31.25" />
+                  <mssgle:LineSegment
+                    End="12,47" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="119.5,350">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,87.5"
+              Start="0,0"
+              End="0,80">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,80" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform WebUser\DFT Transform WebUser">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract"
+          TopLeft="10.5,5.5" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser"
+          TopLeft="5.50000000000003,209.5" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform WebUser\DFT Transform WebUser\DER Audit"
+          TopLeft="25.5,107.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform WebUser\DFT Transform WebUser.Paths[DER Audit_Output_OLE DES WebUser]"
+          TopLeft="88.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform WebUser\DFT Transform WebUser.Paths[OLE SRC Extract_Output_DER Audit]"
+          TopLeft="88.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform WebUser\DFT Transform WebUser\OLE DES WebUser">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

@@ -1,0 +1,1045 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/3/2017 2:07:13 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="mim-ext"
+  DTS:DTSID="{25C24172-3272-40E6-8E09-3E94D823F7A7}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_NavisionDimension"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="49"
+  DTS:VersionGUID="{C3419FFB-E0A4-42BA-B55C-7BBBA8F9B03D}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{50CDB6C0-B3D6-47A4-B8B1-94D777F47076}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{F8EECEA9-C7B0-49EE-99C9-7EF5DFE8A789}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{607644E5-55F2-4B70-AED3-8671143A7D3E}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{0E050500-CEF5-45FC-9E43-F242B5CA68A8}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">dim</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{F9C4894E-0BB4-4A76-BE13-AEB0D7505782}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.NavisionDimension</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{BCB32D54-A34A-4D5B-90FE-5BF5B8ABA2C1}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">NavisionDimension</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{33548F19-928D-4114-A9FA-AC51CECBB6DC}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{1A2ACAE6-89A8-46C2-99C4-875DC3CE0BC3}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{F8EECEA9-C7B0-49EE-99C9-7EF5DFE8A789}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform NavisionDimension"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{24E79262-86CA-4672-8688-0A5975E68CD0}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform NavisionDimension">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{020C2A15-3BB5-4F1D-B9C8-C6868336D4A4}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform NavisionDimension"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="OLE DB Source"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">WITH GL AS (
+SELECT DISTINCT 
+	   [Department Code] AS DepartmentCode
+      ,[Project Code] AS ProjectCode
+      ,[DWNavisionCompany]
+FROM
+	[nav].[G/L Entry]
+--WHERE
+--	[Department Code] IN ('PRIVATE LB','PRODMNGT','INDKØB')
+--	AND [Project Code] IN ('SCPP','SURVEILLAN','PRO AV','POS','STO/NW','CE','')
+)
+,ProjectAndDepartment AS (
+	SELECT 
+		 d.[DWNavisionCompany] + N'-' + d.[Code] + N'-' + p.[Code] AS NavisionDimensionKey
+		,d.[Code] AS DepartmentCode
+		,d.[Name] AS DepartmentName
+		,d.[Consolidation Code] AS DepartmentConsolidationCode
+		,p.[Code] AS ProjectCode
+		,p.[Name] AS ProjectName
+		,p.[Consolidation Code] AS ProjectConsolidationCode
+		,d.[DWNavisionCompany]
+	FROM
+		[Nav].[Department] d
+		JOIN [Nav].[Project] p
+		ON d.[DWNavisionCompany]=p.[DWNavisionCompany]
+	
+	UNION 
+	
+	SELECT 
+		 d.[DWNavisionCompany] + N'-' + d.[Code] + N'-' + N'' AS NavisionDimensionKey
+		,d.[Code] AS DepartmentCode
+		,d.[Name] AS DepartmentName
+		,d.[Consolidation Code] AS DepartmentConsolidationCode
+		,N'' AS ProjectCode
+		,N'' AS ProjectName
+		,N'' AS ProjectConsolidationCode
+		,d.[DWNavisionCompany]
+	FROM
+		[Nav].[Department] d 
+	WHERE
+		d.[DWNavisionCompany] NOT IN (SELECT [DWNavisionCompany] FROM [Nav].[Project] WHERE [Code]='')
+	
+	UNION 
+	
+	SELECT
+		p.[DWNavisionCompany] + N'-' + N'' + N'-' + p.Code AS NavisionDimensionKey
+		,N'' AS DepartmentCode
+		,N'' AS DepartmentName
+		,N'' AS DepartmentConsolidationCode
+		,p.[Code] AS ProjectCode
+		,p.[Name] AS ProjectName
+		,p.[Consolidation Code] AS ProjectConsolidationCode
+		,p.[DWNavisionCompany]
+	FROM
+		[Nav].[Project] p
+	WHERE
+		p.[DWNavisionCompany] NOT IN (SELECT [DWNavisionCompany] FROM [nav].[Department] WHERE [Code]='')
+)
+
+SELECT
+	 CONVERT(nvarchar(40),NavisionDimensionKey)			AS NavisionDimensionKey
+	,CONVERT(nvarchar(10),DepartmentCode)				AS DepartmentCode
+	,CONVERT(nvarchar(50),DepartmentName)				AS DepartmentName
+	,CONVERT(nvarchar(10),DepartmentConsolidationCode)	AS DepartmentConsolidationCode
+	,CONVERT(nvarchar(10),ProjectCode)					AS ProjectCode
+	,CONVERT(nvarchar(50),ProjectName)					AS ProjectName
+	,CONVERT(nvarchar(10),ProjectConsolidationCode)		AS ProjectConsolidationCode
+	,CONVERT(nvarchar(18),[DWNavisionCompany])			AS [DWNavisionCompany]
+FROM (
+	SELECT
+		 NavisionDimensionKey
+		,DepartmentCode
+		,DepartmentName
+		,DepartmentConsolidationCode
+		,ProjectCode
+		,ProjectName
+		,ProjectConsolidationCode
+		,[DWNavisionCompany]
+	FROM
+		ProjectAndDepartment
+	
+	UNION
+	
+	SELECT
+		 GL.[DWNavisionCompany] + N'-' + Gl.DepartmentCode + N'-' + Gl.ProjectCode AS NavisionDimensionKey
+		,Gl.DepartmentCode
+		,ProjectAndDepartment.DepartmentName
+		,ProjectAndDepartment.DepartmentConsolidationCode
+		,Gl.ProjectCode
+		,ProjectAndDepartment.ProjectName
+		,ProjectAndDepartment.ProjectConsolidationCode
+		,Gl.[DWNavisionCompany]
+	FROM
+		GL
+		LEFT JOIN ProjectAndDepartment
+		ON Gl.DWNavisionCompany = ProjectAndDepartment.DWNavisionCompany
+		AND Gl.DepartmentCode = ProjectAndDepartment.DepartmentCode
+		AND Gl.ProjectCode = ProjectAndDepartment.ProjectCode
+) AS InnerSelect</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[NavisionDimensionKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[NavisionDimensionKey]"
+                          length="40"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[NavisionDimensionKey]"
+                          name="NavisionDimensionKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[DepartmentCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DepartmentCode]"
+                          length="10"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[DepartmentCode]"
+                          name="DepartmentCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[DepartmentName]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DepartmentName]"
+                          length="50"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[DepartmentName]"
+                          name="DepartmentName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[DepartmentConsolidationCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DepartmentConsolidationCode]"
+                          length="10"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[DepartmentConsolidationCode]"
+                          name="DepartmentConsolidationCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProjectCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ProjectCode]"
+                          length="10"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProjectCode]"
+                          name="ProjectCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProjectName]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ProjectName]"
+                          length="50"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProjectName]"
+                          name="ProjectName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProjectConsolidationCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ProjectConsolidationCode]"
+                          length="10"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProjectConsolidationCode]"
+                          name="ProjectConsolidationCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[DWNavisionCompany]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DWNavisionCompany]"
+                          length="18"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[DWNavisionCompany]"
+                          name="DWNavisionCompany"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[NavisionDimensionKey]"
+                          dataType="wstr"
+                          length="40"
+                          name="NavisionDimensionKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DepartmentCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="DepartmentCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DepartmentName]"
+                          dataType="wstr"
+                          length="50"
+                          name="DepartmentName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DepartmentConsolidationCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="DepartmentConsolidationCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ProjectCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="ProjectCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ProjectName]"
+                          dataType="wstr"
+                          length="50"
+                          name="ProjectName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ProjectConsolidationCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="ProjectConsolidationCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DWNavisionCompany]"
+                          dataType="wstr"
+                          length="18"
+                          name="DWNavisionCompany" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[NavisionDimensionKey]"
+                          dataType="wstr"
+                          length="40"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[NavisionDimensionKey]"
+                          name="NavisionDimensionKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DepartmentCode]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DepartmentCode]"
+                          name="DepartmentCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DepartmentName]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DepartmentName]"
+                          name="DepartmentName" />
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DepartmentConsolidationCode]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DepartmentConsolidationCode]"
+                          name="DepartmentConsolidationCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ProjectCode]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ProjectCode]"
+                          name="ProjectCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ProjectName]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ProjectName]"
+                          name="ProjectName" />
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ProjectConsolidationCode]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ProjectConsolidationCode]"
+                          name="ProjectConsolidationCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DWNavisionCompany]"
+                          dataType="wstr"
+                          length="18"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DWNavisionCompany]"
+                          name="DWNavisionCompany" />
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES SalesEntryBudget"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES SalesOrder">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].Columns[NavisionDimensionKey]"
+                          cachedDataType="wstr"
+                          cachedLength="40"
+                          cachedName="NavisionDimensionKey"
+                          externalMetadataColumnId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].ExternalColumns[NavisionDimensionKey]"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[NavisionDimensionKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].Columns[DepartmentCode]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="DepartmentCode"
+                          externalMetadataColumnId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].ExternalColumns[DepartmentCode]"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[DepartmentCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].Columns[DepartmentName]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="DepartmentName"
+                          externalMetadataColumnId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].ExternalColumns[DepartmentName]"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[DepartmentName]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].Columns[DepartmentConsolidationCode]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="DepartmentConsolidationCode"
+                          externalMetadataColumnId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].ExternalColumns[DepartmentConsolidationCode]"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[DepartmentConsolidationCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].Columns[ProjectCode]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="ProjectCode"
+                          externalMetadataColumnId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].ExternalColumns[ProjectCode]"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProjectCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].Columns[ProjectName]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="ProjectName"
+                          externalMetadataColumnId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].ExternalColumns[ProjectName]"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProjectName]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].Columns[ProjectConsolidationCode]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="ProjectConsolidationCode"
+                          externalMetadataColumnId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].ExternalColumns[ProjectConsolidationCode]"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProjectConsolidationCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].Columns[DWNavisionCompany]"
+                          cachedDataType="wstr"
+                          cachedLength="18"
+                          cachedName="DWNavisionCompany"
+                          externalMetadataColumnId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].ExternalColumns[DWNavisionCompany]"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output].Columns[DWNavisionCompany]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].ExternalColumns[NavisionDimensionKey]"
+                          dataType="wstr"
+                          length="40"
+                          name="NavisionDimensionKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].ExternalColumns[DepartmentCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="DepartmentCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].ExternalColumns[DepartmentName]"
+                          dataType="wstr"
+                          length="50"
+                          name="DepartmentName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].ExternalColumns[DepartmentConsolidationCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="DepartmentConsolidationCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].ExternalColumns[ProjectCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="ProjectCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].ExternalColumns[ProjectName]"
+                          dataType="wstr"
+                          length="50"
+                          name="ProjectName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].ExternalColumns[ProjectConsolidationCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="ProjectConsolidationCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder].ExternalColumns[DWNavisionCompany]"
+                          dataType="wstr"
+                          length="50"
+                          name="DWNavisionCompany" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension.Paths[DER Audit_Output_OLE DES SalesOrder]"
+                  endId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget.Inputs[DER Audit_Output_OLE DES SalesOrder]"
+                  name="DER Audit_Output_OLE DES SalesOrder"
+                  startId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension.Paths[OLE DB Source Output]"
+                  endId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="OLE DB Source Output"
+                  startId="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source.Outputs[OLE DB Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform NavisionDimension\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{E6829003-0174-43F7-8C2F-6C9501DD1F64}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{607644E5-55F2-4B70-AED3-8671143A7D3E}"
+              SQLTask:SqlStatementSource="EXEC('TRUNCATE TABLE ' + ?)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC Transform NavisionDimension.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform SalesOrder]"
+          DTS:CreationName=""
+          DTS:DTSID="{9E3121E7-B0F8-4BCF-9AE5-D352C9FCAF5D}"
+          DTS:From="Package\SEQC Transform NavisionDimension\Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_Truncate Table_To_DFT Transform SalesOrder"
+          DTS:To="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SEQC Transform SalesOrder_To_SEQC MaintainDW]"
+      DTS:CreationName=""
+      DTS:DTSID="{BF48285C-6AB7-401E-8D28-C0C71D4C62C1}"
+      DTS:From="Package\SEQC Transform NavisionDimension"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SEQC Transform SalesOrder_To_SEQC MaintainDW"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,103"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="27.0000000000001,313.5" />
+        <NodeLayout
+          Size="242,42"
+          Id="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension"
+          TopLeft="5.50000000000001,107.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform NavisionDimension\Truncate Table"
+          TopLeft="32.5,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform NavisionDimension.PrecedenceConstraints[Constraint_Truncate Table_To_DFT Transform SalesOrder]"
+          TopLeft="107.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="19,60"
+              Start="0,0"
+              End="19,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="4,30" />
+                  <mssgle:LineSegment
+                    End="15,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="15,30"
+                    Point2="19,30"
+                    Point3="19,34" />
+                  <mssgle:LineSegment
+                    End="19,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="265,205"
+          Size="265,248"
+          Id="Package\SEQC Transform NavisionDimension"
+          TopLeft="5.50000000000003,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_SEQC Transform SalesOrder_To_SEQC MaintainDW]"
+          TopLeft="141,253.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-27.9999999999999,60"
+              Start="0,0"
+              End="-27.9999999999999,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="-4,30" />
+                  <mssgle:LineSegment
+                    End="-23.9999999999999,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-23.9999999999999,30"
+                    Point2="-27.9999999999999,30"
+                    Point3="-27.9999999999999,34" />
+                  <mssgle:LineSegment
+                    End="-27.9999999999999,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="150,42"
+          Id="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source"
+          TopLeft="25,13" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\DER Audit"
+          TopLeft="30,107.5" />
+        <NodeLayout
+          Size="206,42"
+          Id="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget"
+          TopLeft="3.50000000000003,209.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension.Paths[OLE DB Source Output]"
+          TopLeft="96.5,55">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,52.5"
+              Start="0,0"
+              End="0,45">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,45" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension.Paths[DER Audit_Output_OLE DES SalesOrder]"
+          TopLeft="93,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="13.5,60"
+              Start="0,0"
+              End="13.5,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="4,30" />
+                  <mssgle:LineSegment
+                    End="9.50000000000003,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="9.50000000000003,30"
+                    Point2="13.5,30"
+                    Point3="13.5,34" />
+                  <mssgle:LineSegment
+                    End="13.5,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform NavisionDimension\DFT Transform NavisionDimension\OLE DES SalesEntryBudget">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

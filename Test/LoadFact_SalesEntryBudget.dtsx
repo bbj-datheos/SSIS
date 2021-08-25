@@ -1,0 +1,2015 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/28/2017 2:24:00 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="nna-ext"
+  DTS:DTSID="{87B902B2-4D34-4029-A2A7-5F73F2B555DD}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="LoadFact_SalesEntryBudget"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="43"
+  DTS:VersionGUID="{6CBC39A6-91B4-41C2-B115-E3574E641874}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{4F05681D-C30B-4452-AC9B-1C9FD849DD6F}"
+      DTS:ObjectName="DW">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_DW]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=TEST-BI-01;Initial Catalog=EETDW;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{7D522430-8DDC-4954-9C32-009C8812D273}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=TEST-BI-01;Initial Catalog=EETDW;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{E9A93A57-E105-4659-9666-1355FAFAE3FB}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=TEST-BI-01;Initial Catalog=EETDW;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{0E0D495A-F680-4D8B-A50A-6397BE97CB99}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="@[$Project::MartFactSchema] +&quot;.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">MartFact.SalesEntryBudget</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{3731EB43-E1F4-464D-84A5-FD9D2FD8399D}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;SELECT * FROM &quot; +  @[User::SourceTable]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SelectAllFrom">
+      <DTS:VariableValue
+        DTS:DataType="8">SELECT * FROM TransformFact.SalesEntryBudget</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{765F082A-54DD-4523-A324-E9809C02E261}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="@[$Project::TransformFactSchema] + &quot;.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SourceTable">
+      <DTS:VariableValue
+        DTS:DataType="8">TransformFact.SalesEntryBudget</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{F28ADC70-45AC-4FB3-A698-6A2738642267}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">SalesEntryBudget</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC FullLoad SalesEntryBudget"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{5E6191A6-3016-4E3A-AC74-54E883E0E739}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC FullLoad SalesEntryBudget">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{254B4536-1BB7-49E9-A631-74DE0F9FBE6E}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT SalesEntryBudget"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\DER Error Handling"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Error Handling"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\DER Error Handling.Inputs[LKP Person_Match_DER Error Handling]"
+                      name="LKP Person_Match_DER Error Handling">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\DER Error Handling.Inputs[LKP Person_Match_DER Error Handling].Columns[CalendarID]"
+                          cachedDataType="i4"
+                          cachedName="CalendarID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Outputs[Match].Columns[CalendarID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[REPLACENULL](#{Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Outputs[Match].Columns[CalendarID]},19000101)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(CalendarID,19000101)</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\DER Error Handling.Inputs[LKP Person_Match_DER Error Handling].Columns[CompanyID]"
+                          cachedDataType="i4"
+                          cachedName="CompanyID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Outputs[Match].Columns[CompanyID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[REPLACENULL](#{Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Outputs[Match].Columns[CompanyID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(CompanyID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\DER Error Handling.Inputs[LKP Person_Match_DER Error Handling].Columns[ItemID]"
+                          cachedDataType="i4"
+                          cachedName="ItemID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Outputs[Match].Columns[ItemID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[REPLACENULL](#{Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Outputs[Match].Columns[ItemID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(ItemID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\DER Error Handling.Inputs[LKP Person_Match_DER Error Handling].Columns[BudgetTypeID]"
+                          cachedDataType="i4"
+                          cachedName="BudgetTypeID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Outputs[Lookup Match Output].Columns[BudgetTypeID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[REPLACENULL](#{Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Outputs[Lookup Match Output].Columns[BudgetTypeID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(BudgetTypeID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\DER Error Handling.Inputs[LKP Person_Match_DER Error Handling].Columns[GPPGID]"
+                          cachedDataType="i4"
+                          cachedName="GPPGID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Outputs[Lookup Match Output].Columns[GPPGID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[REPLACENULL](#{Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Outputs[Lookup Match Output].Columns[GPPGID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(GPPGID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\DER Error Handling.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\DER Error Handling.Inputs[LKP Person_Match_DER Error Handling]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\DER Error Handling.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\DER Error Handling.Inputs[LKP Person_Match_DER Error Handling]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\DER Error Handling.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\DER Error Handling.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\DER Error Handling.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\DER Error Handling.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+                  description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+                  name="LKP BudgetType"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+	 [BudgetTypeID]
+	,[BudgetTypeKey] FROM
+	Martdim.[BudgetType]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT
+	 [BudgetTypeID]
+	,[BudgetTypeKey] FROM
+	Martdim.[BudgetType]) [refTable]
+where [refTable].[BudgetTypeKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="BudgetTypeID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="BudgetTypeKey" dataType="DT_WSTR" length="200" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[BudgetTypeKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Inputs[Lookup Input]"
+                      name="Lookup Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Inputs[Lookup Input].Columns[BudgetTypeKey]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="BudgetTypeKey"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[BudgetTypeKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">BudgetTypeKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Outputs[Lookup Match Output]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Lookup Match Output"
+                      synchronousInputId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Inputs[Lookup Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Outputs[Lookup Match Output].Columns[BudgetTypeID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Copy Column"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Outputs[Lookup Match Output].Columns[BudgetTypeID]"
+                          name="BudgetTypeID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">BudgetTypeID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Outputs[Lookup No Match Output]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="Lookup No Match Output"
+                      synchronousInputId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Inputs[Lookup Input]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Outputs[Lookup Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Lookup Error Output"
+                      synchronousInputId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Inputs[Lookup Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;5"
+                  name="LKP Calendar"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT CalendarID,CalendarDate FROM Martdim.Calendar</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT CalendarID,CalendarDate FROM Martdim.Calendar) [refTable]
+where [refTable].[CalendarDate] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="CalendarID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CalendarDate" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[CalendarKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Inputs[OLE SRC SalesOrder_Output_LKP Calendar]"
+                      name="OLE SRC SalesOrder_Output_LKP Calendar">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Inputs[OLE SRC SalesOrder_Output_LKP Calendar].Columns[CalendarKey]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="CalendarKey"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[CalendarKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">CalendarDate</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Outputs[Match]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Match"
+                      synchronousInputId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Inputs[OLE SRC SalesOrder_Output_LKP Calendar]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Outputs[Match].Columns[CalendarID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="CopyColumn"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Outputs[Match].Columns[CalendarID]"
+                          name="CalendarID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">CalendarID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Outputs[NoMatch]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="NoMatch"
+                      synchronousInputId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Inputs[OLE SRC SalesOrder_Output_LKP Calendar]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Inputs[OLE SRC SalesOrder_Output_LKP Calendar]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;5"
+                  name="LKP Company"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT CompanyID, CompanyKey FROM Martdim.Company</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT CompanyID, CompanyKey FROM Martdim.Company) [refTable]
+where [refTable].[CompanyKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="CompanyID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CompanyKey" dataType="DT_WSTR" length="10" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[CompanyKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Inputs[LKP Calendar_Match_LKP Company]"
+                      name="LKP Calendar_Match_LKP Company">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Inputs[LKP Calendar_Match_LKP Company].Columns[CompanyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CompanyKey"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[CompanyKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">CompanyKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Outputs[Match]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Match"
+                      synchronousInputId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Inputs[LKP Calendar_Match_LKP Company]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Outputs[Match].Columns[CompanyID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="CopyColumn"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Outputs[Match].Columns[CompanyID]"
+                          name="CompanyID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">CompanyID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Outputs[NoMatch]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="NoMatch"
+                      synchronousInputId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Inputs[LKP Calendar_Match_LKP Company]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Inputs[LKP Calendar_Match_LKP Company]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+                  description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+                  name="LKP GPPG"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+	 [GPPGID]
+	,[GPPGKey] FROM
+	Martdim.[GPPG]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT
+	 [GPPGID]
+	,[GPPGKey] FROM
+	Martdim.[GPPG]) [refTable]
+where [refTable].[GPPGKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="GPPGID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="GPPGKey" dataType="DT_WSTR" length="10" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[GPPGKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Inputs[Lookup Input]"
+                      name="Lookup Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Inputs[Lookup Input].Columns[GPPGKey]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="GPPGKey"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[GPPGKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">GPPGKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Outputs[Lookup Match Output]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Lookup Match Output"
+                      synchronousInputId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Inputs[Lookup Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Outputs[Lookup Match Output].Columns[GPPGID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Copy Column"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Outputs[Lookup Match Output].Columns[GPPGID]"
+                          name="GPPGID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">GPPGID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Outputs[Lookup No Match Output]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="Lookup No Match Output"
+                      synchronousInputId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Inputs[Lookup Input]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Outputs[Lookup Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Lookup Error Output"
+                      synchronousInputId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Inputs[Lookup Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;5"
+                  name="LKP Item"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT ItemID, ItemKey FROM Martdim.Item</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT ItemID, ItemKey FROM Martdim.Item) [refTable]
+where [refTable].[ItemKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="ItemID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ItemKey" dataType="DT_WSTR" length="100" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[ItemKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Inputs[LKP Employee_Match_LKP Item]"
+                      name="LKP Employee_Match_LKP Item">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Inputs[LKP Employee_Match_LKP Item].Columns[ItemKey]"
+                          cachedDataType="wstr"
+                          cachedLength="200"
+                          cachedName="ItemKey"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[ItemKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">ItemKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Outputs[Match]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Match"
+                      synchronousInputId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Inputs[LKP Employee_Match_LKP Item]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Outputs[Match].Columns[ItemID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="CopyColumn"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Outputs[Match].Columns[ItemID]"
+                          name="ItemID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">ItemID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Outputs[NoMatch]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="NoMatch"
+                      synchronousInputId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Inputs[LKP Employee_Match_LKP Item]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Inputs[LKP Employee_Match_LKP Item]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="ODB SalesEntryBudget"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+	 UPPER([CompanyKey]) AS [CompanyKey]
+	,UPPER([ItemKey]) AS [ItemKey]
+	,[CalendarKey]
+	,UPPER([BudgetTypeKey]) AS [BudgetTypeKey]
+	,UPPER([GPPGKey]) AS [GPPGKey]
+	,[SalesBudgetLCY]
+	,[SalesBudgetDKK]
+FROM
+	[EETDW_Stage].[dbo].[SalesEntryBudget]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable">User::SelectAllFrom</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[CompanyKey]"
+                          length="10"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[CompanyKey]"
+                          name="CompanyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[ItemKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[ItemKey]"
+                          length="200"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[ItemKey]"
+                          name="ItemKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[CalendarKey]"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[CalendarKey]"
+                          name="CalendarKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[BudgetTypeKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[BudgetTypeKey]"
+                          length="100"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[BudgetTypeKey]"
+                          name="BudgetTypeKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[GPPGKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[GPPGKey]"
+                          length="50"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[GPPGKey]"
+                          name="GPPGKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[SalesBudgetLCY]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[SalesBudgetLCY]"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[SalesBudgetLCY]"
+                          name="SalesBudgetLCY"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[SalesBudgetDKK]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[SalesBudgetDKK]"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[SalesBudgetDKK]"
+                          name="SalesBudgetDKK"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[ItemKey]"
+                          dataType="wstr"
+                          length="200"
+                          name="ItemKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          name="CalendarKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[BudgetTypeKey]"
+                          dataType="wstr"
+                          length="100"
+                          name="BudgetTypeKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[GPPGKey]"
+                          dataType="wstr"
+                          length="50"
+                          name="GPPGKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[SalesBudgetLCY]"
+                          dataType="numeric"
+                          name="SalesBudgetLCY"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[SalesBudgetDKK]"
+                          dataType="numeric"
+                          name="SalesBudgetDKK"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output].Columns[CompanyKey]"
+                          name="CompanyKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output].Columns[ItemKey]"
+                          dataType="wstr"
+                          length="200"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output].Columns[ItemKey]"
+                          name="ItemKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output].Columns[CalendarKey]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output].Columns[CalendarKey]"
+                          name="CalendarKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output].Columns[BudgetTypeKey]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output].Columns[BudgetTypeKey]"
+                          name="BudgetTypeKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output].Columns[GPPGKey]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output].Columns[GPPGKey]"
+                          name="GPPGKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output].Columns[SalesBudgetLCY]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output].Columns[SalesBudgetLCY]"
+                          name="SalesBudgetLCY"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output].Columns[SalesBudgetDKK]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output].Columns[SalesBudgetDKK]"
+                          name="SalesBudgetDKK"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES FactSalesEntryBudget"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES FactSalesOrder">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].Columns[SalesBudgetLCY]"
+                          cachedDataType="numeric"
+                          cachedName="SalesBudgetLCY"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[SalesBudgetLCY]"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[SalesBudgetLCY]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].Columns[SalesBudgetDKK]"
+                          cachedDataType="numeric"
+                          cachedName="SalesBudgetDKK"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[SalesBudgetDKK]"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output].Columns[SalesBudgetDKK]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].Columns[CalendarID]"
+                          cachedDataType="i4"
+                          cachedName="CalendarID"
+                          externalMetadataColumnId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[CalendarID]"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Outputs[Match].Columns[CalendarID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].Columns[CompanyID]"
+                          cachedDataType="i4"
+                          cachedName="CompanyID"
+                          externalMetadataColumnId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[CompanyID]"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Outputs[Match].Columns[CompanyID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].Columns[ItemID]"
+                          cachedDataType="i4"
+                          cachedName="ItemID"
+                          externalMetadataColumnId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[ItemID]"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Outputs[Match].Columns[ItemID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].Columns[BudgetTypeID]"
+                          cachedDataType="i4"
+                          cachedName="BudgetTypeID"
+                          externalMetadataColumnId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[BudgetTypeID]"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Outputs[Lookup Match Output].Columns[BudgetTypeID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].Columns[GPPGID]"
+                          cachedDataType="i4"
+                          cachedName="GPPGID"
+                          externalMetadataColumnId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[GPPGID]"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Outputs[Lookup Match Output].Columns[GPPGID]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[CompanyID]"
+                          dataType="i4"
+                          name="CompanyID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[ItemID]"
+                          dataType="i4"
+                          name="ItemID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[CalendarID]"
+                          dataType="i4"
+                          name="CalendarID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[BudgetTypeID]"
+                          dataType="i4"
+                          name="BudgetTypeID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[GPPGID]"
+                          dataType="i4"
+                          name="GPPGID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[SalesBudgetLCY]"
+                          dataType="numeric"
+                          name="SalesBudgetLCY"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder].ExternalColumns[SalesBudgetDKK]"
+                          dataType="numeric"
+                          name="SalesBudgetDKK"
+                          precision="38"
+                          scale="20" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget.Paths[Lookup Match Output]"
+                  endId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Inputs[Lookup Input]"
+                  name="Lookup Match Output"
+                  startId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Outputs[Lookup Match Output]" />
+                <path
+                  refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget.Paths[Lookup Match Output1]"
+                  endId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\DER Error Handling.Inputs[LKP Person_Match_DER Error Handling]"
+                  name="Lookup Match Output"
+                  startId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG.Outputs[Lookup Match Output]" />
+                <path
+                  refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget.Paths[Match]"
+                  endId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Inputs[LKP Calendar_Match_LKP Company]"
+                  name="Match"
+                  startId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Outputs[Match]" />
+                <path
+                  refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget.Paths[Match1]"
+                  endId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Inputs[LKP Employee_Match_LKP Item]"
+                  name="Match"
+                  startId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company.Outputs[Match]" />
+                <path
+                  refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget.Paths[Match2]"
+                  endId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType.Inputs[Lookup Input]"
+                  name="Match"
+                  startId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item.Outputs[Match]" />
+                <path
+                  refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget.Paths[OLE DB Source Output]"
+                  endId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar.Inputs[OLE SRC SalesOrder_Output_LKP Calendar]"
+                  name="OLE DB Source Output"
+                  startId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget.Outputs[OLE DB Source Output]" />
+                <path
+                  refId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget.Paths[Output]"
+                  endId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget.Inputs[DER Audit_Output_OLE DES FactSalesOrder]"
+                  name="Output"
+                  startId="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\DER Error Handling.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC FullLoad SalesEntryBudget\SQL Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{DED1A2B5-B3A8-4D3D-9718-7120626C376C}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{4F05681D-C30B-4452-AC9B-1C9FD849DD6F}"
+              SQLTask:SqlStatementSource="&#xA;         EXEC('TRUNCATE TABLE ' + ?)&#xA;        " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC FullLoad SalesEntryBudget.PrecedenceConstraints[Constraint_SQL Truncate Table_To_DFT LoadFactSalesOrder]"
+          DTS:CreationName=""
+          DTS:DTSID="{A45BC47B-E710-4332-9E1A-2656823580F2}"
+          DTS:From="Package\SEQC FullLoad SalesEntryBudget\SQL Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_SQL Truncate Table_To_DFT LoadFactSalesOrder"
+          DTS:To="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="184,42"
+          Id="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget"
+          TopLeft="4.50000000000001,107.5" />
+        <NodeLayout
+          Size="172,42"
+          Id="Package\SEQC FullLoad SalesEntryBudget\SQL Truncate Table"
+          TopLeft="17,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC FullLoad SalesEntryBudget.PrecedenceConstraints[Constraint_SQL Truncate Table_To_DFT LoadFactSalesOrder]"
+          TopLeft="99.75,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="206,205"
+          Size="206,248"
+          Id="Package\SEQC FullLoad SalesEntryBudget"
+          TopLeft="5.50000000000006,5.5" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="226,42"
+          Id="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget"
+          TopLeft="5.5000000000001,821.5" />
+        <NodeLayout
+          Size="141,42"
+          Id="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar"
+          TopLeft="32,107.5" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG"
+          TopLeft="39.5000000000001,515.5" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget"
+          TopLeft="33,15" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType"
+          TopLeft="24.5000000000001,413.5" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company"
+          TopLeft="30.5,209.5" />
+        <NodeLayout
+          Size="122,42"
+          Id="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item"
+          TopLeft="41.5,311.5" />
+        <NodeLayout
+          Size="170,42"
+          Id="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\DER Error Handling"
+          TopLeft="17.5000000000001,617.5" />
+        <EdgeLayout
+          Id="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget.Paths[Match2]"
+          TopLeft="102.5,353.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-13.56193359375,21.37548828125,27.1238671875,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget.Paths[Match1]"
+          TopLeft="102.5,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-13.56193359375,21.37548828125,27.1238671875,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget.Paths[Match]"
+          TopLeft="102.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-13.56193359375,21.37548828125,27.1238671875,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget.Paths[Lookup Match Output1]"
+          TopLeft="102.5,557.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,20.4453125,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget.Paths[Lookup Match Output]"
+          TopLeft="102.5,455.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,20.4453125,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget.Paths[Output]"
+          TopLeft="102.5,659.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="16,162"
+              Start="0,0"
+              End="16,154.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,77" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,77"
+                    Point2="0,81"
+                    Point3="4,81" />
+                  <mssgle:LineSegment
+                    End="12,81" />
+                  <mssgle:CubicBezierSegment
+                    Point1="12,81"
+                    Point2="16,81"
+                    Point3="16,85" />
+                  <mssgle:LineSegment
+                    End="16,154.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget.Paths[OLE DB Source Output]"
+          TopLeft="126,57">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-23.5,50.5"
+              Start="0,0"
+              End="-23.5,43">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.25" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,21.25"
+                    Point2="0,25.25"
+                    Point3="-4,25.25" />
+                  <mssgle:LineSegment
+                    End="-19.5,25.25" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-19.5,25.25"
+                    Point2="-23.5,25.25"
+                    Point3="-23.5,29.25" />
+                  <mssgle:LineSegment
+                    End="-23.5,43" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\OLE DES FactSalesEntryBudget">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Calendar">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP GPPG">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\ODB SalesEntryBudget">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP BudgetType">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Company">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad SalesEntryBudget\DFT SalesEntryBudget\LKP Item">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

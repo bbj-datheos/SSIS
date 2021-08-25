@@ -1,0 +1,1885 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/1/2017 11:19:08 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="nna-ext"
+  DTS:DTSID="{3EBF5D02-B820-462A-9EF7-51CCC33E1150}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="Transform_ItemLiveNew"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="38"
+  DTS:VersionGUID="{F182E428-1E7A-4B0F-9017-F03096C10FC2}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Extract]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{135A35E1-C7AD-4003-9FF8-D02AF73D9B9E}"
+      DTS:ObjectName="Extract">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Extract]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Extract;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{FDF0804F-66A2-4EE5-A254-B54C84714524}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{055216CE-DD44-46AB-A422-CF413040607F}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-04;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{3530999C-7FC3-4D66-83AE-FFA6EEE79314}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationSchema">
+      <DTS:VariableValue
+        DTS:DataType="8">dim</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{16743B69-A3BC-4A88-8A80-AEC12B507346}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;dbo.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">dbo.Item</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{36B50D50-60B8-41FB-AFA9-4150D45E121F}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">Item</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC MaintainDW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{22B5D998-C4F0-448A-9985-A88F29469E8D}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC MaintainDW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC MaintainDW\SQL Maintain DW"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{89D54114-2F0A-4ABE-B351-617E6A4763F2}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Maintain DW"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{FDF0804F-66A2-4EE5-A254-B54C84714524}"
+              SQLTask:SqlStatementSource="EXEC etl.MaintainDW @MasterTable = ?, @MasterDestinationSchema = ?  " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Table"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::DestinationSchema"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQC Transform Item"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DTSID="{5722FCAB-8AE8-4BC6-9A27-5ECED0582B92}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC Transform Item">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC Transform Item\DFT Transform Item"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{5CDF021D-B2C2-4F50-A0D7-E216355A4EEB}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT Transform Item"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC Transform Item\DFT Transform Item\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform Item\DFT Transform Item\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                      name="OLE SRC Extract_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform Item\DFT Transform Item\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC Transform Item\DFT Transform Item\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform Item\DFT Transform Item\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform Item\DFT Transform Item\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES Item"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES Item">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemKey]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="ItemKey"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemKey]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemKey]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemCode]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="ItemCode"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemCode]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemName]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="ItemName"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemName]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemName]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemGeneralProductPostingGroupCode]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="ItemGeneralProductPostingGroupCode"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemGeneralProductPostingGroupCode]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemGeneralProductPostingGroupCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemProductGroupCode]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="ItemProductGroupCode"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemProductGroupCode]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemProductGroupCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemGroupCode]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="ItemGroupCode"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemGroupCode]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemGroupCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemBrandCode]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="ItemBrandCode"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemBrandCode]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemBrandCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemClassificationCode]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="ItemClassificationCode"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemClassificationCode]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemClassificationCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemProductTypeCode]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="ItemProductTypeCode"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemProductTypeCode]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemProductTypeCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemCostingMethodCode]"
+                          cachedDataType="i4"
+                          cachedName="ItemCostingMethodCode"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemCostingMethodCode]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemCostingMethodCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemReorderPoint]"
+                          cachedDataType="numeric"
+                          cachedName="ItemReorderPoint"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemReorderPoint]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemReorderPoint]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemReorderQuantity]"
+                          cachedDataType="numeric"
+                          cachedName="ItemReorderQuantity"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemReorderQuantity]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemReorderQuantity]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemGrossWeight]"
+                          cachedDataType="numeric"
+                          cachedName="ItemGrossWeight"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemGrossWeight]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemGrossWeight]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemNetWeight]"
+                          cachedDataType="numeric"
+                          cachedName="ItemNetWeight"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemNetWeight]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemNetWeight]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemUnitVolume]"
+                          cachedDataType="numeric"
+                          cachedName="ItemUnitVolume"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemUnitVolume]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemUnitVolume]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemHeight]"
+                          cachedDataType="numeric"
+                          cachedName="ItemHeight"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemHeight]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemHeight]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemWidth]"
+                          cachedDataType="numeric"
+                          cachedName="ItemWidth"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemWidth]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemWidth]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemDepth]"
+                          cachedDataType="numeric"
+                          cachedName="ItemDepth"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemDepth]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemDepth]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemShowOnWebIndicator]"
+                          cachedDataType="i4"
+                          cachedName="ItemShowOnWebIndicator"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemShowOnWebIndicator]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemShowOnWebIndicator]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="ItemCreatedDate"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemCreatedDate]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemCreatedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemPurchaseResponsibleCode]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="ItemPurchaseResponsibleCode"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemPurchaseResponsibleCode]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemPurchaseResponsibleCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemProductResponsibleCode]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="ItemProductResponsibleCode"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemProductResponsibleCode]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemProductResponsibleCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemRecyclingIndicator]"
+                          cachedDataType="i4"
+                          cachedName="ItemRecyclingIndicator"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemRecyclingIndicator]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemRecyclingIndicator]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemGroupMainVendorCode]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="ItemGroupMainVendorCode"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemGroupMainVendorCode]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemGroupMainVendorCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemDefaultVendorCode]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="ItemDefaultVendorCode"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemDefaultVendorCode]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemDefaultVendorCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemIsResourceIndicator]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="ItemIsResourceIndicator"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemIsResourceIndicator]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemIsResourceIndicator]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemBrandTypeCode]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="ItemBrandTypeCode"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemBrandTypeCode]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemBrandTypeCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemBrandName]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="ItemBrandName"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemBrandName]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemBrandName]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemProductGroupName]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="ItemProductGroupName"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemProductGroupName]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemProductGroupName]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemGroupName]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="ItemGroupName"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemGroupName]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemGroupName]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemProcessMethodCode]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="ItemProcessMethodCode"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemProcessMethodCode]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemProcessMethodCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemSupportResponsibleCode]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="ItemSupportResponsibleCode"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemSupportResponsibleCode]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemSupportResponsibleCode]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[ItemGroupCategory]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="ItemGroupCategory"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemGroupCategory]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemGroupCategory]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[NavisionCompany]"
+                          cachedDataType="wstr"
+                          cachedLength="200"
+                          cachedName="NavisionCompany"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[NavisionCompany]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[NavisionCompany]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[SalesPriceOwner]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="SalesPriceOwner"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[SalesPriceOwner]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[SalesPriceOwner]" />
+                        <inputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].Columns[SalesPriceResponsible]"
+                          cachedDataType="wstr"
+                          cachedLength="30"
+                          cachedName="SalesPriceResponsible"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[SalesPriceResponsible]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[SalesPriceResponsible]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemKey]"
+                          dataType="wstr"
+                          length="100"
+                          name="ItemKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="ItemCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemName]"
+                          dataType="wstr"
+                          length="30"
+                          name="ItemName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemGeneralProductPostingGroupCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="ItemGeneralProductPostingGroupCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemProductGroupCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="ItemProductGroupCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemGroupCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="ItemGroupCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemBrandCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="ItemBrandCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemClassificationCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="ItemClassificationCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemProductTypeCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="ItemProductTypeCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemCostingMethodCode]"
+                          dataType="i4"
+                          name="ItemCostingMethodCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemReorderPoint]"
+                          dataType="numeric"
+                          name="ItemReorderPoint"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemReorderQuantity]"
+                          dataType="numeric"
+                          name="ItemReorderQuantity"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemGrossWeight]"
+                          dataType="numeric"
+                          name="ItemGrossWeight"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemNetWeight]"
+                          dataType="numeric"
+                          name="ItemNetWeight"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemUnitVolume]"
+                          dataType="numeric"
+                          name="ItemUnitVolume"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemHeight]"
+                          dataType="numeric"
+                          name="ItemHeight"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemWidth]"
+                          dataType="numeric"
+                          name="ItemWidth"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemDepth]"
+                          dataType="numeric"
+                          name="ItemDepth"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemShowOnWebIndicator]"
+                          dataType="i4"
+                          name="ItemShowOnWebIndicator" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="ItemCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemPurchaseResponsibleCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="ItemPurchaseResponsibleCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemProductResponsibleCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="ItemProductResponsibleCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemRecyclingIndicator]"
+                          dataType="i4"
+                          name="ItemRecyclingIndicator" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemGroupMainVendorCode]"
+                          dataType="wstr"
+                          length="20"
+                          name="ItemGroupMainVendorCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemDefaultVendorCode]"
+                          dataType="wstr"
+                          length="20"
+                          name="ItemDefaultVendorCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemIsResourceIndicator]"
+                          dataType="wstr"
+                          length="20"
+                          name="ItemIsResourceIndicator" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemBrandTypeCode]"
+                          dataType="wstr"
+                          length="50"
+                          name="ItemBrandTypeCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemBrandName]"
+                          dataType="wstr"
+                          length="50"
+                          name="ItemBrandName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemProductGroupName]"
+                          dataType="wstr"
+                          length="50"
+                          name="ItemProductGroupName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemGroupName]"
+                          dataType="wstr"
+                          length="50"
+                          name="ItemGroupName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemProcessMethodCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="ItemProcessMethodCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemSupportResponsibleCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="ItemSupportResponsibleCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[ItemGroupCategory]"
+                          dataType="wstr"
+                          length="50"
+                          name="ItemGroupCategory" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[NavisionCompany]"
+                          dataType="wstr"
+                          length="200"
+                          name="NavisionCompany" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[SalesPriceOwner]"
+                          dataType="wstr"
+                          length="30"
+                          name="SalesPriceOwner" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item].ExternalColumns[SalesPriceResponsible]"
+                          dataType="wstr"
+                          length="30"
+                          name="SalesPriceResponsible" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC Extract"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select distinct
+ CONVERT(NVARCHAR(30),i.[DWNavisionCompany]) + N'-' + CONVERT(NVARCHAR(30),i.[No.]) as [ItemKey]
+,CONVERT(NVARCHAR(30),i.[No.]) AS ItemCode
+,CONVERT(NVARCHAR(30),i.Description) AS ItemName
+,CONVERT(NVARCHAR(10),i.[Gen. Prod. Posting Group]) AS ItemGeneralProductPostingGroupCode
+,CONVERT(NVARCHAR(10),i.[Product Group]) AS ItemProductGroupCode
+-- added by bbj 20170716
+,CONVERT(NVARCHAR(50),pg.[Description]) AS ItemProductGroupName
+-- end bbj
+-- changed by bbj 20170716 ,CONVERT(NVARCHAR(10),i.[Item Group No.]) AS ItemGroupCode
+,CONVERT(NVARCHAR(30),i.[Item Group No.]) AS ItemGroupCode
+-- added by bbj 20170716
+,CONVERT(NVARCHAR(50),ig.Name) AS ItemGroupName
+-- end bbj
+,CONVERT(NVARCHAR(10),i.[Brand No.]) AS ItemBrandCode
+--,CONVERT(NVARCHAR(10),b.[Name]) AS ItemBrandName Changed By BBJ 20170629
+,CONVERT(NVARCHAR(50),b.[Name]) AS ItemBrandName
+
+,CONVERT(NVARCHAR(50),
+	CASE 
+		WHEN b.[Brand Type] = 0 THEN 'OEM'
+		WHEN b.[Brand Type] = 1 THEN 'Private Label'
+		ELSE ''
+	END) AS ItemBrandTypeCode
+,CONVERT(NVARCHAR(10),[Classification Code]) AS ItemClassificationCode
+,CONVERT(NVARCHAR(10),[Product type code]) AS ItemProductTypeCode
+,[Costing Method] AS ItemCostingMethodCode
+,[Reorder Point] AS ItemReorderPoint
+,[Reorder Quantity] AS ItemReorderQuantity
+,[Gross Weight] AS ItemGrossWeight
+,[Net Weight] AS ItemNetWeight
+,[Unit Volume] AS ItemUnitVolume
+,[Height] AS ItemHeight
+,[Width] AS ItemWidth
+,[Depth] AS ItemDepth
+,CONVERT(INT,[Show on Web]) AS ItemShowOnWebIndicator
+,[Created Date] AS ItemCreatedDate
+,CONVERT(NVARCHAR(30),[Purchase Responsible]) AS ItemPurchaseResponsibleCode
+,CONVERT(NVARCHAR(30),[Product Responsible]) AS ItemProductResponsibleCode
+,CONVERT(NVARCHAR(30),[Purchase Backup]) AS ItemPurchaseBackupCode
+,[Recycling (New)] AS ItemRecyclingIndicator
+-- changed by bbj 20170716
+--,CONVERT(NVARCHAR(20),'') AS ItemGroupMainVendorCode
+,CONVERT(NVARCHAR(20),ISNULL(gmv.[Territory Code],N'')) AS ItemGroupMainVendorCode
+-- end bbj
+,CONVERT(NVARCHAR(20),[Vendor No.]) AS ItemDefaultVendorCode -- changed by bbj 20170824 from blank to Vendo No
+,CONVERT(NVARCHAR(20),'No') AS ItemIsResourceIndicator
+,CONVERT(NVARCHAR(10),i.[Process Method Code]) AS ItemProcessMethodCode
+,CONVERT(NVARCHAR(30),i.[Purchase Backup]) AS ItemSupportResponsibleCode
+,CONVERT(NVARCHAR(50),ig.[Comment]) AS ItemGroupCategory
+,CONVERT(NVARCHAR(200),i.DWNavisionCompany) AS NavisionCompany
+,CONVERT(NVARCHAR(30),i.[Sales Price Owner]) AS [SalesPriceOwner]
+,CONVERT(NVARCHAR(30),i.[Sales Price Responsible]) AS [SalesPriceResponsible]
+
+FROM nav.[Item Live New] i
+LEFT JOIN [EETDW_Extract].[navcom].[Brand] b ON i.[Brand No.] = b.[No.]
+-- added by bbj 20170716
+LEFT JOIN [EETDW_Extract].[navcom].[Item Group] ig ON i.[Item Group No.]=ig.[No.]
+LEFT JOIN [EETDW_Extract].[nav].[Product Group] pg ON i.[Product Group]=pg.Code AND pg.DWNavisionCompany='EET Group'
+LEFT JOIN (
+  SELECT  
+    i.[No.]
+   ,v.[Territory Code]
+  FROM [EETDW_Extract].[nav].[Item] i
+  INNER JOIN [EETDW_Extract].[nav].[Vendor] v ON v.[No.]=i.[Vendor No.] AND v.[DWNavisionCompany]='EET Group'
+  where i.[Vendor No.]&lt;&gt;''
+  AND i.[DWNavisionCompany]='EET Group'
+  AND v.[Territory Code]&lt;&gt;''
+) gmv ON i.[No.]=gmv.[No.]
+-- end bbj</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Extract]"
+                      connectionManagerRefId="Package.ConnectionManagers[Extract]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemKey]"
+                          length="100"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemKey]"
+                          name="ItemKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemCode]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemCode]"
+                          name="ItemCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemName]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemName]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemName]"
+                          name="ItemName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemGeneralProductPostingGroupCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemGeneralProductPostingGroupCode]"
+                          length="10"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemGeneralProductPostingGroupCode]"
+                          name="ItemGeneralProductPostingGroupCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemProductGroupCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemProductGroupCode]"
+                          length="10"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemProductGroupCode]"
+                          name="ItemProductGroupCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemGroupCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemGroupCode]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemGroupCode]"
+                          name="ItemGroupCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemBrandCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemBrandCode]"
+                          length="10"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemBrandCode]"
+                          name="ItemBrandCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemClassificationCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemClassificationCode]"
+                          length="10"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemClassificationCode]"
+                          name="ItemClassificationCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemProductTypeCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemProductTypeCode]"
+                          length="10"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemProductTypeCode]"
+                          name="ItemProductTypeCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemCostingMethodCode]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemCostingMethodCode]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemCostingMethodCode]"
+                          name="ItemCostingMethodCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemReorderPoint]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemReorderPoint]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemReorderPoint]"
+                          name="ItemReorderPoint"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemReorderQuantity]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemReorderQuantity]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemReorderQuantity]"
+                          name="ItemReorderQuantity"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemGrossWeight]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemGrossWeight]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemGrossWeight]"
+                          name="ItemGrossWeight"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemNetWeight]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemNetWeight]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemNetWeight]"
+                          name="ItemNetWeight"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemUnitVolume]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemUnitVolume]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemUnitVolume]"
+                          name="ItemUnitVolume"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemHeight]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemHeight]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemHeight]"
+                          name="ItemHeight"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemWidth]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemWidth]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemWidth]"
+                          name="ItemWidth"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemDepth]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemDepth]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemDepth]"
+                          name="ItemDepth"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemShowOnWebIndicator]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemShowOnWebIndicator]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemShowOnWebIndicator]"
+                          name="ItemShowOnWebIndicator"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemCreatedDate]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemCreatedDate]"
+                          name="ItemCreatedDate"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemPurchaseResponsibleCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemPurchaseResponsibleCode]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemPurchaseResponsibleCode]"
+                          name="ItemPurchaseResponsibleCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemProductResponsibleCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemProductResponsibleCode]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemProductResponsibleCode]"
+                          name="ItemProductResponsibleCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemRecyclingIndicator]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemRecyclingIndicator]"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemRecyclingIndicator]"
+                          name="ItemRecyclingIndicator"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemGroupMainVendorCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemGroupMainVendorCode]"
+                          length="20"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemGroupMainVendorCode]"
+                          name="ItemGroupMainVendorCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemDefaultVendorCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemDefaultVendorCode]"
+                          length="20"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemDefaultVendorCode]"
+                          name="ItemDefaultVendorCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemIsResourceIndicator]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemIsResourceIndicator]"
+                          length="20"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemIsResourceIndicator]"
+                          name="ItemIsResourceIndicator"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemBrandTypeCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemBrandTypeCode]"
+                          length="50"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemBrandTypeCode]"
+                          name="ItemBrandTypeCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemBrandName]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemBrandName]"
+                          length="50"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemBrandName]"
+                          name="ItemBrandName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemProductGroupName]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemProductGroupName]"
+                          length="50"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemProductGroupName]"
+                          name="ItemProductGroupName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemGroupName]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemGroupName]"
+                          length="50"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemGroupName]"
+                          name="ItemGroupName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemPurchaseBackupCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemPurchaseBackupCode]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemPurchaseBackupCode]"
+                          name="ItemPurchaseBackupCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemProcessMethodCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemProcessMethodCode]"
+                          length="10"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemProcessMethodCode]"
+                          name="ItemProcessMethodCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemSupportResponsibleCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemSupportResponsibleCode]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemSupportResponsibleCode]"
+                          name="ItemSupportResponsibleCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemGroupCategory]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemGroupCategory]"
+                          length="50"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[ItemGroupCategory]"
+                          name="ItemGroupCategory"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[NavisionCompany]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[NavisionCompany]"
+                          length="200"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[NavisionCompany]"
+                          name="NavisionCompany"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[SalesPriceOwner]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[SalesPriceOwner]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[SalesPriceOwner]"
+                          name="SalesPriceOwner"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[SalesPriceResponsible]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[SalesPriceResponsible]"
+                          length="30"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].Columns[SalesPriceResponsible]"
+                          name="SalesPriceResponsible"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemKey]"
+                          dataType="wstr"
+                          length="61"
+                          name="ItemKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="ItemCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemName]"
+                          dataType="wstr"
+                          length="30"
+                          name="ItemName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemGeneralProductPostingGroupCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="ItemGeneralProductPostingGroupCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemProductGroupCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="ItemProductGroupCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemGroupCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="ItemGroupCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemBrandCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="ItemBrandCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemClassificationCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="ItemClassificationCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemProductTypeCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="ItemProductTypeCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemCostingMethodCode]"
+                          dataType="i4"
+                          name="ItemCostingMethodCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemReorderPoint]"
+                          dataType="numeric"
+                          name="ItemReorderPoint"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemReorderQuantity]"
+                          dataType="numeric"
+                          name="ItemReorderQuantity"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemGrossWeight]"
+                          dataType="numeric"
+                          name="ItemGrossWeight"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemNetWeight]"
+                          dataType="numeric"
+                          name="ItemNetWeight"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemUnitVolume]"
+                          dataType="numeric"
+                          name="ItemUnitVolume"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemHeight]"
+                          dataType="numeric"
+                          name="ItemHeight"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemWidth]"
+                          dataType="numeric"
+                          name="ItemWidth"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemDepth]"
+                          dataType="numeric"
+                          name="ItemDepth"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemShowOnWebIndicator]"
+                          dataType="i4"
+                          name="ItemShowOnWebIndicator" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="ItemCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemPurchaseResponsibleCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="ItemPurchaseResponsibleCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemProductResponsibleCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="ItemProductResponsibleCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemRecyclingIndicator]"
+                          dataType="i4"
+                          name="ItemRecyclingIndicator" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemGroupMainVendorCode]"
+                          dataType="wstr"
+                          length="20"
+                          name="ItemGroupMainVendorCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemDefaultVendorCode]"
+                          dataType="wstr"
+                          length="20"
+                          name="ItemDefaultVendorCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemIsResourceIndicator]"
+                          dataType="wstr"
+                          length="20"
+                          name="ItemIsResourceIndicator" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemBrandTypeCode]"
+                          dataType="wstr"
+                          length="50"
+                          name="ItemBrandTypeCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemBrandName]"
+                          dataType="wstr"
+                          length="50"
+                          name="ItemBrandName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemProductGroupName]"
+                          dataType="wstr"
+                          length="50"
+                          name="ItemProductGroupName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemGroupName]"
+                          dataType="wstr"
+                          length="50"
+                          name="ItemGroupName" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemPurchaseBackupCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="ItemPurchaseBackupCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemProcessMethodCode]"
+                          dataType="wstr"
+                          length="10"
+                          name="ItemProcessMethodCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemSupportResponsibleCode]"
+                          dataType="wstr"
+                          length="30"
+                          name="ItemSupportResponsibleCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[ItemGroupCategory]"
+                          dataType="wstr"
+                          length="50"
+                          name="ItemGroupCategory" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[NavisionCompany]"
+                          dataType="wstr"
+                          length="200"
+                          name="NavisionCompany" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[SalesPriceOwner]"
+                          dataType="wstr"
+                          length="30"
+                          name="SalesPriceOwner" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output].ExternalColumns[SalesPriceResponsible]"
+                          dataType="wstr"
+                          length="30"
+                          name="SalesPriceResponsible" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemKey]"
+                          dataType="wstr"
+                          length="61"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemKey]"
+                          name="ItemKey" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemCode]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemCode]"
+                          name="ItemCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemName]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemName]"
+                          name="ItemName" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemGeneralProductPostingGroupCode]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemGeneralProductPostingGroupCode]"
+                          name="ItemGeneralProductPostingGroupCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemProductGroupCode]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemProductGroupCode]"
+                          name="ItemProductGroupCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemProductGroupName]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemProductGroupName]"
+                          name="ItemProductGroupName" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemGroupCode]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemGroupCode]"
+                          name="ItemGroupCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemGroupName]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemGroupName]"
+                          name="ItemGroupName" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemBrandCode]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemBrandCode]"
+                          name="ItemBrandCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemBrandName]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemBrandName]"
+                          name="ItemBrandName" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemBrandTypeCode]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemBrandTypeCode]"
+                          name="ItemBrandTypeCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemClassificationCode]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemClassificationCode]"
+                          name="ItemClassificationCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemProductTypeCode]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemProductTypeCode]"
+                          name="ItemProductTypeCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemCostingMethodCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemCostingMethodCode]"
+                          name="ItemCostingMethodCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemReorderPoint]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemReorderPoint]"
+                          name="ItemReorderPoint"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemReorderQuantity]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemReorderQuantity]"
+                          name="ItemReorderQuantity"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemGrossWeight]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemGrossWeight]"
+                          name="ItemGrossWeight"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemNetWeight]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemNetWeight]"
+                          name="ItemNetWeight"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemUnitVolume]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemUnitVolume]"
+                          name="ItemUnitVolume"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemHeight]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemHeight]"
+                          name="ItemHeight"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemWidth]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemWidth]"
+                          name="ItemWidth"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemDepth]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemDepth]"
+                          name="ItemDepth"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemShowOnWebIndicator]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemShowOnWebIndicator]"
+                          name="ItemShowOnWebIndicator" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemCreatedDate]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemCreatedDate]"
+                          name="ItemCreatedDate" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemPurchaseResponsibleCode]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemPurchaseResponsibleCode]"
+                          name="ItemPurchaseResponsibleCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemProductResponsibleCode]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemProductResponsibleCode]"
+                          name="ItemProductResponsibleCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemPurchaseBackupCode]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemPurchaseBackupCode]"
+                          name="ItemPurchaseBackupCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemRecyclingIndicator]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemRecyclingIndicator]"
+                          name="ItemRecyclingIndicator" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemGroupMainVendorCode]"
+                          dataType="wstr"
+                          length="20"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemGroupMainVendorCode]"
+                          name="ItemGroupMainVendorCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemDefaultVendorCode]"
+                          dataType="wstr"
+                          length="20"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemDefaultVendorCode]"
+                          name="ItemDefaultVendorCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemIsResourceIndicator]"
+                          dataType="wstr"
+                          length="20"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemIsResourceIndicator]"
+                          name="ItemIsResourceIndicator" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemProcessMethodCode]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemProcessMethodCode]"
+                          name="ItemProcessMethodCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemSupportResponsibleCode]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemSupportResponsibleCode]"
+                          name="ItemSupportResponsibleCode" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemGroupCategory]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ItemGroupCategory]"
+                          name="ItemGroupCategory" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[NavisionCompany]"
+                          dataType="wstr"
+                          length="200"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[NavisionCompany]"
+                          name="NavisionCompany" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[SalesPriceOwner]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[SalesPriceOwner]"
+                          name="SalesPriceOwner" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[SalesPriceResponsible]"
+                          dataType="wstr"
+                          length="30"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[SalesPriceResponsible]"
+                          name="SalesPriceResponsible" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC Transform Item\DFT Transform Item.Paths[DER Audit_Output_OLE DES Item]"
+                  endId="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item.Inputs[DER Audit_Output_OLE DES Item]"
+                  name="DER Audit_Output_OLE DES Item"
+                  startId="Package\SEQC Transform Item\DFT Transform Item\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC Transform Item\DFT Transform Item.Paths[OLE SRC Extract_Output_DER Audit]"
+                  endId="Package\SEQC Transform Item\DFT Transform Item\DER Audit.Inputs[OLE SRC Extract_Output_DER Audit]"
+                  name="OLE SRC Extract_Output_DER Audit"
+                  startId="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_SEQC Transform Item_To_SEQC MaintainDW]"
+      DTS:CreationName=""
+      DTS:DTSID="{C2B60661-E4DA-4095-A054-A3760D398A79}"
+      DTS:From="Package\SEQC Transform Item"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_SEQC Transform Item_To_SEQC MaintainDW"
+      DTS:To="Package\SEQC MaintainDW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\SEQC MaintainDW\SQL Maintain DW"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="172,103"
+          Size="172,146"
+          Id="Package\SEQC MaintainDW"
+          TopLeft="19.5000000000001,462.5" />
+        <NodeLayout
+          Size="175,42"
+          Id="Package\SEQC Transform Item\DFT Transform Item"
+          TopLeft="14.5,157.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="211,357"
+          Size="211,400"
+          Id="Package\SEQC Transform Item"
+          TopLeft="5.50000000000003,5.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_SEQC Transform Item_To_SEQC MaintainDW]"
+          TopLeft="108.25,405.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,57"
+              Start="0,0"
+              End="0,49.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,49.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC Transform Item\DFT Transform Item">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="156,42"
+          Id="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract"
+          TopLeft="5.50000000000001,6.5" />
+        <NodeLayout
+          Size="146,42"
+          Id="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item"
+          TopLeft="10.5,208.5" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC Transform Item\DFT Transform Item\DER Audit"
+          TopLeft="20.5,107.5" />
+        <EdgeLayout
+          Id="Package\SEQC Transform Item\DFT Transform Item.Paths[OLE SRC Extract_Output_DER Audit]"
+          TopLeft="83.5,48.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,59"
+              Start="0,0"
+              End="0,51.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,51.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC Transform Item\DFT Transform Item.Paths[DER Audit_Output_OLE DES Item]"
+          TopLeft="83.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,59"
+              Start="0,0"
+              End="0,51.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,51.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform Item\DFT Transform Item\OLE SRC Extract">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC Transform Item\DFT Transform Item\OLE DES Item">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

@@ -1,0 +1,1011 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/8/2017 11:44:26 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HQ-BI-02"
+  DTS:CreatorName="nna-ext"
+  DTS:DTSID="{6AD62EDD-7294-4AB7-B957-C5292F08C8AE}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="1030"
+  DTS:ObjectName="LoadFact_ExchangeRate"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="3"
+  DTS:VersionGUID="{65D74079-F617-485D-9687-7952B497BB84}"
+  DTS:VersionMajor="0">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{F9593CE5-5787-413A-AF0F-D48A3D410E2B}"
+      DTS:ObjectName="DW">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_DW]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Meta]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{2BE09279-034A-458A-B6C8-4F48A6B79957}"
+      DTS:ObjectName="Meta">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Meta]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Meta;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Stage]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{2966DB89-DC49-4546-BA6A-2F5D43C53B26}"
+      DTS:ObjectName="Stage">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ConnectionStringDW_Stage]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=HQ-BI-02;Initial Catalog=EETDW_Stage;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{637031F2-5ADC-4069-A43F-8A04FA103F70}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;fact.&quot; + @[User::Table]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DestinationTable">
+      <DTS:VariableValue
+        DTS:DataType="8">fact.ExchangeRate</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{F43B6493-A88D-4FA8-85A1-5F4F9014B9DC}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Table">
+      <DTS:VariableValue
+        DTS:DataType="8">ExchangeRate</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQC FullLoad FactExchangeRate"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{72FC4805-0E20-4E04-878A-49201D6B7FB5}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQC FullLoad FactExchangeRate">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{148341F2-8311-47E2-B366-180D6958D607}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT LoadFactExchangeRate"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v10; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Audit"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit.Inputs[DER Error Handling_Output_DER Audit]"
+                      name="DER Error Handling_Output_DER Audit">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit.Inputs[DER Error Handling_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit.Outputs[Output].Columns[DWCreatedDate]"
+                          name="DWCreatedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit.Outputs[Output].Columns[DWModifiedDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit.Outputs[Output].Columns[DWModifiedDate]"
+                          name="DWModifiedDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">GETDATE()</property>
+                            <property
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit.Inputs[DER Error Handling_Output_DER Audit]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Error Handling"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  name="DER Error Handling"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Error Handling.Inputs[LKP Company_Match_DER Error Handling]"
+                      name="LKP Company_Match_DER Error Handling">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Error Handling.Inputs[LKP Company_Match_DER Error Handling].Columns[CompanyID]"
+                          cachedDataType="i4"
+                          cachedName="CompanyID"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Outputs[Match].Columns[CompanyID]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">REPLACENULL(#{Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Outputs[Match].Columns[CompanyID]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(CompanyID,-1)</property>
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Error Handling.Outputs[Output]"
+                      exclusionGroup="1"
+                      name="Output"
+                      synchronousInputId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Error Handling.Inputs[LKP Company_Match_DER Error Handling]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Error Handling.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Error Handling.Inputs[LKP Company_Match_DER Error Handling]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Error Handling.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Error Handling.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Error Handling.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Error Handling.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;5"
+                  name="LKP Company"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT CompanyID, UPPER(CompanyKey) AS [CompanyKey] FROM dim.Company</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT CompanyID, UPPER(CompanyKey) AS [CompanyKey] FROM dim.Company) [refTable] where [refTable].[CompanyKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;
+  &lt;referenceColumns&gt;
+    &lt;referenceColumn name="CompanyID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0" /&gt;
+    &lt;referenceColumn name="CompanyKey" dataType="DT_WSTR" length="10" precision="0" scale="0" codePage="0" /&gt;
+  &lt;/referenceColumns&gt;
+&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].Columns[CompanyKey]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Inputs[OLE SRC ExchangeRate_Output_LKP Company]"
+                      name="OLE SRC ExchangeRate_Output_LKP Company">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Inputs[OLE SRC ExchangeRate_Output_LKP Company].Columns[CompanyKey]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="CompanyKey"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].Columns[CompanyKey]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">CompanyKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Outputs[Match]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Match"
+                      synchronousInputId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Inputs[OLE SRC ExchangeRate_Output_LKP Company]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Outputs[Match].Columns[CompanyID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="CopyColumn"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Outputs[Match].Columns[CompanyID]"
+                          name="CompanyID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">CompanyID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Outputs[NoMatch]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="NoMatch"
+                      synchronousInputId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Inputs[OLE SRC ExchangeRate_Output_LKP Company]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Inputs[OLE SRC ExchangeRate_Output_LKP Company]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  name="OLE DES FactExchangeRate"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable">User::DestinationTable</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode">4</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="DER Audit_Output_OLE DES FactExchangeRate">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate].Columns[DWCreatedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWCreatedDate"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate].ExternalColumns[DWCreatedDate]"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit.Outputs[Output].Columns[DWCreatedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate].Columns[DWModifiedDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DWModifiedDate"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate].ExternalColumns[DWModifiedDate]"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit.Outputs[Output].Columns[DWModifiedDate]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate].Columns[CompanyID]"
+                          cachedDataType="i4"
+                          cachedName="CompanyID"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate].ExternalColumns[CompanyID]"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Outputs[Match].Columns[CompanyID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate].Columns[MonthID]"
+                          cachedDataType="i4"
+                          cachedName="MonthID"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate].ExternalColumns[MonthID]"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].Columns[MonthID]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate].Columns[Rel. Exchange Rate Amount]"
+                          cachedDataType="numeric"
+                          cachedName="Rel. Exchange Rate Amount"
+                          cachedPrecision="38"
+                          cachedScale="20"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate].ExternalColumns[Rel. Exchange Rate Amount]"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].Columns[Rel. Exchange Rate Amount]" />
+                        <inputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate].Columns[ExchangeRateTypeID]"
+                          cachedDataType="i4"
+                          cachedName="ExchangeRateTypeID"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate].ExternalColumns[ExchangeRateTypeID]"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].Columns[ExchangeRateTypeID]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate].ExternalColumns[CompanyID]"
+                          dataType="i4"
+                          name="CompanyID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate].ExternalColumns[MonthID]"
+                          dataType="i4"
+                          name="MonthID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate].ExternalColumns[Rel. Exchange Rate Amount]"
+                          dataType="numeric"
+                          name="Rel. Exchange Rate Amount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate].ExternalColumns[ExchangeRateTypeID]"
+                          dataType="i4"
+                          name="ExchangeRateTypeID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate].ExternalColumns[DWCreatedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWCreatedDate" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate].ExternalColumns[DWModifiedDate]"
+                          dataType="dbTimeStamp"
+                          name="DWModifiedDate" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Outputs[Error]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Error"
+                      synchronousInputId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SqlServer v10; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  name="OLE SRC ExchangeRate"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
+ UPPER([CompanyKey]) AS [CompanyKey]
+,[MonthID]
+,[Rel. Exchange Rate Amount]
+,[ExchangeRateTypeID]
+FROM [dbo].[ExchangeRate]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Stage]"
+                      connectionManagerRefId="Package.ConnectionManagers[Stage]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output]"
+                      name="Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].Columns[CompanyKey]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].ExternalColumns[CompanyKey]"
+                          length="10"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].Columns[CompanyKey]"
+                          name="CompanyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].Columns[MonthID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].ExternalColumns[MonthID]"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].Columns[MonthID]"
+                          name="MonthID"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].Columns[Rel. Exchange Rate Amount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].ExternalColumns[Rel. Exchange Rate Amount]"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].Columns[Rel. Exchange Rate Amount]"
+                          name="Rel. Exchange Rate Amount"
+                          precision="38"
+                          scale="20"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].Columns[ExchangeRateTypeID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].ExternalColumns[ExchangeRateTypeID]"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].Columns[ExchangeRateTypeID]"
+                          name="ExchangeRateTypeID"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].ExternalColumns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          name="CompanyKey" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].ExternalColumns[MonthID]"
+                          dataType="i4"
+                          name="MonthID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].ExternalColumns[Rel. Exchange Rate Amount]"
+                          dataType="numeric"
+                          name="Rel. Exchange Rate Amount"
+                          precision="38"
+                          scale="20" />
+                        <externalMetadataColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output].ExternalColumns[ExchangeRateTypeID]"
+                          dataType="i4"
+                          name="ExchangeRateTypeID" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Error]"
+                      isErrorOut="true"
+                      name="Error">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Error].Columns[CompanyKey]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Error].Columns[CompanyKey]"
+                          name="CompanyKey" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Error].Columns[MonthID]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Error].Columns[MonthID]"
+                          name="MonthID" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Error].Columns[Rel. Exchange Rate Amount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Error].Columns[Rel. Exchange Rate Amount]"
+                          name="Rel. Exchange Rate Amount"
+                          precision="38"
+                          scale="20" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Error].Columns[ExchangeRateTypeID]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Error].Columns[ExchangeRateTypeID]"
+                          name="ExchangeRateTypeID" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Error].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Error].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Error].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Error].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate.Paths[DER Audit_Output_OLE DES FactExchangeRate]"
+                  endId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate.Inputs[DER Audit_Output_OLE DES FactExchangeRate]"
+                  name="DER Audit_Output_OLE DES FactExchangeRate"
+                  startId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate.Paths[DER Error Handling_Output_DER Audit]"
+                  endId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit.Inputs[DER Error Handling_Output_DER Audit]"
+                  name="DER Error Handling_Output_DER Audit"
+                  startId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Error Handling.Outputs[Output]" />
+                <path
+                  refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate.Paths[LKP Company_Match_DER Error Handling]"
+                  endId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Error Handling.Inputs[LKP Company_Match_DER Error Handling]"
+                  name="LKP Company_Match_DER Error Handling"
+                  startId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Outputs[Match]" />
+                <path
+                  refId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate.Paths[OLE SRC ExchangeRate_Output_LKP Company]"
+                  endId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company.Inputs[OLE SRC ExchangeRate_Output_LKP Company]"
+                  name="OLE SRC ExchangeRate_Output_LKP Company"
+                  startId="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate.Outputs[Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQC FullLoad FactExchangeRate\SQL Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{B85DBA71-8717-4BCA-9256-82BF4259F329}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{F9593CE5-5787-413A-AF0F-D48A3D410E2B}"
+              SQLTask:SqlStatementSource="&#xA;         EXEC('TRUNCATE TABLE ' + ?)&#xA;        " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::DestinationTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQC FullLoad FactExchangeRate.PrecedenceConstraints[Constraint_SQL Truncate Table_To_DFT LoadFactExchangeRate]"
+          DTS:CreationName=""
+          DTS:DTSID="{19D31DAA-2EAD-4EDA-B741-3F2F936BF778}"
+          DTS:From="Package\SEQC FullLoad FactExchangeRate\SQL Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint_SQL Truncate Table_To_DFT LoadFactExchangeRate"
+          DTS:To="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="210,42"
+          Id="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate"
+          TopLeft="5.50000000000001,107.5" />
+        <NodeLayout
+          Size="172,42"
+          Id="Package\SEQC FullLoad FactExchangeRate\SQL Truncate Table"
+          TopLeft="24.5,5.5" />
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactExchangeRate.PrecedenceConstraints[Constraint_SQL Truncate Table_To_DFT LoadFactExchangeRate]"
+          TopLeft="110.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="221,205"
+          Size="221,248"
+          Id="Package\SEQC FullLoad FactExchangeRate"
+          TopLeft="5.50000000000004,5.5" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="210,42"
+          Id="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate"
+          TopLeft="5.50000000000004,413.5" />
+        <NodeLayout
+          Size="170,42"
+          Id="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Error Handling"
+          TopLeft="25.5,209.5" />
+        <NodeLayout
+          Size="190,42"
+          Id="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate"
+          TopLeft="15.5,5.5" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\LKP Company"
+          TopLeft="38.5,107.5" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\DER Audit"
+          TopLeft="47.5,311.5" />
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate.Paths[DER Audit_Output_OLE DES FactExchangeRate]"
+          TopLeft="110.5,353.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate.Paths[OLE SRC ExchangeRate_Output_LKP Company]"
+          TopLeft="110.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate.Paths[LKP Company_Match_DER Error Handling]"
+          TopLeft="110.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-13.56193359375,21.37548828125,27.1238671875,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate.Paths[DER Error Handling_Output_DER Audit]"
+          TopLeft="110.5,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE DES FactExchangeRate">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQC FullLoad FactExchangeRate\DFT LoadFactExchangeRate\OLE SRC ExchangeRate">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

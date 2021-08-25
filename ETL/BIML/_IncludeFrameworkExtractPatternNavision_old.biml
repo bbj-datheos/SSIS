@@ -1,0 +1,169 @@
+<#@ include file="_IncludeFrameworkGlobals.biml" #>
+<#@ property name="Table" type="AstTableNode" #>
+<#@ property name="Meta" type="DataRow" #>
+
+<Package Name="<#=Meta["ExtractPackageName"]#>" ConstraintMode="Linear" ProtectionLevel="DontSaveSensitive">
+
+	<Connections>
+		<Connection ConnectionName="Extract">
+			<Expressions>
+				<Expression PropertyName="Extract.ConnectionString" >@[$Project::ConnectionStringDW_Extract]</Expression>
+			</Expressions>
+		</Connection> 
+		<Connection ConnectionName="<#=Meta["ConnectionName"]#>">
+			<Expressions>
+				<Expression PropertyName="<#=Meta["ConnectionName"]#>.ConnectionString" >@[$Project::ConnectionString<#=Meta["ConnectionName"]#>]</Expression>
+			</Expressions>
+		</Connection>
+	</Connections>
+
+	<Variables>
+		<!-- Standard Navision setup -->
+		<Variable Name="NavisionConnectionName" DataType="String"><#=Meta["ConnectionName"]#></Variable>
+		<Variable Name="NavisionCompanies" DataType="Object" />
+		<Variable Name="NavisionCompany" DataType="String"><#=Meta["NavisionCompany"]#></Variable>
+		<Variable Name="NavisionSchema" DataType="String"><#=Meta["SchemaName"]#></Variable>
+		<Variable Name="NavisionTable" DataType="String"><#= Meta["NavisionTableName"] #></Variable>
+		<Variable Name="NavisionColumnList" DataType="String"><#=Table.GetColumnList(c => !c.Name.StartsWith("DW"))#></Variable>
+		<Variable Name="ExtractTable" DataType="String"><#=Meta["ExtractSchemaName"] + ".[" + Meta["NavisionTableName"] + "]"#></Variable>
+		<Variable Name="ExtractSQL" DataType="String" EvaluateAsExpression="true">
+			<# if (Meta["IncrementalFlag"].ToString() == "1") { #>
+				"select " + 
+					@[User::NavisionColumnList] + 
+				" from " +  
+					@[User::NavisionSchema] + ".[" +  @[User::NavisionCompany] + "$" + @[User::NavisionTable] + "]" +
+				" where  
+					<#=Meta["IncrementalValueColumnDefinition"]#> > " + @[User::LastIncrementalValue]
+			<# } else { #>
+				"select " + 
+					@[User::NavisionColumnList] + 
+				" from " +  
+					@[User::NavisionSchema] + ".[" +  @[User::NavisionCompany] + "$" + @[User::NavisionTable] + "]" +
+				" where 
+					<#=Meta["ExtractSQLFilter"]#> "
+			<# } #>
+		</Variable>
+
+		<!-- Incremental specific variables -->
+		<# if (Meta["IncrementalFlag"].ToString() == "1") { #>
+			<Variable Name="LastIncrementalValueSQL" DataType="String" EvaluateAsExpression="true">
+				"select 
+						case when '" +  (DT_WSTR, 20) @[$Project::JobIsIncremental] 	+ "' = 'False'  then case when isnumeric([LastValueLoaded]) = 1 then '0' else '' end else	[LastValueLoaded]	end as LastValueLoaded
+				from 
+					etl.SourceObjectIncrementalSetup as incremental_setup join
+					etl.SourceObjects as source_objects on 
+						incremental_setup.SourceObjectID = source_objects.ID join
+					etl.SourceConnections as source_connections on 
+						source_objects.SourceConnectionID = source_connections.ID
+				where
+					source_connections.ExtractSchemaName + '.[' + substring(source_objects.ObjectName, charindex('$', source_objects.ObjectName)+1, 200) + ']' = '" + @[User::ExtractTable] + "'"
+			</Variable>
+			<Variable Name="LastIncrementalValue" DataType="String">0</Variable>
+			<Variable Name="LatestIncrementalValueSQL" DataType="String" EvaluateAsExpression="true">
+				"update
+					incremental_setup
+				set
+					[LastValueLoaded] = isnull((select max(<#=Meta["IncrementalValueColumnDefinition"]#>) from <#=DataWarehouseName#>_Extract." + @[User::ExtractTable] + "), [LastValueLoaded])
+				from 
+					etl.SourceObjectIncrementalSetup as incremental_setup join
+					etl.SourceObjects as source_objects on 
+						incremental_setup.SourceObjectID = source_objects.ID join
+					etl.SourceConnections as source_connections on 
+						source_objects.SourceConnectionID = source_connections.ID
+				where
+					source_connections.ExtractSchemaName + '.[' + substring(source_objects.ObjectName, charindex('$', source_objects.ObjectName)+1, 200) + ']' = '" + @[User::ExtractTable] + "'"
+			</Variable>
+		<# } #>
+
+		<!-- History specific variables -->
+		<# if (Meta["PreserveHistoryFlag"].ToString() == "1") { #>
+			<Variable Name="LoadHistorySQL" DataType="String" EvaluateAsExpression="true">
+				 (DT_WSTR, 20) @[$Project::JobIsIncremental] =="True"?"exec etl.LoadSourceObjectHistory '" + @[User::ExtractTable] + "','1',NULL":"exec etl.LoadSourceObjectHistory '" + @[User::ExtractTable] + "','0',NULL"
+			</Variable>
+		<# } #>
+	</Variables>
+
+	<Tasks>
+
+		<!-- Incremental specific -->
+		<# if (Meta["IncrementalFlag"].ToString() == "1") { #>
+			<ExecuteSQL Name="EST Get last used incremental value" ResultSet="SingleRow" ConnectionName="Meta">
+				<VariableInput VariableName="User.LastIncrementalValueSQL" />
+				<Results>
+					<Result Name="0" VariableName="User.LastIncrementalValue" />
+				</Results>
+			</ExecuteSQL> 
+		<# } #>
+
+		<ExecuteSQL Name="EST Truncate Extract Table" ConnectionName="Extract">
+		    <Parameters>
+						<Parameter Name="0" DataType="String" VariableName="User.ExtractTable"></Parameter>
+			</Parameters>
+			<DirectInput>EXEC('truncate table ' + ? )</DirectInput>
+			<!--<DirectInput><#=Meta["ExtractTableName"]#></DirectInput> Old Logic-->
+		</ExecuteSQL> 
+
+		<ExecuteSQL Name="EST Gather Navision Companies" ResultSet="Full" ConnectionName="Meta">
+		    <Parameters>
+						<Parameter Name="0" DataType="String" VariableName="User.NavisionConnectionName"></Parameter>
+			</Parameters>
+			<DirectInput>select CompanyName from etl.SourceConnectionNavisionSetup scn inner join etl.SourceConnections sc on scn.SourceConnectionID = sc.ID where ExtractFlag = 1 and sc.Name = ?</DirectInput>
+			<Results>
+                <Result Name="0" VariableName="User.NavisionCompanies" />
+            </Results>
+		</ExecuteSQL> 
+
+		<ForEachAdoLoop SourceVariableName="User.NavisionCompanies" ConstraintMode="Linear" Name="FELC Iterate Navision Companies">
+			<VariableMappings>
+				<VariableMapping VariableName="User.NavisionCompany" Name="0" />
+			</VariableMappings>
+			<Tasks>
+				<Dataflow Name="Extract Data">
+					<Transformations>
+
+						<OleDbSource Name="ODS Source" ConnectionName="<#=Meta["ConnectionName"]#>" ValidateExternalMetadata="false">
+							<VariableInput VariableName="User.ExtractSQL" />
+						</OleDbSource>
+
+						<# if (Table.Columns.Any(c => c.GetTag("ConvertToUnicode") == "yes")) { #>
+						<DataConversion Name="Convert datatypes">
+							<Columns>
+								<# foreach (var column in Table.Columns.Where(c => c.GetTag("ConvertToUnicode") == "yes")) { #>
+								<Column SourceColumn="<#=column.Name#>" TargetColumn="<#=column.Name#>" DataType="String" Length="<#=column.Length#>" />
+								<# } #>
+							</Columns>
+						</DataConversion>
+						<# } #>
+
+						<DerivedColumns Name="DER System Columns">
+							<Columns>
+								<Column Name="DWCreatedDate" DataType="DateTime">getdate()</Column>
+								<Column Name="DWNavisionCompany" DataType="StringFixedLength" Length="200">@[User::NavisionCompany]</Column>  
+							</Columns>
+						</DerivedColumns>
+
+						<OleDbDestination Name="ODD Destination" ConnectionName="Extract">				
+							<TableFromVariableOutput VariableName="User.ExtractTable" />
+						</OleDbDestination>
+
+					</Transformations>
+				</Dataflow>
+			</Tasks>
+		</ForEachAdoLoop>
+
+		<!-- Incremental specific -->
+		<# if (Meta["IncrementalFlag"].ToString() == "1") { #>
+			<ExecuteSQL Name="EST Get latest incremental value" ConnectionName="Meta">
+				<VariableInput VariableName="User.LatestIncrementalValueSQL" />
+			</ExecuteSQL> 
+		<# } #>
+
+		<!-- History specific -->
+		<# if (Meta["PreserveHistoryFlag"].ToString() == "1") { #>
+			<ExecuteSQL Name="EST Load to history archive" ConnectionName="Meta">
+				<VariableInput VariableName="User.LoadHistorySQL" />
+			</ExecuteSQL> 
+		<# } #>
+
+	</Tasks>
+</Package>

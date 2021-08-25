@@ -1,0 +1,81 @@
+<#@ include file="_IncludeFrameworkGlobals.biml" #>
+<#@ property name="Table" type="AstTableNode" #>
+<#@ property name="Meta" type="DataRow" #>
+
+<Package Name="Extract<#=Meta["ExtractSchemaName"]#>_<#=Meta["ObjectName"]#>" ConstraintMode="Linear" ProtectionLevel="DontSaveSensitive">
+
+	<Connections>
+		<Connection ConnectionName="Extract">
+			<Expressions>
+				<Expression PropertyName="Extract.ConnectionString" >@[$Project::ConnectionStringDW_Extract]</Expression>
+			</Expressions>
+		</Connection> 
+		<Connection ConnectionName="<#=Meta["ConnectionName"]#>">
+			<Expressions>
+				<Expression PropertyName="<#=Meta["ConnectionName"]#>.ConnectionString" >@[$Project::ConnectionString<#=Meta["ConnectionName"]#>]</Expression>
+				<Expression ExternalProperty="ExcelFilePath">@[User::ExcelFilePath]</Expression>
+			</Expressions>
+		</Connection>
+	</Connections>
+	
+	<Variables>
+		<Variable Name="ExcelFileFolder" DataType="String"><#=Meta["Folder"]#></Variable>
+        <Variable Name="ExcelFileName" DataType="String"><#=Meta["FileName"]#></Variable>
+        <Variable Name="ExcelFileExtension" DataType="String"><#=Meta["FileExtension"]#></Variable>
+        <Variable Name="ExcelFilePath" DataType="String" EvaluateAsExpression="true">@[User::ExcelFileFolder] + @[User::ExcelFileName] + "." + @[User::ExcelFileExtension]</Variable>
+		<Variable Name="ExtractTable" DataType="String"><#=Meta["ExtractSchemaName"] + "." + Meta["ObjectName"]#></Variable>
+    </Variables>
+
+	<Tasks>
+
+		<ExecuteSQL Name="Truncate Extract Table" ConnectionName="Extract">
+			<DirectInput>truncate table <#=Meta["ExtractSchemaName"] + "." + Meta["ObjectName"]#></DirectInput>
+		</ExecuteSQL> 
+
+		<ForEachFileLoop Folder="<#=Meta["Folder"]#>" FileSpecification="<#=Meta["FileSpecification"]#>" ConstraintMode="Linear" RetrieveFileNameFormat="NameOnly" Name="FELC Iterate Excel">
+           
+		    <VariableMappings>
+                <VariableMapping Name="0" VariableName="User.ExcelFileName"/>
+            </VariableMappings>
+            
+			<Tasks>
+				<Dataflow Name="Extract Data" DelayValidation="true">
+
+					<Transformations>
+						
+						<ExcelSource Name="Source" ConnectionName="<#=Meta["ConnectionName"]#>">
+							<DirectInput>
+								<![CDATA[
+								select 
+									<#=Table.GetColumnList(c => c.Name != "DWCreatedDate" && c.Name != "ExcelFileName")#>
+								from 
+									[<#=Meta["InitialCatalog"]#>$]
+
+								<# if(!String.IsNullOrEmpty(Meta["ExtractSQLFilter"].ToString().Trim())) {#>
+								where
+									<#=Meta["ExtractSQLFilter"]#>	
+								<#}#>
+								]]>
+							</DirectInput>
+						</ExcelSource>
+						
+						<DerivedColumns Name="DER System Columns">
+							<Columns>
+								<Column Name="DWCreatedDate" DataType="DateTime">getdate()</Column> 
+								<Column Name="ExcelFileName" DataType="StringFixedLength" Length="100">(DT_WSTR,100)@[User::ExcelFileName]</Column> 
+							</Columns>
+						</DerivedColumns>
+
+						<OleDbDestination Name="ODD Destination" ConnectionName="Extract">				
+							<TableFromVariableOutput VariableName="User.ExtractTable" />
+						</OleDbDestination>
+					
+					</Transformations>
+				</Dataflow>
+            </Tasks>
+
+        </ForEachFileLoop>
+
+	</Tasks>
+
+</Package>

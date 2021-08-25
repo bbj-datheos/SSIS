@@ -1,0 +1,120 @@
+<#@ template language="C#" hostspecific="True" tier="2" #>
+<#@ include file="biml/_IncludeFrameworkGlobals.biml" #>
+
+<!-- Create schemas and extract tables in database -->
+<# 
+OleDbConnection extractconnection = new OleDbConnection(conExtract + ";");
+extractconnection.Open();
+
+// Schemas
+foreach (DataRow row in SourceConnections.Rows) {
+	//MessageBox.Show("Hello");
+	string sqlStatement = "if not exists (select * from sys.schemas where name = N'" + row["ExtractSchemaName"] + "' ) exec('create schema [" + row["ExtractSchemaName"] + "] authorization [dbo]')";
+    OleDbCommand command = new OleDbCommand(sqlStatement, extractconnection);
+    command.ExecuteNonQuery();
+}
+
+// Tables
+foreach(var table in RootNode.Tables) {
+	// Create table
+	//MessageBox.Show("Hello");
+	string sqlStatements = table.GetTableSql();
+	foreach (var sqlBatch in sqlStatements.Split(new[] { "\nGO" }, StringSplitOptions.RemoveEmptyEntries)) {
+		OleDbCommand command = new OleDbCommand(sqlBatch, extractconnection);
+		command.ExecuteNonQuery();
+	}
+
+	// Specific for applying compression, temp fix until Davids script is in place. Only works for entreprise edition!
+	//string sqlStatement = "ALTER TABLE " + table.Schema.Name + "." + table.Name + " REBUILD PARTITION = ALL WITH (DATA_COMPRESSION = PAGE);";
+	//OleDbCommand command2 = new OleDbCommand(sqlStatement, extractconnection);
+	//command2.ExecuteNonQuery();
+}
+
+extractconnection.Close();
+#>
+
+<!-- Update project.params file -->
+<# 
+	var project = RootNode.PackageProjects.FirstOrDefault();
+	//MessageBox.Show(RootNode.PackageProjects.ToString());
+	if (project == null) {
+		ValidationReporter.Report(Severity.Error, "<PackageProject> does not exist");
+	} else {
+		var projectPath = project.GetTag("ProjectParametersPath");
+		if (projectPath == "") {
+			ValidationReporter.Report(project, Severity.Error, "Annotation ProjectParametersPath does not exist", @"Add <Annotation Tag=""ProjectParametersPath"">S:\EETDW\Solutions\SSIS\ETL\Project.params</Annotation> to <PackageProject>");
+        } else {
+			
+			try {
+				
+				var fileAttributes = File.GetAttributes(projectPath);
+				if ((fileAttributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly) {
+					File.SetAttributes(projectPath, (fileAttributes & ~FileAttributes.ReadOnly));
+				}
+				
+				StringBuilder parameters = new StringBuilder();
+				parameters.AppendLine("<?xml version=\"1.0\"?>");
+				parameters.AppendLine("<SSIS:Parameters xmlns:SSIS=\"www.microsoft.com/SqlServer/SSIS\">");
+				foreach (var parameter in project.Parameters) {
+					parameters.AppendFormat("<SSIS:Parameter SSIS:Name=\"{0}\">", parameter.Name).AppendLine();
+					parameters.AppendLine("<SSIS:Properties>");
+					parameters.AppendFormat("<SSIS:Property SSIS:Name=\"ID\">{{{0}}}</SSIS:Property>", (parameter.Id == Guid.Empty ?  Guid.NewGuid() : parameter.Id)).AppendLine();
+					parameters.AppendFormat("<SSIS:Property SSIS:Name=\"DataType\">{0}</SSIS:Property>", Convert.ToInt16(parameter.DataType)).AppendLine();
+					parameters.AppendFormat("<SSIS:Property SSIS:Name=\"Value\">{0}</SSIS:Property>", parameter.Value).AppendLine();
+					parameters.AppendFormat("<SSIS:Property SSIS:Name=\"Sensitive\">{0}</SSIS:Property>", Convert.ToInt16(parameter.IsSensitive)).AppendLine();
+					parameters.AppendFormat("<SSIS:Property SSIS:Name=\"Required\">{0}</SSIS:Property>", Convert.ToInt16(parameter.IsRequired)).AppendLine();
+					parameters.AppendFormat("<SSIS:Property SSIS:Name=\"IncludeInDebugDump\">{0}</SSIS:Property>", Convert.ToInt16(parameter.IncludeInDebugDump)).AppendLine();
+					parameters.AppendFormat("<SSIS:Property SSIS:Name=\"Description\">{0}</SSIS:Property>", parameter.GetTag("Description")).AppendLine();
+					parameters.AppendFormat("<SSIS:Property SSIS:Name=\"CreationName\">{0}</SSIS:Property>", parameter.GetTag("CreationName")).AppendLine();
+					parameters.AppendLine("</SSIS:Properties>");
+					parameters.AppendLine("</SSIS:Parameter>");
+				}
+				parameters.AppendLine("</SSIS:Parameters>");
+				
+				File.WriteAllText(projectPath, parameters.ToString());
+				
+			} catch (Exception e) {
+				ValidationReporter.Report(project, Severity.Error, "Error writing Project Parameters to Project.params", String.Format("Make sure the path \"{0}\" is correct and that this project uses the Project Deployment Model", projectPath));
+			}
+			
+        }
+	}
+#>
+
+<!-- Build extract packages -->
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+
+	<!-- Packages -->
+	<Packages>
+		
+		<!-- Build Extract Packages -->
+		<#
+		OleDbConnection metaconnection = new OleDbConnection(conMeta + ";");
+		metaconnection.Open();
+		foreach (DataRow Meta in SourceObjects.Rows) {
+			var Table = RootNode.Tables[DataWarehouseName + "_Extract." + Meta["ExtractTableName"]]; 
+			if (Table != null) { // Ensure no errors, if table node does not exist, i.e. tramos not able to deliver meta data. Todo: report error
+		#>
+
+			<#= CallBimlScript("biml/_IncludeFrameworkExtractPattern" + Meta["ExtractPattern"] + ".biml", Table, Meta) #>
+
+		<#
+				// Update meta table SourceObjects, disable specific table
+				string sqlStatement = "UPDATE etl.SourceObjects SET ExcludeFlag = 1  WHERE ID = " + Meta["SourceObjectID"];
+				OleDbCommand command = new OleDbCommand(sqlStatement, metaconnection);
+				command.ExecuteNonQuery();
+			}
+		} 
+		metaconnection.Close();
+		#>
+
+		<!-- Build Extract Controllers -->
+		 
+		 <#= CallBimlScript("biml/_IncludeFrameworkExtractPatternController.biml") #>
+
+	</Packages>
+
+	<# CallBimlScript("biml/_HelperFrameworkSaveCompiledBiml.biml"); #>
+		
+</Biml>
+
